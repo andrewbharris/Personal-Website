@@ -107,19 +107,31 @@ Once `andrewbharrismd.com` loads your site, go back to **GitHub → Settings →
 
 This is the part you'll actually use.
 
-### The routine
+### The routine — use GitHub Desktop
 
 1. **Change something.** Either:
    - Double-click **`USE THIS TO HAND-EDIT CONTENT.command`** to edit text by clicking directly on the page, or
    - Ask Claude to make the change.
 2. **Check it looks right.** Double-click `index.html` to preview it in your browser.
-3. **Double-click `PUBLISH UPDATES.command`.**
-   It shows you what changed, asks you to confirm with `y`, then publishes.
-4. Wait about a minute, then visit **andrewbharrismd.com** and refresh with **Cmd+Shift+R**.
+3. **Open GitHub Desktop.** Your changed files appear in the left panel.
+4. Type a short summary in the bottom-left box (e.g. "Updated bio") and click **Commit to main**.
+5. Click **Push origin** at the top.
+6. Wait about a minute, then visit **andrewbharrismd.com** and refresh with **Cmd+Shift+R**.
 
-That's it. No other steps.
+**Why GitHub Desktop and not the script?** GitHub no longer accepts your account
+password for uploads, and GitHub Desktop is what holds your secure sign-in token.
+The script can save your work, but the upload step may fail with a password prompt.
+GitHub Desktop always works.
 
-> **Note:** the first time you run `PUBLISH UPDATES.command`, macOS may warn that it's from an unidentified developer. Right-click the file → **Open** → **Open**. You only have to do that once.
+> If GitHub Desktop ever says **"Pull origin"** instead of "Push origin", click
+> that first, then push. That happens when GitHub made a change on its side
+> (for example when you edit Pages settings, which creates a commit).
+
+### About `PUBLISH UPDATES.command`
+
+Optional convenience. It saves your changes and tries to upload them. If it
+asks for a username and password, close it and use GitHub Desktop instead —
+your work is already saved safely, nothing is lost.
 
 ---
 
@@ -144,8 +156,11 @@ Hard-refresh with **Cmd+Shift+R** — browsers cache aggressively. If it's still
 **I broke something and want to undo it.**
 Nothing is ever lost. In GitHub Desktop, click **History** to see every publish. Right-click any entry and choose **Revert changes in commit**. Or ask Claude to restore from an archived version.
 
-**The publish script says it failed.**
-Your changes are still saved locally. The usual causes are no internet, or GitHub wanting you to sign in again — open GitHub Desktop and it will prompt you.
+**The publish script says it failed, or asks for a password.**
+Expected — GitHub doesn't accept account passwords for uploads. Your changes are already saved. Open GitHub Desktop and click **Push origin**.
+
+**GitHub Desktop shows "Pull origin" and won't let me push.**
+Click **Pull origin** first, then **Push origin**. GitHub made a change on its side that your computer doesn't have yet.
 
 **Someone submitted the contact form but I got nothing.**
 Sign in at **https://formspree.io** and check the form's submissions. Confirm the destination email there is one you actually check. Free accounts get 50 submissions a month.

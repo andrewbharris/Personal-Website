@@ -1043,6 +1043,67 @@ section {
   mix-blend-mode: multiply;
 }
 
+/* ===== Bio article (About page) ===== */
+
+.bio p {
+  margin-bottom: 18px;
+}
+
+.bio p:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Uniform photos woven through the bio, alternating sides */
+.bio-fig {
+  width: 215px;
+  max-width: 36%;
+  margin: 5px 0 18px;
+}
+
+.bio-fig img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 20%;
+  border-radius: 2px;
+  box-shadow: 0 18px 36px -16px rgba(20, 32, 43, 0.3);
+}
+
+.bio-fig figcaption {
+  font-size: 12px;
+  color: var(--slate);
+  font-style: italic;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.bio-fig-right {
+  float: right;
+  clear: both;
+  margin-left: 34px;
+}
+
+.bio-fig-left {
+  float: left;
+  clear: both;
+  margin-right: 34px;
+}
+
+/* start the adjacent paragraph level with the photo, not mid-sentence */
+.bio-fig-right + p { clear: left; }
+.bio-fig-left + p { clear: right; }
+
+@media (max-width: 700px) {
+  .bio-fig {
+    float: none;
+    clear: both;
+    width: 100%;
+    max-width: 320px;
+    margin: 8px auto 24px;
+  }
+}
+
 /* ===== Photo pair (About: presentations) ===== */
 
 .photo-pair {
