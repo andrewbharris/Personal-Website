@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | Andrew B. Harris, MD</title>
+<meta name="description" content="Contact the office of Dr. Andrew Harris, hip and knee replacement surgeon in Chicago (Skokie, Lakeview, and Bucktown). Send a question and the office will get back to you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ============ HEADER / NAV ============ -->
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">
+      Andrew B. Harris, MD
+      <span class="brand-sub">Hip &amp; Knee Replacement</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="about.html">Meet Dr. Harris</a>
+      <a href="procedures.html">Procedures</a>
+      <a href="patient-resources.html">Patient Resources</a>
+      <a href="publications.html">Research</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="contact.html" class="nav-cta">Schedule Now</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ PAGE HEADER ============ -->
+<div class="page-header">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; Contact</div>
+    <div class="eyebrow">Contact</div>
+    <h1>Get in Touch</h1>
+  </div>
+</div>
+
+<!-- ============ CONTACT FORM ============ -->
+<section class="section-white">
+  <div class="wrap">
+    <div class="intro-grid" style="align-items:start;">
+
+      <div>
+        <p class="pull-quote" style="margin-bottom:22px;">Have a question, or want to request an appointment? Send a message and the office will get back to you.</p>
+        <p>Dr. Harris sees patients at three Chicago offices, Skokie, Lakeview, and Bucktown. Use the form to share your name, email, and question, and someone from the office will reply as soon as possible.</p>
+      </div>
+
+      <div>
+        <!--
+          ============================================================
+          CONTACT FORM - CURRENTLY WORKING VIA EMAIL HANDOFF
+          Pressing "Send Message" opens the visitor's own email app with
+          the message pre-filled and addressed to the office. Nothing to
+          set up, nothing to pay for, and it works right now.
+
+          TO UPGRADE LATER (message arrives in your inbox automatically,
+          without the visitor needing an email app):
+            1. Make a free account at https://formspree.io
+            2. Create a form and copy the endpoint
+               (it looks like https://formspree.io/f/abcdwxyz)
+            3. Paste it into FORMSPREE_ENDPOINT in the script at the
+               bottom of this file. That is the only change needed.
+          ============================================================
+        -->
+        <form id="contactForm" class="contact-form" action="#" method="POST" novalidate>
+          <div class="form-field">
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="email" autocomplete="email" required>
+          </div>
+          <div class="form-field">
+            <label for="cf-message">Your Question</label>
+            <textarea id="cf-message" name="message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="form-note">We&rsquo;ll get back to you as soon as we can. Please do not include sensitive medical information in this form.</p>
+        </form>
+
+        <div id="contactSuccess" class="form-success">
+          <h3>Thank you, your message has been sent.</h3>
+          <p>We&rsquo;ll get back to you as soon as we can.</p>
+        </div>
+
+        <div id="contactError" class="form-success">
+          <h3>Sorry, that message didn&rsquo;t go through.</h3>
+          <p>Something went wrong on our end, and your message was not sent. Please check your connection and <a href="#" id="retryLink" class="text-link">try again</a>.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>Andrew B. Harris, MD</h4>
+        <p>Hip &amp; Knee Replacement Surgeon<br><em>Offices in Skokie, Lakeview &amp; Bucktown, Chicago</em></p>
+        <div class="footer-links">
+          <a href="https://scholar.google.com/citations?user=HISx5XcAAAAJ&amp;hl=en" class="icon-link icon-link-light" target="_blank" rel="noopener" title="Google Scholar" aria-label="Google Scholar profile">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12, 4 22, 9 12, 14 2, 9"/><path d="M7 11 L7 15 L12 17 L17 15 L17 11"/><path d="M22 9 L22 14"/></svg>
+          </a>
+          <a href="https://www.doximity.com/cv/andrewbharrismd" class="icon-link icon-link-light" target="_blank" rel="noopener" title="Doximity" aria-label="Doximity profile">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/andrew-harris-4b088654/" class="icon-link icon-link-light" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn profile">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21H18.6v-5.3c0-1.26-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H10z"/></svg>
+          </a>
+          <a href="https://orcid.org/0000-0002-8158-4364" class="icon-link icon-link-light" target="_blank" rel="noopener" title="ORCID" aria-label="ORCID profile">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><text x="12" y="15.5" text-anchor="middle" font-size="9" font-weight="700" font-family="sans-serif" fill="#0d2438">iD</text></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <p>
+          <a href="about.html">Meet Dr. Harris</a><br>
+          <a href="procedures.html">Procedures</a><br>
+          <a href="publications.html">Research &amp; Publications</a><br>
+          <a href="patient-resources.html">Patient Resources</a><br>
+          <a href="contact.html">Contact</a>
+        </p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>
+          Chicago: Skokie &middot; Lakeview &middot; Bucktown<br>
+          <a href="contact.html">Contact the office &rarr;</a>
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Andrew B. Harris, MD</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ CONTACT FORM HANDLER ============ -->
+<script>
+(function () {
+  /* ==========================================================
+     SETTING - this is the only line to change.
+     ==========================================================
+     Messages are delivered by Formspree (https://formspree.io).
+     Sign in there to read submissions, change the destination
+     email address, or set up forwarding. No email address is
+     stored in this file, so none is exposed to the public.
+  */
+  var FORMSPREE_ENDPOINT = 'https://formspree.io/f/xbdnqyjl';
+
+  var form    = document.getElementById('contactForm');
+  var success = document.getElementById('contactSuccess');
+  var errorEl = document.getElementById('contactError');
+  var retry   = document.getElementById('retryLink');
+  if (!form) return;
+
+  function show(panel) {
+    form.style.display = 'none';
+    success.style.display = 'none';
+    errorEl.style.display = 'none';
+    panel.style.display = 'block';
+    panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  if (retry) {
+    retry.addEventListener('click', function (e) {
+      e.preventDefault();
+      errorEl.style.display = 'none';
+      form.style.display = 'block';
+      form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    var btn = form.querySelector('button[type="submit"]');
+    var label = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+
+    function reset() {
+      if (btn) { btn.disabled = false; btn.textContent = label; }
+    }
+
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    }).then(function (r) {
+      if (r.ok) {
+        form.reset();
+        reset();
+        show(success);
+      } else {
+        throw new Error('send failed');
+      }
+    }).catch(function () {
+      reset();
+      show(errorEl);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
