@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Contact | Andrew B. Harris, MD">
 <meta name="twitter:description" content="Contact Dr. Andrew Harris, hip and knee replacement surgeon in Chicago (Skokie, Lakeview, and Bucktown). Send a question and someone will get back to you.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/headshot.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=3">
+<link rel="stylesheet" href="assets/css/style.css?v=5">
 </head>
 <body>
 
@@ -83,6 +83,21 @@
             <label class="choice"><input type="radio" name="preferred_contact" value="Text message"> <span>Text message</span></label>
             <label class="choice"><input type="radio" name="preferred_contact" value="Either"> <span>Either is fine</span></label>
           </fieldset>
+          <div class="form-field">
+            <label for="cf-referral">How did you hear about Dr. Harris? <span class="label-note">(optional)</span></label>
+            <select id="cf-referral" name="referral_source">
+              <option value="">Select one</option>
+              <option>Referred by another physician</option>
+              <option>Referred by a friend or family member</option>
+              <option>Google or other web search</option>
+              <option>Hospital or practice directory</option>
+              <option>Insurance provider directory</option>
+              <option>Social media</option>
+              <option>Research or publications</option>
+              <option>Existing patient of Dr. Harris</option>
+              <option>Other</option>
+            </select>
+          </div>
           <div class="form-field">
             <label for="cf-message">Your Question</label>
             <textarea id="cf-message" name="message" required></textarea>

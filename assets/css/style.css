@@ -1087,19 +1087,15 @@ section {
 
 .bio-fig-right {
   float: right;
-  clear: both;
+  clear: right;
   margin-left: 34px;
 }
 
 .bio-fig-left {
   float: left;
-  clear: both;
+  clear: left;
   margin-right: 34px;
 }
-
-/* start the adjacent paragraph level with the photo, not mid-sentence */
-.bio-fig-right + p { clear: left; }
-.bio-fig-left + p { clear: right; }
 
 @media (max-width: 700px) {
   .bio-fig {
@@ -1429,7 +1425,8 @@ section {
   margin-bottom: 7px;
 }
 .form-field input,
-.form-field textarea {
+.form-field textarea,
+.form-field select {
   width: 100%;
   font-family: var(--font-sans);
   font-size: 15px;
@@ -1441,12 +1438,24 @@ section {
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .form-field input:focus,
-.form-field textarea:focus {
+.form-field textarea:focus,
+.form-field select:focus {
   outline: none;
   border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(56,99,127,0.1);
 }
 .form-field textarea { resize: vertical; min-height: 150px; }
+
+/* dropdown: strip the OS look, use our own caret */
+.form-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 42px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2338637f' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+}
 
 .label-note {
   text-transform: none;
