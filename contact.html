@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact | Andrew B. Harris, MD</title>
-<meta name="description" content="Contact the office of Dr. Andrew Harris, hip and knee replacement surgeon in Chicago (Skokie, Lakeview, and Bucktown). Send a question and the office will get back to you.">
+<meta name="description" content="Contact Dr. Andrew Harris, hip and knee replacement surgeon in Chicago (Skokie, Lakeview, and Bucktown). Send a question and someone will get back to you.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="canonical" href="https://andrewbharrismd.com/contact.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Andrew B. Harris, MD">
 <meta property="og:title" content="Contact | Andrew B. Harris, MD">
-<meta property="og:description" content="Contact the office of Dr. Andrew Harris, hip and knee replacement surgeon in Chicago (Skokie, Lakeview, and Bucktown). Send a question and the office will get back to you.">
+<meta property="og:description" content="Contact Dr. Andrew Harris, hip and knee replacement surgeon in Chicago (Skokie, Lakeview, and Bucktown). Send a question and someone will get back to you.">
 <meta property="og:url" content="https://andrewbharrismd.com/contact.html">
 <meta property="og:image" content="https://andrewbharrismd.com/assets/img/headshot.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Contact | Andrew B. Harris, MD">
-<meta name="twitter:description" content="Contact the office of Dr. Andrew Harris, hip and knee replacement surgeon in Chicago (Skokie, Lakeview, and Bucktown). Send a question and the office will get back to you.">
+<meta name="twitter:description" content="Contact Dr. Andrew Harris, hip and knee replacement surgeon in Chicago (Skokie, Lakeview, and Bucktown). Send a question and someone will get back to you.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/headshot.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=2">
+<link rel="stylesheet" href="assets/css/style.css?v=3">
 </head>
 <body>
 
@@ -56,8 +56,8 @@
     <div class="intro-grid" style="align-items:start;">
 
       <div>
-        <p class="pull-quote" style="margin-bottom:22px;">Have a question, or want to request an appointment? Send a message and the office will get back to you.</p>
-        <p>Dr. Harris sees patients at three Chicago offices, Skokie, Lakeview, and Bucktown. Use the form to share your name, email, and question, and someone from the office will reply as soon as possible.</p>
+        <p class="pull-quote" style="margin-bottom:22px;">Have a question, or want to request an appointment? Send a message and someone will get back to you.</p>
+        <p>Dr. Harris sees patients at three Chicago offices, Skokie, Lakeview, and Bucktown. Share how best to reach you and someone will reply as soon as possible.</p>
       </div>
 
       <div>
@@ -65,7 +65,7 @@
           ============================================================
           CONTACT FORM - CURRENTLY WORKING VIA EMAIL HANDOFF
           Pressing "Send Message" opens the visitor's own email app with
-          the message pre-filled and addressed to the office. Nothing to
+          the message pre-filled and ready to send. Nothing to
           set up, nothing to pay for, and it works right now.
 
           TO UPGRADE LATER (message arrives in your inbox automatically,
@@ -86,6 +86,17 @@
             <label for="cf-email">Email</label>
             <input type="email" id="cf-email" name="email" autocomplete="email" required>
           </div>
+          <div class="form-field">
+            <label for="cf-phone">Phone <span class="label-note">(optional)</span></label>
+            <input type="tel" id="cf-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="(312) 555-0123">
+          </div>
+          <fieldset class="form-field choice-field">
+            <legend>Preferred way to reach you</legend>
+            <label class="choice"><input type="radio" name="preferred_contact" value="Email" checked> <span>Email</span></label>
+            <label class="choice"><input type="radio" name="preferred_contact" value="Phone call"> <span>Phone call</span></label>
+            <label class="choice"><input type="radio" name="preferred_contact" value="Text message"> <span>Text message</span></label>
+            <label class="choice"><input type="radio" name="preferred_contact" value="Either"> <span>Either is fine</span></label>
+          </fieldset>
           <div class="form-field">
             <label for="cf-message">Your Question</label>
             <textarea id="cf-message" name="message" required></textarea>
@@ -145,7 +156,7 @@
         <h4>Contact</h4>
         <p>
           Chicago: Skokie &middot; Lakeview &middot; Bucktown<br>
-          <a href="contact.html">Contact the office &rarr;</a>
+          <a href="contact.html">Send a message &rarr;</a>
         </p>
       </div>
     </div>

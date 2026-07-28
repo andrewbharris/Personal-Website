@@ -647,6 +647,8 @@ section {
 }
 
 .stat {
+  display: flex;
+  flex-direction: column;
   padding: 40px 30px;
   text-align: center;
   border-right: 1px solid var(--border-hair);
@@ -654,13 +656,18 @@ section {
 
 .stat:last-child { border-right: none; }
 
+/* fixed heading area so the descriptions line up across all three */
 .stat .num {
   font-family: var(--font-serif);
-  font-size: 25px;
+  font-size: 24px;
   color: var(--ink);
   font-weight: 500;
   line-height: 1.25;
   letter-spacing: -0.005em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
 }
 
 .stat .label {
@@ -1440,6 +1447,53 @@ section {
   box-shadow: 0 0 0 3px rgba(56,99,127,0.1);
 }
 .form-field textarea { resize: vertical; min-height: 150px; }
+
+.label-note {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--slate);
+}
+
+/* Preferred contact method */
+.choice-field {
+  border: none;
+  padding: 0;
+  margin-bottom: 18px;
+}
+
+.choice-field legend {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.choice-field .choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 18px 8px 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.choice-field input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--gold);
+  cursor: pointer;
+  margin: 0;
+}
 .form-note { font-size: 13px; color: var(--slate); margin-top: 14px; }
 .contact-form .btn { margin-top: 6px; cursor: pointer; }
 .form-success {
