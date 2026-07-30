@@ -539,6 +539,14 @@ section {
   margin-top: 12px;
 }
 
+/* Keep a section-head H1 visually identical to the H2 it replaced (SEO: one H1 per page) */
+.section-head h1 {
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-top: 12px;
+}
+
 /* ===== Intro / About snippet ===== */
 
 .intro-grid {
