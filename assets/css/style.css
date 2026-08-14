@@ -648,7 +648,7 @@ section {
 
 .stat-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   border-top: 1px solid var(--border-hair);
   border-bottom: 1px solid var(--border-hair);
   background: var(--white);
@@ -1013,8 +1013,8 @@ section {
   .intro-grid { grid-template-columns: 1fr; gap: 32px; }
   .card-grid { grid-template-columns: 1fr; }
   .stat-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .stat:nth-child(2) { border-right: none; }
-  .stat:nth-child(3) { border-right: none; }
+  .stat { border-right: 1px solid var(--border-hair); }
+  .stat:nth-child(2n) { border-right: none; }
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
   section { padding: 60px 0; }
 }
@@ -1524,12 +1524,23 @@ section {
 .form-success p { font-size: 15px; margin: 0; }
 
 /* ===== Footer profile links ===== */
+.footer-sub {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-top: 6px;
+}
+
 .footer-links {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 18px;
-  margin-top: 16px;
+  margin-top: 14px;
 }
 .footer-links .icon-link { gap: 0; }
 .footer-links .icon-link svg { width: 20px; height: 20px; }
@@ -1549,4 +1560,19 @@ section {
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 16px;
+}
+
+/* ===== Mobile refinements (2026-08-07) — interior page headings + tighter gutters ===== */
+@media (max-width: 700px) {
+  .page-header { padding: 46px 0 36px; }
+  .page-header h1 { font-size: 34px; }
+  .page-header .page-lead { font-size: 16.5px; }
+}
+@media (max-width: 540px) {
+  .wrap { padding: 0 22px; }
+  .site-header .wrap { padding: 16px 22px; }
+  .page-header h1 { font-size: 29px; line-height: 1.2; }
+  .hero h1 { font-size: 34px; }
+  h1 { font-size: 34px; }
+  h2 { font-size: 27px; }
 }
