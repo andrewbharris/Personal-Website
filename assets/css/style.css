@@ -108,6 +108,9 @@ p {
 }
 
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   font-family: var(--font-serif);
   font-weight: 500;
   color: var(--ink);
@@ -115,6 +118,20 @@ p {
   letter-spacing: 0.005em;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.brand-mark {
+  width: 46px;
+  height: 46px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.brand-text { display: block; }
+
+@media (max-width: 700px) {
+  .brand { gap: 10px; }
+  .brand-mark { width: 38px; height: 38px; }
 }
 
 .brand .brand-sub {

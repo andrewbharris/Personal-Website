@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="Signs You May Need a Hip Replacement | Andrew B. Harris, MD">
 <meta name="twitter:description" content="Signs you may need a hip replacement, from a Chicago hip surgeon. Learn the symptoms of hip arthritis, when surgery is considered, and what to try first. Offices in Skokie, the North Shore, and Chicago.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/headshot.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=6">
+<link rel="stylesheet" href="assets/css/style.css?v=7">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +44,7 @@
       "name": "How do I know if I need a hip replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Hip replacement is usually considered when hip arthritis pain limits daily life despite non-surgical treatment. Common signs include groin or thigh pain with walking, stiffness that limits putting on shoes or socks, pain that disturbs sleep, and a hip that no longer responds to activity changes, physical therapy, anti-inflammatory medication, or injections."
+        "text": "Hip replacement is elective, so the question is less whether you need it and more whether you want it. It is usually considered when joint pain limits daily life despite non-surgical treatment. Common signs include groin or thigh pain with walking, stiffness that limits putting on shoes or socks, pain that disturbs sleep, and a hip that no longer responds to activity changes, physical therapy, anti-inflammatory medication, or injections."
       }
     },
     {
@@ -52,7 +52,7 @@
       "name": "What conditions lead to a hip replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The most common cause is osteoarthritis (wear-and-tear arthritis). Others include avascular necrosis (loss of blood supply to the ball of the hip), hip dysplasia, inflammatory arthritis such as rheumatoid arthritis, and certain hip fractures."
+        "text": "Osteoarthritis (wear-and-tear arthritis) is the most common reason, but far from the only one. Others include avascular necrosis (loss of blood supply to the ball of the hip), hip dysplasia, inflammatory arthritis such as rheumatoid arthritis, and certain hip fractures."
       }
     },
     {
@@ -76,7 +76,7 @@
       "name": "Does “bone on bone” mean I need a hip replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sometimes, but not always. “Bone on bone” means the cartilage space has worn down until the bones nearly touch on an X-ray. It can certainly explain why a hip hurts. Whether to operate rests on how much the arthritis limits your daily life and whether non-surgical treatment is still working."
+        "text": "Sometimes, but not always. “Bone on bone” means the cartilage space has worn down until the bones nearly touch on an X-ray. It can certainly explain why a hip hurts. Whether to operate rests on how much the joint limits your daily life, whether non-surgical treatment is still working, and whether you are ready."
       }
     },
     {
@@ -108,7 +108,7 @@
       "name": "Can I wait too long to have a hip replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A hip that has been stiff for many years can develop contracture, and advanced cases can involve deformity or bone loss that make the operation more complex and rehab longer. The surgery is still possible and the end result is generally the same, so worry that it will be harder later is not a good reason to operate sooner. The right time is when arthritis limits your life and non-surgical care is no longer enough."
+        "text": "A hip that has been stiff for many years can develop contracture, and advanced cases can involve deformity or bone loss that make the operation more complex and rehab longer. The surgery is still possible and the end result is generally the same, so worry that it will be harder later is not a good reason to operate sooner. The right time is when the joint limits your life, non-surgical care is no longer enough, and you are ready."
       }
     },
     {
@@ -122,11 +122,57 @@
   ]
 }
 </script>
+<style>
+.res-tabs > input { position:absolute; opacity:0; pointer-events:none; }
+.res-tablist { display:flex; flex-wrap:wrap; gap:0; border-bottom:1px solid var(--border-hair); margin-bottom:4px; }
+.res-tablist label { cursor:pointer; padding:14px 22px 13px; font-family:var(--font-sans); font-size:13.5px;
+  font-weight:600; letter-spacing:0.01em; color:var(--slate); border-bottom:2px solid transparent;
+  margin-bottom:-1px; transition:color .15s ease, border-color .15s ease; }
+.res-tablist label:hover { color:var(--gold); }
+.res-panel { display:none; padding-top:12px; }
+#restab-a:checked ~ .res-tablist label[for="restab-a"],
+#restab-b:checked ~ .res-tablist label[for="restab-b"] { color:var(--ink); border-bottom-color:var(--gold); }
+#restab-a:checked ~ .res-panel-a, #restab-b:checked ~ .res-panel-b { display:block; }
+.res-tabs > input:focus-visible ~ .res-tablist label { outline:2px solid var(--gold); outline-offset:2px; }
+@media (max-width:640px){
+  .res-tablist { flex-direction:column; gap:0; border-bottom:none; }
+  .res-tablist label { padding:12px 0 12px 14px; border-bottom:1px solid var(--border-hair);
+    border-left:3px solid transparent; margin-bottom:0; }
+  #restab-a:checked ~ .res-tablist label[for="restab-a"],
+  #restab-b:checked ~ .res-tablist label[for="restab-b"] {
+    border-bottom-color:var(--border-hair); border-left-color:var(--gold); background:var(--ivory); }
+}
+</style>
+<style>
+.cite { position:relative; display:inline-block; line-height:1; padding:0 1px;
+  color:var(--gold); text-decoration:none; }
+.cite:hover, .cite:focus-visible { text-decoration:underline; }
+.cite::after {
+  content: attr(data-tip);
+  position:absolute; bottom:calc(100% + 9px); left:50%; transform:translateX(-50%);
+  width:max-content; max-width:300px;
+  background:var(--navy); color:#fff; text-align:left;
+  font-family:var(--font-sans); font-size:12.5px; font-weight:400; line-height:1.45;
+  letter-spacing:0; padding:10px 13px; border-radius:3px;
+  box-shadow:0 12px 28px -10px rgba(20,32,43,.5);
+  opacity:0; visibility:hidden; transition:opacity .13s ease; pointer-events:none; z-index:120;
+}
+.cite::before {
+  content:''; position:absolute; bottom:calc(100% + 3px); left:50%; transform:translateX(-50%);
+  border:6px solid transparent; border-top-color:var(--navy);
+  opacity:0; visibility:hidden; transition:opacity .13s ease; pointer-events:none; z-index:121;
+}
+.cite:hover::after, .cite:hover::before,
+.cite:focus-visible::after, .cite:focus-visible::before { opacity:1; visibility:visible; }
+.cite-edge::after { left:auto; right:0; transform:none; }
+.cite-edge::before { left:auto; right:8px; transform:none; }
+@media (hover:none){ .cite::after, .cite::before { display:none; } }
+</style>
 </head>
 <body>
 <header class="site-header">
   <div class="wrap">
-    <a href="index.html" class="brand">Andrew B. Harris, MD<span class="brand-sub">Hip &amp; Knee · Chicago</span></a>
+    <a href="index.html" class="brand"><img src="assets/img/abh-mark.png" alt="" class="brand-mark" width="46" height="46"><span class="brand-text">Andrew B. Harris, MD<span class="brand-sub">Hip &amp; Knee &middot; Chicago</span></span></a>
     <nav class="nav-links" id="navLinks">
       <a href="index.html">Home</a>
       <a href="about.html">Meet Dr. Harris</a>
@@ -148,8 +194,9 @@
   <div class="wrap">
     <div class="intro-grid">
       <div>
-        <p>Hip arthritis rarely becomes a problem all at once. The symptoms usually build very slowly over time. A stiff hip in the morning, a shorter walk before pain sets in, trouble putting on shoes and socks, an ache that starts to interrupt sleep. Because it comes on slowly, many people are surprised how much life they have given up by the time surgery becomes part of the discussion.</p>
-        <p>A <a href="hip-replacement-chicago.html" class="text-link">hip replacement</a> is considered when arthritis pain limits the things that matter to you and non-surgical treatment is no longer enough, not at a particular age or X-ray finding.</p>
+        <p>Hip arthritis rarely becomes a problem all at once. The symptoms usually build very slowly over time. A stiff hip in the morning, a shorter walk before pain sets in, trouble putting on shoes and socks, an ache that starts to interrupt sleep. Because it comes on slowly, many people are surprised how much life they have given up by the time surgery becomes part of the discussion.<sup style="font-size:11px; line-height:0;"><a href="#ref-1" class="cite" data-tip="Lespasio et al. Hip Osteoarthritis: A Primer. Perm J, 2018. Free full text." aria-label="Reference 1">1</a><span style="color:var(--gold);">,</span><a href="#ref-2" class="cite" data-tip="Katz et al. Diagnosis and treatment of hip and knee osteoarthritis. JAMA, 2021. Free full text." aria-label="Reference 2">2</a></sup></p>
+        <p>A <a href="hip-replacement-chicago.html" class="text-link">hip replacement</a> is rarely something you strictly need. It is an elective operation, considered when damage to the joint limits the things that matter to you and non-surgical treatment is no longer enough. The timing is your decision, and it is not set by a particular age or X-ray finding.</p>
+        <p>Osteoarthritis is the most common reason, but not the only one. A hip may also be replaced for avascular necrosis, which is loss of blood supply to the ball of the hip, for inflammatory arthritis such as rheumatoid or psoriatic disease, for hip dysplasia, or for damage that develops years after an injury or fracture.</p>
       </div>
       <div>
         <h2 style="margin-bottom:12px;">Common signs of hip arthritis</h2>
@@ -169,7 +216,7 @@
     <div class="section-head"><div class="eyebrow">Where the Pain Comes From</div><h2>Is it your hip or your back?</h2></div>
     <div class="bio" style="max-width:820px;">
       <p>Hip arthritis pain usually feels as if it is in the front of the groin. Pain at the front of the hip or the inside of the thigh, sometimes referring down toward the knee, is typically (but not always) coming from the hip joint itself. Pain at the belt line or across the back of the buttock, particularly when it travels past the knee into the calf or foot, more often comes from the spine. Numbness and tingling are also signs that there may be a problem with the nerves coming from your lower back, since arthritis does not typically cause these symptoms.</p>
-      <p>Hip and back pain overlap frequently, and plenty of people have both problems at the same time. Dr. Harris examines the hip and the back at the first visit rather than assuming that the problem is only coming from one place.</p>
+      <p>Hip and back pain overlap frequently, and plenty of people have both problems at the same time. Dr. Harris examines the hip and the back at the first visit rather than assuming that the problem is only coming from one place.<sup style="font-size:11px; line-height:0;"><a href="#ref-3" class="cite" data-tip="Mirghaderi et al. Impact of total hip arthroplasty on low back pain: a meta-analysis. Eur Spine J, 2026. Subscription." aria-label="Reference 3">3</a><span style="color:var(--gold);">,</span><a href="#ref-4" class="cite" data-tip="Kechagias &amp; Grivas. Hip-spine and knee-spine syndrome. Cureus, 2024. Free full text." aria-label="Reference 4">4</a></sup></p>
     </div>
   </div>
 </section>
@@ -177,12 +224,26 @@
   <div class="wrap">
     <div class="section-head"><div class="eyebrow">Imaging</div><h2>What your X-ray does and does not tell you</h2></div>
     <div class="bio" style="max-width:820px;">
-      <p>An X-ray is one part of the story. Some patients have severe arthritis that is visible on X-ray and are not having much pain. Others have moderate-looking changes and can barely walk a block.</p>
+      <p>An X-ray is one part of the story. Some patients have severe arthritis that is visible on X-ray and are not having much pain. Others have moderate-looking changes and can barely walk a block.<sup style="font-size:11px; line-height:0;"><a href="#ref-5" class="cite" data-tip="Kim et al. Association of hip pain with radiographic evidence of hip osteoarthritis. BMJ, 2015. Free full text." aria-label="Reference 5">5</a></sup></p>
       <p>A few points regarding X-ray:</p>
       <h3 style="margin:32px 0 9px;">Standing X-rays are generally the correct test</h3>
       <p>Weight-bearing films show the joint under load, which is when the space between the ball and socket actually narrows.</p>
       <h3 style="margin:32px 0 9px;">What “bone on bone” actually means</h3>
       <p>The cartilage space has worn down to where the two bones nearly touch. This typically (but not always) is a significant source of pain. On its own it does not necessarily mean you need surgery now, although most patients with “bone on bone” arthritis will be having symptoms severe enough to warrant surgery.</p>
+<figure style="margin:34px auto 0; max-width:620px;">
+  <img src="assets/img/hip-arthritis-normal-vs-arthritic.webp" width="896" height="1200" loading="lazy" decoding="async"
+       style="width:100%; height:auto; display:block;"
+       alt="Anatomical comparison of a normal hip and an arthritic hip, showing the healthy joint space, labrum, and joint capsule on the left, and narrowed joint space, degenerated labrum and cartilage, osteophytes, and a thickened joint capsule on the right.">
+  <figcaption style="margin-top:14px;">
+    <p style="font-size:14.5px; color:var(--ink-soft); line-height:1.6; margin-bottom:10px; text-align:center;">The same joint, healthy on the left and arthritic on the right.</p>
+    <ul class="leadership-list" style="font-size:14.5px;">
+      <li><strong>Cartilage and labrum</strong> &middot; the smooth lining of the ball and socket<br><span style="color:var(--gold); font-weight:600;">Normal:</span> even and intact. <span style="color:var(--gold); font-weight:600;">Arthritic:</span> worn thin and irregular.</li>
+      <li><strong>Joint space</strong> &middot; the gap between ball and socket, which is really the cartilage<br><span style="color:var(--gold); font-weight:600;">Normal:</span> clear and open. <span style="color:var(--gold); font-weight:600;">Arthritic:</span> narrowed.</li>
+      <li><strong>Bone spurs (osteophytes)</strong> &middot; extra bone that forms at the edges of a worn joint<br><span style="color:var(--gold); font-weight:600;">Normal:</span> none. <span style="color:var(--gold); font-weight:600;">Arthritic:</span> built up around the rim.</li>
+      <li><strong>Joint capsule</strong> &middot; the sleeve of tissue enclosing the joint<br><span style="color:var(--gold); font-weight:600;">Normal:</span> thin. <span style="color:var(--gold); font-weight:600;">Arthritic:</span> thickened.</li>
+    </ul>
+  </figcaption>
+</figure>
       <h3 style="margin:32px 0 9px;">MRI is usually not needed to diagnose hip arthritis</h3>
       <p>It has a role in specific situations: suspected avascular necrosis, a fracture not visible on X-ray, or a diagnosis that remains unclear.</p>
     </div>
@@ -209,7 +270,7 @@
   <div class="wrap">
     <div class="section-head"><div class="eyebrow">Timing</div><h2>When it is too early</h2></div>
     <div class="bio" style="max-width:820px;">
-      <p>Not every painful hip needs an operation, and there are good reasons to wait before committing to a hip replacement.</p>
+      <p>There is no point at which a hip replacement becomes mandatory. How long you wait is largely up to you, and there are good reasons to wait.</p>
       <h3 style="margin:32px 0 9px;">Non-surgical treatment has not really been tried</h3>
       <p>Most patients deserve a real trial of prolonged nonoperative treatment before surgery is considered. This could involve any of the above treatments, or your own activity modification that has become less effective over time as your hip becomes more symptomatic.</p>
       <h3 style="margin:32px 0 9px;">The pain is not limiting what you actually do</h3>
@@ -219,7 +280,8 @@
       <h2 style="margin-top:56px;">Is it possible to wait too long?</h2>
       <p style="margin-top:16px;">Yes, though less than some patients are often led to believe.</p>
       <p>A hip that has been stiff for years can develop contracture and lose motion, which can sometimes make the operation more involved and the rehabilitation longer. In advanced cases, deformity or bone loss changes the anatomy and adds complexity to the surgery.</p>
-      <p>The surgery remains possible either way, and the end result is generally the same. No one should have a hip replaced purely out of worry that it will be harder later. The right time is when the arthritis is limiting your life and non-surgical treatment is no longer enough.</p>
+      <p>The surgery remains possible either way, and the end result is generally the same. No one should have a hip replaced purely out of worry that it will be harder later. The right time is when the joint is limiting your life, non-surgical treatment is no longer enough, and you decide you are ready.</p>
+      <p>Modern hip replacements are also durable. Registry data covering nearly two million hips implanted with current materials shows more than nine in ten still in place at twenty years, and a similar proportion projected at thirty.<sup style="font-size:11px; line-height:0;"><a href="#ref-6" class="cite" data-tip="Pentland et al. Survivorship of modern total hip replacement to 30 years. Lancet, 2026. Subscription." aria-label="Reference 6">6</a><span style="color:var(--gold);">,</span><a href="#ref-7" class="cite" data-tip="Evans et al. How long does a hip replacement last? Lancet, 2019. Free full text." aria-label="Reference 7">7</a></sup></p>
     </div>
   </div>
 </section>
@@ -254,14 +316,14 @@
       <details>
         <summary>How do I know if I need a hip replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Hip replacement is usually considered when hip arthritis pain limits daily life despite non-surgical treatment. Common signs include groin or thigh pain with walking, stiffness that limits putting on shoes or socks, pain that disturbs sleep, and a hip that no longer responds to activity changes, physical therapy, anti-inflammatory medication, or injections.</p>
+          <p>Hip replacement is elective, so the question is less whether you need it and more whether you want it. It is usually considered when joint pain limits daily life despite non-surgical treatment. Common signs include groin or thigh pain with walking, stiffness that limits putting on shoes or socks, pain that disturbs sleep, and a hip that no longer responds to activity changes, physical therapy, anti-inflammatory medication, or injections.</p>
         </div>
       </details>
 
       <details>
         <summary>What conditions lead to a hip replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>The most common cause is osteoarthritis (wear-and-tear arthritis). Others include avascular necrosis (loss of blood supply to the ball of the hip), hip dysplasia, inflammatory arthritis such as rheumatoid arthritis, and certain hip fractures.</p>
+          <p>Osteoarthritis (wear-and-tear arthritis) is the most common reason, but far from the only one. Others include avascular necrosis (loss of blood supply to the ball of the hip), hip dysplasia, inflammatory arthritis such as rheumatoid arthritis, and certain hip fractures.</p>
         </div>
       </details>
 
@@ -282,14 +344,14 @@
       <details>
         <summary>Does “bone on bone” mean I need a hip replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Sometimes, but not always. “Bone on bone” means the cartilage space has worn down until the bones nearly touch on an X-ray. It can certainly explain why a hip hurts. Whether to operate rests on how much the arthritis limits your daily life and whether non-surgical treatment is still working.</p>
+          <p>Sometimes, but not always. “Bone on bone” means the cartilage space has worn down until the bones nearly touch on an X-ray. It can certainly explain why a hip hurts. Whether to operate rests on how much the joint limits your daily life, whether non-surgical treatment is still working, and whether you are ready.</p>
         </div>
       </details>
 
       <details>
         <summary>Am I too young for a hip replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Modern hip replacements have excellent outcomes and can last for 30+ years. While it is less common for younger patients to need a hip replacement, this is certainly a reasonable option if your hip pain is severely limiting your quality of life. The decision-making in younger patients becomes extremely nuanced and cannot be fully explained in a short paragraph, but Dr. Harris is willing to discuss the possibility of hip replacement in patients of all ages.</p>
+          <p>Modern hip replacements have excellent outcomes and can last for 30+ years.<sup style="font-size:11px; line-height:0;"><a href="#ref-6" class="cite" data-tip="Pentland et al. Survivorship of modern total hip replacement to 30 years. Lancet, 2026. Subscription." aria-label="Reference 6">6</a><span style="color:var(--gold);">,</span><a href="#ref-7" class="cite" data-tip="Evans et al. How long does a hip replacement last? Lancet, 2019. Free full text." aria-label="Reference 7">7</a></sup> While it is less common for younger patients to need a hip replacement, this is certainly a reasonable option if your hip pain is severely limiting your quality of life. The decision-making in younger patients becomes extremely nuanced and cannot be fully explained in a short paragraph, but Dr. Harris is willing to discuss the possibility of hip replacement in patients of all ages.</p>
         </div>
       </details>
 
@@ -310,7 +372,7 @@
       <details>
         <summary>Can I wait too long to have a hip replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>A hip that has been stiff for many years can develop contracture, and advanced cases can involve deformity or bone loss that make the operation more complex and rehab longer. The surgery is still possible and the end result is generally the same, so worry that it will be harder later is not a good reason to operate sooner. The right time is when arthritis limits your life and non-surgical care is no longer enough.</p>
+          <p>A hip that has been stiff for many years can develop contracture, and advanced cases can involve deformity or bone loss that make the operation more complex and rehab longer. The surgery is still possible and the end result is generally the same, so worry that it will be harder later is not a good reason to operate sooner. The right time is when the joint limits your life, non-surgical care is no longer enough, and you are ready.</p>
         </div>
       </details>
 
@@ -326,15 +388,33 @@
 </section>
 <section class="section-white">
   <div class="wrap">
-    <div class="section-head"><div class="eyebrow">Further Reading</div><h2>Other trusted resources on hip arthritis</h2></div>
-    <div class="bio" style="max-width:820px;">
-      <p>These pages are published by orthopaedic and rheumatology professional societies and by nonprofit patient organizations.</p>
-      <ul class="leadership-list" style="margin-top:20px;">
+    <div class="section-head"><div class="eyebrow">Resources</div><h2>Further reading</h2></div>
+    <div class="res-tabs" style="max-width:880px;">
+      <input type="radio" name="restab" id="restab-a" checked>
+      <input type="radio" name="restab" id="restab-b">
+      <div class="res-tablist">
+        <label for="restab-a">Additional patient educational materials</label>
+        <label for="restab-b">Sources for readers with a medical or scientific background</label>
+      </div>
+      <div class="res-panel res-panel-a">
+        <ul class="leadership-list" style="margin-top:20px;">
         <li><a href="https://hipkneeinfo.org/hip-care/do-i-need-a-hip-replacement/" class="text-link" target="_blank" rel="noopener">Do I Need a Hip Replacement?</a> · American Association of Hip and Knee Surgeons</li>
         <li><a href="https://hipkneeinfo.org/hip-care/relieving-hip-pain-without-surgery/" class="text-link" target="_blank" rel="noopener">Relieving Hip Pain Without Surgery</a> · American Association of Hip and Knee Surgeons</li>
         <li><a href="https://www.orthoinfo.org/diseases--conditions/osteoarthritis-of-the-hip/" class="text-link" target="_blank" rel="noopener">Hip Osteoarthritis</a> · OrthoInfo, American Academy of Orthopaedic Surgeons</li>
         <li><a href="https://www.arthritis.org/diseases/more-about/guidelines-for-osteoarthritis-treatments" class="text-link" target="_blank" rel="noopener">Guidelines for Osteoarthritis Treatments</a> · Arthritis Foundation and American College of Rheumatology</li>
       </ul>
+      </div>
+      <div class="res-panel res-panel-b">
+        <ol style="list-style:none; margin-top:20px; border-top:1px solid var(--border-hair);">
+        <li id="ref-1" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">1.</span> Lespasio MJ, Sultan AA, Piuzzi NS, et al. Hip Osteoarthritis: A Primer. <em>Perm J.</em> 2018;22:17-084. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5760056/" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-2" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">2.</span> Katz JN, Arant KR, Loeser RF. Diagnosis and treatment of hip and knee osteoarthritis: a review. <em>JAMA.</em> 2021;325(6):568-578. <a href="https://pubmed.ncbi.nlm.nih.gov/33560326/" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-3" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">3.</span> Mirghaderi P, Tajvidi M, Habibi M, et al. Impact of total hip arthroplasty on low back pain: a systematic review and meta-analysis. <em>Eur Spine J.</em> 2026;35:2752-2777. <a href="https://doi.org/10.1007/s00586-025-09409-4" class="text-link" target="_blank" rel="noopener">Subscription</a></li>
+        <li id="ref-4" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">4.</span> Kechagias VA, Grivas TB. Hip-spine and knee-spine syndrome: is low back pain improved after total hip and knee arthroplasty? <em>Cureus.</em> 2024;16(4):e57765. <a href="https://pubmed.ncbi.nlm.nih.gov/38716012/" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-5" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">5.</span> Kim C, Nevitt MC, Niu J, et al. Association of hip pain with radiographic evidence of hip osteoarthritis: diagnostic test study. <em>BMJ.</em> 2015;351:h5983. <a href="https://www.bmj.com/content/351/bmj.h5983" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-6" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">6.</span> Pentland V, Thompson Z, Dayimu A, et al. Survivorship of modern total hip replacement to 30 years: systematic review, meta-analysis, and extrapolation of global joint registry data. <em>Lancet.</em> 2026;407(10531):855-866. <a href="https://pubmed.ncbi.nlm.nih.gov/41763743/" class="text-link" target="_blank" rel="noopener">Subscription</a></li>
+        <li id="ref-7" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">7.</span> Evans JT, Evans JP, Walker RW, et al. How long does a hip replacement last? A systematic review and meta-analysis of case series and national registry reports with more than 15 years of follow-up. <em>Lancet.</em> 2019;393(10172):647-654. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6376618/" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+      </ol>
+      </div>
     </div>
   </div>
 </section>
@@ -398,4 +478,24 @@
   </div>
 </footer>
 
+<script>
+(function(){
+  function openRefs(hash){
+    if(!hash || hash.indexOf('#ref-')!==0) return;
+    var t=document.getElementById('restab-b'); if(t){ t.checked=true; }
+    var el=document.getElementById(hash.slice(1));
+    if(el){ requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      el.scrollIntoView({block:'center', behavior:'smooth'}); }); }); }
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest ? e.target.closest('a[href^="#ref-"]') : null;
+    if(!a) return;
+    e.preventDefault();
+    var hash=a.getAttribute('href');
+    if(history.replaceState){ history.replaceState(null,'',hash); }
+    openRefs(hash);
+  });
+  openRefs(location.hash);
+})();
+</script>
 </body></html>

@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="Signs You May Need a Knee Replacement | Andrew B. Harris, MD">
 <meta name="twitter:description" content="Signs you may need a knee replacement, from a Chicago knee surgeon. Learn the symptoms of knee arthritis, total vs partial knee replacement, and what to try first. Offices in Skokie, the North Shore, and Chicago.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/headshot.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=6">
+<link rel="stylesheet" href="assets/css/style.css?v=7">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +44,7 @@
       "name": "How do I know if I need a knee replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Knee replacement is considered when arthritis pain limits daily life despite non-surgical treatment. Common signs include deep or aching knee pain with walking or stairs, swelling and stiffness, a knee that feels like it is giving out or locking, and pain that no longer responds to physical therapy, medication, or injections."
+        "text": "Knee replacement is elective, so the question is less whether you need it and more whether you want it. It is usually considered when joint pain limits daily life despite non-surgical treatment. Common signs include deep or aching knee pain with walking or stairs, swelling and stiffness, a knee that feels like it is giving out or locking, and pain that no longer responds to physical therapy, medication, or injections."
       }
     },
     {
@@ -52,7 +52,7 @@
       "name": "What conditions lead to a knee replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most often osteoarthritis (wear-and-tear arthritis), but also inflammatory arthritis and arthritis that develops years after a knee injury."
+        "text": "Osteoarthritis (wear-and-tear arthritis) is the most common reason, but far from the only one. Others include inflammatory arthritis such as rheumatoid or psoriatic disease, osteonecrosis (loss of blood supply to a portion of the bone), and arthritis that develops years after a knee injury or fracture."
       }
     },
     {
@@ -68,7 +68,7 @@
       "name": "Should I try other treatments first?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Knee arthritis is usually managed first with activity modification, physical therapy, weight management, anti-inflammatory medication, and injections. Surgery is considered when those measures no longer provide enough relief."
+        "text": "Yes. Knee arthritis is usually managed first with activity modification, physical therapy, weight management, anti-inflammatory medication, and injections. Because surgery is elective, it comes into the conversation when those measures no longer give you enough relief to do what you want to do."
       }
     },
     {
@@ -84,7 +84,7 @@
       "name": "Does “bone on bone” mean I need a knee replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sometimes, but not always. “Bone on bone” means the cartilage space has worn down until the bones nearly touch on an X-ray. It can certainly explain why a knee hurts. Whether to operate rests on how much the arthritis limits your daily life and whether non-surgical treatment is still working."
+        "text": "Sometimes, but not always. “Bone on bone” means the cartilage space has worn down until the bones nearly touch on an X-ray. It can certainly explain why a knee hurts. Whether to operate rests on how much the joint limits your daily life, whether non-surgical treatment is still working, and whether you are ready."
       }
     },
     {
@@ -92,7 +92,7 @@
       "name": "Am I too young for a knee replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Modern knee replacements have excellent outcomes and can last for 30+ years. While it is less common for younger patients to need a knee replacement, this is certainly a reasonable option if your knee pain is severely limiting your quality of life. The decision-making in younger patients becomes extremely nuanced and cannot be fully explained in a short paragraph, but Dr. Harris is willing to discuss the possibility of knee replacement in patients of all ages."
+        "text": "Modern knee replacements have excellent outcomes. A high proportion are still functioning well at 25 years, and many last longer than that. While it is less common for younger patients to need a knee replacement, this is certainly a reasonable option if your knee pain is severely limiting your quality of life. The decision-making in younger patients becomes extremely nuanced and cannot be fully explained in a short paragraph, but Dr. Harris is willing to discuss the possibility of knee replacement in patients of all ages."
       }
     },
     {
@@ -116,7 +116,7 @@
       "name": "Do I need an MRI for knee arthritis?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Usually not. Standing X-rays are typically enough. An MRI of an arthritic knee will almost always report a meniscus tear, since degenerative tears are very common alongside arthritis, and that finding rarely changes the plan. MRI is reserved for an unclear diagnosis, concern for avascular necrosis or a fracture not visible on X-ray, or a suspected ligament injury."
+        "text": "Usually not. Standing X-rays are typically enough. An MRI of an arthritic knee will often report a meniscus tear, since degenerative tears are very common alongside arthritis, and that finding rarely changes the plan. MRI is reserved for an unclear diagnosis, concern for avascular necrosis or a fracture not visible on X-ray, or a suspected ligament injury."
       }
     },
     {
@@ -124,17 +124,63 @@
       "name": "Can I wait too long to have a knee replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A knee that has been stiff for many years can lose motion and develop a contracture, and advanced cases can involve deformity or bone loss that make the operation more complex. The surgery is still possible and the end result is generally the same, so worry that it will be harder later is not a good reason to operate sooner. The right time is when arthritis limits your life and non-surgical care is no longer enough."
+        "text": "A knee that has been stiff for many years can lose motion and develop a contracture, and advanced cases can involve deformity or bone loss that make the operation more complex. The surgery is still possible and the end result is generally the same, so worry that it will be harder later is not a good reason to operate sooner. The right time is when the joint limits your life, non-surgical care is no longer enough, and you are ready."
       }
     }
   ]
 }
 </script>
+<style>
+.res-tabs > input { position:absolute; opacity:0; pointer-events:none; }
+.res-tablist { display:flex; flex-wrap:wrap; gap:0; border-bottom:1px solid var(--border-hair); margin-bottom:4px; }
+.res-tablist label { cursor:pointer; padding:14px 22px 13px; font-family:var(--font-sans); font-size:13.5px;
+  font-weight:600; letter-spacing:0.01em; color:var(--slate); border-bottom:2px solid transparent;
+  margin-bottom:-1px; transition:color .15s ease, border-color .15s ease; }
+.res-tablist label:hover { color:var(--gold); }
+.res-panel { display:none; padding-top:12px; }
+#restab-a:checked ~ .res-tablist label[for="restab-a"],
+#restab-b:checked ~ .res-tablist label[for="restab-b"] { color:var(--ink); border-bottom-color:var(--gold); }
+#restab-a:checked ~ .res-panel-a, #restab-b:checked ~ .res-panel-b { display:block; }
+.res-tabs > input:focus-visible ~ .res-tablist label { outline:2px solid var(--gold); outline-offset:2px; }
+@media (max-width:640px){
+  .res-tablist { flex-direction:column; gap:0; border-bottom:none; }
+  .res-tablist label { padding:12px 0 12px 14px; border-bottom:1px solid var(--border-hair);
+    border-left:3px solid transparent; margin-bottom:0; }
+  #restab-a:checked ~ .res-tablist label[for="restab-a"],
+  #restab-b:checked ~ .res-tablist label[for="restab-b"] {
+    border-bottom-color:var(--border-hair); border-left-color:var(--gold); background:var(--ivory); }
+}
+</style>
+<style>
+.cite { position:relative; display:inline-block; line-height:1; padding:0 1px;
+  color:var(--gold); text-decoration:none; }
+.cite:hover, .cite:focus-visible { text-decoration:underline; }
+.cite::after {
+  content: attr(data-tip);
+  position:absolute; bottom:calc(100% + 9px); left:50%; transform:translateX(-50%);
+  width:max-content; max-width:300px;
+  background:var(--navy); color:#fff; text-align:left;
+  font-family:var(--font-sans); font-size:12.5px; font-weight:400; line-height:1.45;
+  letter-spacing:0; padding:10px 13px; border-radius:3px;
+  box-shadow:0 12px 28px -10px rgba(20,32,43,.5);
+  opacity:0; visibility:hidden; transition:opacity .13s ease; pointer-events:none; z-index:120;
+}
+.cite::before {
+  content:''; position:absolute; bottom:calc(100% + 3px); left:50%; transform:translateX(-50%);
+  border:6px solid transparent; border-top-color:var(--navy);
+  opacity:0; visibility:hidden; transition:opacity .13s ease; pointer-events:none; z-index:121;
+}
+.cite:hover::after, .cite:hover::before,
+.cite:focus-visible::after, .cite:focus-visible::before { opacity:1; visibility:visible; }
+.cite-edge::after { left:auto; right:0; transform:none; }
+.cite-edge::before { left:auto; right:8px; transform:none; }
+@media (hover:none){ .cite::after, .cite::before { display:none; } }
+</style>
 </head>
 <body>
 <header class="site-header">
   <div class="wrap">
-    <a href="index.html" class="brand">Andrew B. Harris, MD<span class="brand-sub">Hip &amp; Knee · Chicago</span></a>
+    <a href="index.html" class="brand"><img src="assets/img/abh-mark.png" alt="" class="brand-mark" width="46" height="46"><span class="brand-text">Andrew B. Harris, MD<span class="brand-sub">Hip &amp; Knee &middot; Chicago</span></span></a>
     <nav class="nav-links" id="navLinks">
       <a href="index.html">Home</a>
       <a href="about.html">Meet Dr. Harris</a>
@@ -156,8 +202,9 @@
   <div class="wrap">
     <div class="intro-grid">
       <div>
-        <p>Knee arthritis usually becomes increasingly symptomatic over time (sometimes over years, but sometimes months). Stairs get more challenging to navigate, walking distances get shorter, and the knee may swell after activity or feel like it is giving out or catching. As the cartilage wears unevenly, some people notice the leg starting to look bowed or knock-kneed.</p>
-        <p>A <a href="knee-replacement-chicago.html" class="text-link">knee replacement</a> is considered when arthritis pain limits daily life and non-surgical treatment no longer helps enough, not necessarily at a specific age. Depending on where the wear is, the answer may be a total or partial knee replacement.</p>
+        <p>Knee arthritis usually becomes increasingly symptomatic over time (sometimes over years, but sometimes months). Stairs get more challenging to navigate, walking distances get shorter, and the knee may swell after activity or feel like it is giving out or catching. As the cartilage wears unevenly, some people notice the leg starting to look bowed or knock-kneed.<sup style="font-size:11px; line-height:0;"><a href="#ref-1" class="cite" data-tip="Lespasio et al. Knee Osteoarthritis: A Primer. Perm J, 2017. Free full text." aria-label="Reference 1">1</a><span style="color:var(--gold);">,</span><a href="#ref-2" class="cite" data-tip="Katz et al. Diagnosis and treatment of hip and knee osteoarthritis. JAMA, 2021. Free full text." aria-label="Reference 2">2</a></sup></p>
+        <p>A <a href="knee-replacement-chicago.html" class="text-link">knee replacement</a> is rarely something you strictly need. It is an elective operation, considered when damage to the joint limits daily life and non-surgical treatment no longer helps enough. The timing is your decision, and it is not set by a specific age or X-ray finding. Depending on where the wear is, the answer may be a total or partial knee replacement.</p>
+        <p>Osteoarthritis is the most common reason, but not the only one. A knee may also be replaced for inflammatory arthritis such as rheumatoid or psoriatic disease, for osteonecrosis, which is loss of blood supply to a portion of the bone, or for arthritis that develops years after an injury or fracture.</p>
       </div>
       <div>
         <h2 style="margin-bottom:12px;">Common signs of knee arthritis</h2>
@@ -189,13 +236,29 @@
   <div class="wrap">
     <div class="section-head"><div class="eyebrow">Imaging</div><h2>What your X-ray does and does not tell you</h2></div>
     <div class="bio" style="max-width:820px;">
-      <p>An X-ray is one part of the collection of findings that help determine the best treatment. Some patients have severe arthritis that is visible on X-ray and are not having much pain. Others have moderate-looking changes and can barely manage a flight of stairs. This is where a hands-on physical examination and thorough discussion becomes extremely important.</p>
+      <p>An X-ray is one part of the collection of findings that help determine the best treatment. Some patients have severe arthritis that is visible on X-ray and are not having much pain. Others have moderate-looking changes and can barely manage a flight of stairs. This is where a hands-on physical examination and thorough discussion becomes extremely important.<sup style="font-size:11px; line-height:0;"><a href="#ref-3" class="cite" data-tip="Bedson &amp; Croft. The discordance between clinical and radiographic knee osteoarthritis. BMC Musculoskelet Disord, 2008. Free full text." aria-label="Reference 3">3</a><span style="color:var(--gold);">,</span><a href="#ref-4" class="cite" data-tip="Neogi et al. Association between radiographic features of knee osteoarthritis and pain. BMJ, 2009. Free full text." aria-label="Reference 4">4</a></sup></p>
       <h3 style="margin:32px 0 9px;">Standing X-rays are generally the right test</h3>
       <p>This matters even more in the knee than in the hip. A knee X-ray taken lying down can look considerably better than the same knee looks under body weight, because the joint space only collapses when the leg is loaded. Standing films, including a bent-knee view, show what is happening when you actually walk.</p>
       <h3 style="margin:32px 0 9px;">What “bone on bone” actually means</h3>
       <p>The cartilage space has worn down to where the two bones nearly touch. This typically (but not always) is a significant source of pain. On its own this finding does not necessarily mean you need surgery now, although most patients with “bone on bone” arthritis will be having symptoms severe enough to warrant surgery.</p>
+<figure style="margin:34px auto 0; max-width:820px;">
+  <img src="assets/img/knee-arthritis-normal-vs-arthritic.webp" width="1640" height="1640" loading="lazy" decoding="async"
+       style="width:100%; height:auto; display:block;"
+       alt="Anatomical comparison of a normal knee and an arthritic knee, showing smooth cartilage, an intact meniscus, and a clear joint space on the left, and degenerated cartilage, a torn meniscus, osteophytes, and a thickened joint capsule on the right.">
+  <figcaption style="margin-top:14px;">
+    <p style="font-size:14.5px; color:var(--ink-soft); line-height:1.6; margin-bottom:10px; text-align:center;">The same joint, healthy on the left and arthritic on the right.</p>
+    <ul class="leadership-list" style="font-size:14.5px;">
+      <li><strong>Cartilage</strong> &middot; the smooth layer covering the ends of the femur and tibia<br><span style="color:var(--gold); font-weight:600;">Normal:</span> even and continuous. <span style="color:var(--gold); font-weight:600;">Arthritic:</span> pitted and worn through.</li>
+      <li><strong>Joint space</strong> &middot; the gap between the bones, which is really the cartilage<br><span style="color:var(--gold); font-weight:600;">Normal:</span> clear and open. <span style="color:var(--gold); font-weight:600;">Arthritic:</span> narrowed.</li>
+      <li><strong>Meniscus</strong> &middot; the cushion that sits between femur and tibia<br><span style="color:var(--gold); font-weight:600;">Normal:</span> smooth and intact. <span style="color:var(--gold); font-weight:600;">Arthritic:</span> frayed and torn.</li>
+      <li><strong>ACL</strong> &middot; the ligament in the center of the knee<br><span style="color:var(--gold); font-weight:600;">Normal:</span> intact. <span style="color:var(--gold); font-weight:600;">Arthritic:</span> may be intact or worn, and this helps decide whether a partial knee replacement is possible.</li>
+      <li><strong>Bone spurs (osteophytes)</strong> &middot; extra bone that forms at the edges of a worn joint<br><span style="color:var(--gold); font-weight:600;">Normal:</span> none. <span style="color:var(--gold); font-weight:600;">Arthritic:</span> prominent.</li>
+      <li><strong>Joint capsule</strong> &middot; the sleeve of tissue enclosing the joint<br><span style="color:var(--gold); font-weight:600;">Normal:</span> thin. <span style="color:var(--gold); font-weight:600;">Arthritic:</span> thickened.</li>
+    </ul>
+  </figcaption>
+</figure>
       <h3 style="margin:32px 0 9px;">MRI is usually not needed to diagnose knee arthritis</h3>
-      <p>Standing X-rays are typically enough. An MRI of an arthritic knee will almost always report a meniscus tear, because degenerative tears are extremely common in knees with arthritis, and that finding rarely changes the plan. MRI has a role when the diagnosis is unclear, when there is concern for avascular necrosis or a fracture not visible on X-ray, or when a ligament injury is suspected.</p>
+      <p>Standing X-rays are typically enough. An MRI of an arthritic knee will often report a meniscus tear, because degenerative tears are extremely common in knees with arthritis, and that finding rarely changes the plan. MRI has a role when the diagnosis is unclear, when there is concern for avascular necrosis or a fracture not visible on X-ray, or when a ligament injury is suspected.</p>
     </div>
   </div>
 </section>
@@ -250,7 +313,7 @@
   <div class="wrap">
     <div class="section-head"><div class="eyebrow">Timing</div><h2>When it is too early</h2></div>
     <div class="bio" style="max-width:820px;">
-      <p>Not every painful knee needs an operation, and there are often good reasons to wait before committing to a knee replacement.</p>
+      <p>There is no point at which a knee replacement becomes mandatory. How long you wait is largely up to you, and there are often good reasons to wait.</p>
       <h3 style="margin:32px 0 9px;">Non-surgical treatment has not really been tried</h3>
       <p>Most patients deserve a real trial of prolonged nonoperative treatment before surgery is considered. This could involve any of the above treatments, or your own activity modification that has become less effective over time as your knee becomes more symptomatic.</p>
       <h3 style="margin:32px 0 9px;">The pain is not limiting what you actually do</h3>
@@ -260,7 +323,8 @@
       <h2 style="margin-top:56px;">Is it possible to wait too long?</h2>
       <p style="margin-top:16px;">Yes, though less than some patients are often led to believe.</p>
       <p>A knee that has been stiff for years can lose motion and develop a contracture, meaning it no longer straightens fully. Regaining that last bit of extension after surgery is harder the longer it has been missing. In advanced cases, severe deformity or bone loss changes the anatomy and adds complexity to the operation.</p>
-      <p>The surgery remains possible either way, and the end result is generally the same. No one should have a knee replaced purely out of worry that it will be harder later. The right time is when the arthritis is limiting your life and non-surgical treatment is no longer enough.</p>
+      <p>The surgery remains possible either way, and the end result is generally the same. No one should have a knee replaced purely out of worry that it will be harder later. The right time is when the joint is limiting your life, non-surgical treatment is no longer enough, and you decide you are ready.</p>
+      <p>Modern knee replacements are also durable. Pooled registry data shows a high proportion still functioning well at twenty-five years, and many last longer than that.<sup style="font-size:11px; line-height:0;"><a href="#ref-5" class="cite" data-tip="Evans et al. How long does a knee replacement last? Lancet, 2019. Free full text." aria-label="Reference 5">5</a></sup></p>
     </div>
   </div>
 </section>
@@ -290,14 +354,14 @@
       <details>
         <summary>How do I know if I need a knee replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Knee replacement is considered when arthritis pain limits daily life despite non-surgical treatment. Common signs include deep or aching knee pain with walking or stairs, swelling and stiffness, a knee that feels like it is giving out or locking, and pain that no longer responds to physical therapy, medication, or injections.</p>
+          <p>Knee replacement is elective, so the question is less whether you need it and more whether you want it. It is usually considered when joint pain limits daily life despite non-surgical treatment. Common signs include deep or aching knee pain with walking or stairs, swelling and stiffness, a knee that feels like it is giving out or locking, and pain that no longer responds to physical therapy, medication, or injections.</p>
         </div>
       </details>
 
       <details>
         <summary>What conditions lead to a knee replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Most often osteoarthritis (wear-and-tear arthritis), but also inflammatory arthritis and arthritis that develops years after a knee injury.</p>
+          <p>Osteoarthritis (wear-and-tear arthritis) is the most common reason, but far from the only one. Others include inflammatory arthritis such as rheumatoid or psoriatic disease, osteonecrosis (loss of blood supply to a portion of the bone), and arthritis that develops years after a knee injury or fracture.</p>
         </div>
       </details>
 
@@ -311,7 +375,7 @@
       <details>
         <summary>Should I try other treatments first? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Yes. Knee arthritis is usually managed first with activity modification, physical therapy, weight management, anti-inflammatory medication, and injections. Surgery is considered when those measures no longer provide enough relief.</p>
+          <p>Yes. Knee arthritis is usually managed first with activity modification, physical therapy, weight management, anti-inflammatory medication, and injections. Because surgery is elective, it comes into the conversation when those measures no longer give you enough relief to do what you want to do.</p>
         </div>
       </details>
 
@@ -325,14 +389,14 @@
       <details>
         <summary>Does “bone on bone” mean I need a knee replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Sometimes, but not always. “Bone on bone” means the cartilage space has worn down until the bones nearly touch on an X-ray. It can certainly explain why a knee hurts. Whether to operate rests on how much the arthritis limits your daily life and whether non-surgical treatment is still working.</p>
+          <p>Sometimes, but not always. “Bone on bone” means the cartilage space has worn down until the bones nearly touch on an X-ray. It can certainly explain why a knee hurts. Whether to operate rests on how much the joint limits your daily life, whether non-surgical treatment is still working, and whether you are ready.</p>
         </div>
       </details>
 
       <details>
         <summary>Am I too young for a knee replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Modern knee replacements have excellent outcomes and can last for 30+ years. While it is less common for younger patients to need a knee replacement, this is certainly a reasonable option if your knee pain is severely limiting your quality of life. The decision-making in younger patients becomes extremely nuanced and cannot be fully explained in a short paragraph, but Dr. Harris is willing to discuss the possibility of knee replacement in patients of all ages.</p>
+          <p>Modern knee replacements have excellent outcomes. A high proportion are still functioning well at 25 years, and many last longer than that.<sup style="font-size:11px; line-height:0;"><a href="#ref-5" class="cite" data-tip="Evans et al. How long does a knee replacement last? Lancet, 2019. Free full text." aria-label="Reference 5">5</a></sup> While it is less common for younger patients to need a knee replacement, this is certainly a reasonable option if your knee pain is severely limiting your quality of life. The decision-making in younger patients becomes extremely nuanced and cannot be fully explained in a short paragraph, but Dr. Harris is willing to discuss the possibility of knee replacement in patients of all ages.</p>
         </div>
       </details>
 
@@ -353,14 +417,14 @@
       <details>
         <summary>Do I need an MRI for knee arthritis? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Usually not. Standing X-rays are typically enough. An MRI of an arthritic knee will almost always report a meniscus tear, since degenerative tears are very common alongside arthritis, and that finding rarely changes the plan. MRI is reserved for an unclear diagnosis, concern for avascular necrosis or a fracture not visible on X-ray, or a suspected ligament injury.</p>
+          <p>Usually not. Standing X-rays are typically enough. An MRI of an arthritic knee will often report a meniscus tear, since degenerative tears are very common alongside arthritis, and that finding rarely changes the plan. MRI is reserved for an unclear diagnosis, concern for avascular necrosis or a fracture not visible on X-ray, or a suspected ligament injury.</p>
         </div>
       </details>
 
       <details>
         <summary>Can I wait too long to have a knee replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>A knee that has been stiff for many years can lose motion and develop a contracture, and advanced cases can involve deformity or bone loss that make the operation more complex. The surgery is still possible and the end result is generally the same, so worry that it will be harder later is not a good reason to operate sooner. The right time is when arthritis limits your life and non-surgical care is no longer enough.</p>
+          <p>A knee that has been stiff for many years can lose motion and develop a contracture, and advanced cases can involve deformity or bone loss that make the operation more complex. The surgery is still possible and the end result is generally the same, so worry that it will be harder later is not a good reason to operate sooner. The right time is when the joint limits your life, non-surgical care is no longer enough, and you are ready.</p>
         </div>
       </details>
 
@@ -369,10 +433,16 @@
 </section>
 <section class="section-white">
   <div class="wrap">
-    <div class="section-head"><div class="eyebrow">Further Reading</div><h2>Other trusted resources on knee arthritis</h2></div>
-    <div class="bio" style="max-width:820px;">
-      <p>These pages are published by orthopaedic, rheumatology, and physical therapy professional societies and by nonprofit patient organizations.</p>
-      <ul class="leadership-list" style="margin-top:20px;">
+    <div class="section-head"><div class="eyebrow">Resources</div><h2>Further reading</h2></div>
+    <div class="res-tabs" style="max-width:880px;">
+      <input type="radio" name="restab" id="restab-a" checked>
+      <input type="radio" name="restab" id="restab-b">
+      <div class="res-tablist">
+        <label for="restab-a">Additional patient educational materials</label>
+        <label for="restab-b">Sources for readers with a medical or scientific background</label>
+      </div>
+      <div class="res-panel res-panel-a">
+        <ul class="leadership-list" style="margin-top:20px;">
         <li><a href="https://hipkneeinfo.org/knee-care/do-i-need-a-knee-replacement/" class="text-link" target="_blank" rel="noopener">Do I Need a Knee Replacement?</a> · American Association of Hip and Knee Surgeons</li>
         <li><a href="https://hipkneeinfo.org/knee-care/relieving-knee-pain-without-surgery/" class="text-link" target="_blank" rel="noopener">Relieving Knee Pain Without Surgery</a> · American Association of Hip and Knee Surgeons</li>
         <li><a href="https://hipkneeinfo.org/knee-care/full-vs-partial-knee-replacement-whats-the-difference/" class="text-link" target="_blank" rel="noopener">Full vs. Partial Knee Replacement</a> · American Association of Hip and Knee Surgeons</li>
@@ -380,6 +450,16 @@
         <li><a href="https://www.choosept.com/guide/physical-therapy-guide-osteoarthritis-of-knee" class="text-link" target="_blank" rel="noopener">Physical Therapy Guide to Knee Osteoarthritis</a> · ChoosePT, American Physical Therapy Association</li>
         <li><a href="https://www.arthritis.org/diseases/more-about/guidelines-for-osteoarthritis-treatments" class="text-link" target="_blank" rel="noopener">Guidelines for Osteoarthritis Treatments</a> · Arthritis Foundation and American College of Rheumatology</li>
       </ul>
+      </div>
+      <div class="res-panel res-panel-b">
+        <ol style="list-style:none; margin-top:20px; border-top:1px solid var(--border-hair);">
+        <li id="ref-1" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">1.</span> Lespasio MJ, Piuzzi NS, Husni ME, Muschler GF, Guarino A, Mont MA. Knee Osteoarthritis: A Primer. <em>Perm J.</em> 2017;21:16-183. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5638628/" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-2" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">2.</span> Katz JN, Arant KR, Loeser RF. Diagnosis and treatment of hip and knee osteoarthritis: a review. <em>JAMA.</em> 2021;325(6):568-578. <a href="https://pubmed.ncbi.nlm.nih.gov/33560326/" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-3" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">3.</span> Bedson J, Croft PR. The discordance between clinical and radiographic knee osteoarthritis: a systematic search and summary of the literature. <em>BMC Musculoskelet Disord.</em> 2008;9:116. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2542996/" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-4" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">4.</span> Neogi T, Felson D, Niu J, et al. Association between radiographic features of knee osteoarthritis and pain: results from two cohort studies. <em>BMJ.</em> 2009;339:b2844. <a href="https://www.bmj.com/content/339/bmj.b2844" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-5" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">5.</span> Evans JT, Walker RW, Evans JP, Blom AW, Sayers A, Whitehouse MR. How long does a knee replacement last? A systematic review and meta-analysis of case series and national registry reports with more than 15 years of follow-up. <em>Lancet.</em> 2019;393(10172):655-663. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6381229/" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+      </ol>
+      </div>
     </div>
   </div>
 </section>
@@ -445,4 +525,24 @@
 
 
 
+<script>
+(function(){
+  function openRefs(hash){
+    if(!hash || hash.indexOf('#ref-')!==0) return;
+    var t=document.getElementById('restab-b'); if(t){ t.checked=true; }
+    var el=document.getElementById(hash.slice(1));
+    if(el){ requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      el.scrollIntoView({block:'center', behavior:'smooth'}); }); }); }
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest ? e.target.closest('a[href^="#ref-"]') : null;
+    if(!a) return;
+    e.preventDefault();
+    var hash=a.getAttribute('href');
+    if(history.replaceState){ history.replaceState(null,'',hash); }
+    openRefs(hash);
+  });
+  openRefs(location.hash);
+})();
+</script>
 </body></html>
