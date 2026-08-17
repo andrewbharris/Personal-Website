@@ -22,7 +22,7 @@
 <meta name="twitter:title" content="Resources for Patients | Andrew B. Harris, MD">
 <meta name="twitter:description" content="Patient-friendly explanations of hip and knee arthritis, avascular necrosis (osteonecrosis), and what happens when a hip or knee replacement fails, and how Dr. Andrew B. Harris treats each.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/headshot.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=7">
+<link rel="stylesheet" href="assets/css/style.css?v=11">
 </head>
 <body>
 
@@ -38,8 +38,46 @@
     <nav class="nav-links" id="navLinks">
       <a href="index.html">Home</a>
       <a href="about.html">Meet Dr. Harris</a>
-      <a href="procedures.html">Procedures</a>
-      <a href="patient-resources.html" class="active">Patient Resources</a>
+      <div class="nav-item">
+        <a href="procedures.html" class="nav-parent" aria-expanded="false" aria-haspopup="true">Procedures<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-menu">
+          <a href="procedures.html" class="nav-top">All Procedures</a>
+          <a href="hip-replacement-chicago.html" class="nav-top">Hip Replacement</a>
+          <div class="nav-sublist">
+            <a href="anterior-hip-replacement.html" class="nav-sub">Anterior Approach</a>
+            <a href="star-approach-hip-replacement.html" class="nav-sub">STAR Approach</a>
+          </div>
+          <a href="knee-replacement-chicago.html" class="nav-top">Knee Replacement</a>
+          <div class="nav-sublist">
+            <a href="robotic-knee-replacement.html" class="nav-sub">Robotic Knee Replacement</a>
+          </div>
+          <a href="revision-joint-replacement.html" class="nav-top">Revision Joint Replacement</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="patient-resources.html" class="nav-parent active" aria-expanded="false" aria-haspopup="true">Patient Resources<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-menu">
+          <a href="patient-resources.html" class="nav-top current">All Patient Resources</a>
+          <span class="nav-group">Hip</span>
+          <div class="nav-sublist">
+            <a href="signs-you-need-a-hip-replacement.html" class="nav-sub">Signs You May Need a Hip Replacement</a>
+            <a href="hip-replacement-recovery.html" class="nav-sub">Hip Replacement Recovery</a>
+          </div>
+          <span class="nav-group">Knee</span>
+          <div class="nav-sublist">
+            <a href="signs-you-need-a-knee-replacement.html" class="nav-sub">Signs You May Need a Knee Replacement</a>
+            <a href="knee-replacement-recovery.html" class="nav-sub">Knee Replacement Recovery</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="skokie-joint-replacement-surgeon.html" class="nav-parent" aria-expanded="false" aria-haspopup="true">Locations<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-menu">
+          <a href="skokie-joint-replacement-surgeon.html" class="nav-top">Skokie</a>
+          <a href="north-shore-joint-replacement.html" class="nav-top">North Shore</a>
+          <a href="chicago-office.html" class="nav-top">Chicago</a>
+        </div>
+      </div>
       <a href="publications.html">Research</a>
       <a href="contact.html" class="nav-cta">Contact</a>
     </nav>
@@ -317,8 +355,7 @@
           <a href="about.html">Meet Dr. Harris</a><br>
           <a href="procedures.html">Procedures</a><br>
           <a href="publications.html">Research &amp; Publications</a><br>
-          <a href="patient-resources.html">Patient Resources</a><br>
-          <a href="contact.html">Contact</a>
+          <a href="patient-resources.html">Patient Resources</a>
         </p>
       </div>
       <div>
@@ -344,4 +381,5 @@
 
 
 
+<script src="assets/js/nav.js"></script>
 </body></html>
