@@ -1841,3 +1841,16 @@ section {
 @media (max-width: 1180px) { .ph-motif { right: -86px; opacity: 0.5; } }
 @media (max-width: 1000px) { .ph-motif { right: -130px; opacity: 0.38; } }
 @media (max-width: 860px)  { .ph-motif { display: none; } }
+
+/* Publications list actions row */
+.pub-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+  margin-top: 30px;
+}
+
+@media (max-width: 560px) {
+  .pub-actions { flex-direction: column; align-items: flex-start; gap: 18px; }
+}
