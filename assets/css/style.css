@@ -410,7 +410,7 @@ p {
   position: relative;
   background: var(--ivory);
   color: var(--ink);
-  padding: 46px 0 54px;
+  padding: 40px 0 44px;
   overflow: visible;
 }
 
@@ -767,7 +767,7 @@ p {
 /* ===== Sections ===== */
 
 section {
-  padding: 84px 0;
+  padding: 58px 0;
 }
 
 .section-ivory { background: var(--ivory); }
@@ -776,7 +776,7 @@ section {
 
 .section-head {
   max-width: 680px;
-  margin-bottom: 52px;
+  margin-bottom: 28px;
 }
 
 .section-head.center {
@@ -1009,7 +1009,7 @@ section {
 .site-footer {
   background: var(--navy);
   color: rgba(255,255,255,0.6);
-  padding: 60px 0 34px;
+  padding: 48px 0 28px;
 }
 
 .site-footer h4 {
@@ -1021,9 +1021,9 @@ section {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 40px;
-  padding-bottom: 36px;
+  padding-bottom: 28px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .footer-grid h4 {
@@ -1202,7 +1202,7 @@ section {
 .page-header {
   background: var(--ivory);
   color: var(--ink);
-  padding: 66px 0 54px;
+  padding: 52px 0 40px;
   border-bottom: 1px solid var(--border-hair);
 }
 
@@ -1256,7 +1256,7 @@ section {
 }
 
 @media (max-width: 880px) {
-  .hero { padding: 56px 0 64px; }
+  .hero { padding: 44px 0 48px; }
   .hero .wrap { gap: 48px; }
   .hero-photo-col { order: -1; flex-basis: 240px; width: 240px; }
   .hero h1 { font-size: 40px; }
@@ -1266,7 +1266,7 @@ section {
   .stat { border-right: 1px solid var(--border-hair); }
   .stat:nth-child(2n) { border-right: none; }
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
-  section { padding: 60px 0; }
+  section { padding: 46px 0; }
 }
 
 /* ===== Procedures page ===== */
@@ -1503,7 +1503,7 @@ section {
   background: var(--white);
   border-top: 1px solid var(--border-hair);
   border-bottom: 1px solid var(--border-hair);
-  padding: 40px 0;
+  padding: 32px 0;
 }
 .society-label {
   text-align: center;
@@ -1814,7 +1814,7 @@ section {
 
 /* ===== Mobile refinements (2026-08-07) — interior page headings + tighter gutters ===== */
 @media (max-width: 700px) {
-  .page-header { padding: 46px 0 36px; }
+  .page-header { padding: 38px 0 28px; }
   .page-header h1 { font-size: 34px; }
   .page-header .page-lead { font-size: 16.5px; }
 }

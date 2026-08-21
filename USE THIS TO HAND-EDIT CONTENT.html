@@ -92,50 +92,148 @@
     <button class="btn-ghost" id="reloadBtn">Discard &amp; reload</button>
     <span class="status" id="status"></span>
   </div>
-  <div class="hint">Click any text to edit it (editable areas highlight on hover). <b>Menus, headers, footers, and links are locked</b> &mdash; they repeat across pages, so ask Claude to change those. Press <b>Save changes</b> before switching pages. Only the exact text you change is written; everything else stays untouched.</div>
+  <div class="hint">Click any text to edit it (editable areas highlight on hover). <b>Menus, headers, and footers are locked</b> &mdash; they repeat across pages, so ask Claude to change those. Link text can be edited; the destination it points to cannot. Press <b>Save changes</b> before switching pages. Only the exact text you change is written; everything else stays untouched.</div>
   <div class="frame-wrap"><iframe id="frame" title="Page preview" sandbox="allow-same-origin allow-scripts"></iframe></div>
 </div>
 
 <script>
 const $ = s => document.querySelector(s);
-const norm = s => (s||'').replace(/ /g,' ').replace(/\s+/g,' ').trim();
-let dirHandle = null, dirty = false, originalText = '', origMap = {}, cssCache = null, loadedPage = null;
+const NBSP = / /g;
+const norm = s => (s||'').replace(NBSP,' ').replace(/\s+/g,' ').trim();
+const cleanRun = s => (s||'').replace(NBSP,' ').replace(/\n/g,' ');
+let dirHandle = null, dirty = false, originalText = '', origMap = {}, cssCache = null,
+    loadedPage = null, blobCache = {};
 
-// Read the site stylesheet through the granted folder handle (works regardless of how
-// the editor was opened) so the preview is always styled correctly.
+// ---------------------------------------------------------------- file helpers
+// Read any file inside the granted folder. Used for the stylesheet and for images,
+// so the preview looks right no matter how the editor was opened (file:// or local server).
+async function readFile(path){
+  const parts = path.split('/').filter(Boolean);
+  let h = dirHandle;
+  for (let i = 0; i < parts.length - 1; i++) h = await h.getDirectoryHandle(parts[i]);
+  return (await h.getFileHandle(parts[parts.length - 1])).getFile();
+}
 async function getSiteCss(){
   if (cssCache !== null) return cssCache;
-  try {
-    const assets = await dirHandle.getDirectoryHandle('assets');
-    const css = await assets.getDirectoryHandle('css');
-    const fh  = await css.getFileHandle('style.css');
-    cssCache = await (await fh.getFile()).text();
-  } catch(e){ cssCache = ''; }
+  try { cssCache = await (await readFile('assets/css/style.css')).text(); }
+  catch(e){ cssCache = ''; }
   return cssCache;
 }
+async function blobFor(path){
+  if (blobCache[path] !== undefined) return blobCache[path];
+  try { blobCache[path] = URL.createObjectURL(await readFile(path)); }
+  catch(e){ blobCache[path] = null; }
+  return blobCache[path];
+}
+// Point every local <img> at a blob read straight from the folder. Without this the
+// logo and figures show as broken icons when the editor is opened by double-clicking
+// the HTML file (location.origin is "null" under file://).
+async function resolveImages(doc){
+  for (const img of doc.querySelectorAll('img[src]')){
+    const raw = img.getAttribute('src') || '';
+    if (!raw || /^(https?:|data:|blob:|\/\/)/i.test(raw)) continue;
+    const url = await blobFor(raw.split('?')[0].replace(/^\.\//,''));
+    if (url){ img.setAttribute('src', url); img.removeAttribute('srcset'); }
+  }
+}
 
-const BLOCK = new Set(['DIV','SECTION','UL','OL','LI','P','H1','H2','H3','H4','H5','H6','HEADER','FOOTER','NAV','FIGURE','DETAILS','FORM','TABLE','THEAD','TBODY','TR','TD','ARTICLE','ASIDE','MAIN','DL']);
-const SKIP  = new Set(['SCRIPT','STYLE','SVG','INPUT','TEXTAREA','IMG','BR','PATH','POLYGON','LINE','CIRCLE','TEXT','BASE','LINK','META']);
+// ---------------------------------------------------------------- what is editable
+// A container is anything that holds other blocks; those are never edited directly,
+// only their innermost text-bearing children are. FIGCAPTION and SUMMARY are listed
+// so a <figure> is never treated as a single editable blob (which would delete the image).
+const BLOCK = new Set(['DIV','SECTION','UL','OL','LI','P','H1','H2','H3','H4','H5','H6','HEADER',
+  'FOOTER','NAV','FIGURE','FIGCAPTION','DETAILS','SUMMARY','FORM','TABLE','THEAD','TBODY','TFOOT',
+  'TR','TD','TH','CAPTION','ARTICLE','ASIDE','MAIN','DL','DD','DT','BLOCKQUOTE','FIELDSET']);
+// Only these can BE an edit box. Inline tags (strong, em, span, sup, a) are never boxes of
+// their own — they are edited through the block that contains them, which is what keeps a
+// bold lead-in and the sentence after it inside one editable area.
+const EDITABLE = new Set(['P','LI','H1','H2','H3','H4','H5','H6','SUMMARY','FIGCAPTION','DIV',
+  'SECTION','ARTICLE','ASIDE','MAIN','DD','DT','TD','TH','CAPTION','BLOCKQUOTE','LABEL','LEGEND']);
 const isLeaf = el => { for (const c of el.children){ if (BLOCK.has(c.tagName)) return false; } return true; };
 
-// Assign a stable data-cc-id to every editable leaf-text element, in document order.
-// MUST be identical when loading and when saving so ids line up.
+// Assign a stable data-cc-id to every editable element, in document order.
+// MUST produce identical ids at load time and at save time so they line up.
 function assignIds(doc, cb){
-  let i = 0;
+  const cand = [];
   doc.body.querySelectorAll('*').forEach(el => {
-    if (SKIP.has(el.tagName)) return;
+    if (!EDITABLE.has(el.tagName)) return;  // an <a>, <strong>, <span> etc. is never its own
+                                            // edit box; its text is editable through the
+                                            // block that contains it
     if (el.closest('header.site-header, footer.site-footer, .site-header, .site-footer')) return;
-    if (el.closest('ol.pub-list')) return;                 // auto-generated list
-    if (el.tagName === 'A') return;                        // links locked (prevents nav mistakes)
-    if (el.querySelector('a')) return;                     // never edit blocks containing links — saving would flatten them to plain text and destroy the links
+    if (el.closest('ol.pub-list')) return;   // auto-generated list
     if (!isLeaf(el)) return;
     if (!norm(el.textContent)) return;
+    cand.push(el);
+  });
+  // Safety net: never nest one edit box inside another. If a candidate contains another
+  // candidate, drop the outer one — editing the outer would swallow the inner markup.
+  const set = new Set(cand);
+  const keep = cand.filter(el => !cand.some(o => o !== el && el.contains(o)));
+  let i = 0;
+  keep.forEach(el => {
     const id = String(i++);
     el.setAttribute('data-cc-id', id);
     if (cb) cb(el, id);
   });
 }
 
+// ---------------------------------------------------------------- save engine
+// Inline markup that is allowed to survive inside an edited block.
+const INLINE_KEEP = new Set(['A','B','STRONG','I','EM','U','SUP','SUB','BR','SPAN','SMALL','CODE',
+  'ABBR','MARK','TIME','Q','CITE','S','DEL','INS','KBD','VAR','SAMP']);
+const ATTR_KEEP = new Set(['href','target','rel','class','id','style','title','datetime',
+  'data-tip','aria-label','aria-hidden','role']);
+
+const textNodesOf = el => {
+  const w = el.ownerDocument.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  const out = []; let n; while ((n = w.nextNode())) out.push(n); return out;
+};
+const tagSigOf = el => {
+  const w = el.ownerDocument.createTreeWalker(el, NodeFilter.SHOW_ELEMENT);
+  const out = []; let n; while ((n = w.nextNode())) out.push(n.tagName); return out.join('>');
+};
+
+// Fallback used only when the inline structure of a block actually changed (e.g. a link
+// was deleted). Rebuilds the block from the edited version, keeping whitelisted inline
+// tags and their attributes and unwrapping anything contenteditable invented.
+function rebuildInto(outEl, liveEl){
+  const doc = outEl.ownerDocument;
+  function conv(node){
+    if (node.nodeType === 3) return doc.createTextNode(cleanRun(node.data));
+    if (node.nodeType !== 1) return null;
+    const tag = node.tagName;
+    if (tag === 'SCRIPT' || tag === 'STYLE') return null;
+    if (!INLINE_KEEP.has(tag)){
+      const frag = doc.createDocumentFragment();
+      [...node.childNodes].forEach(c => { const n = conv(c); if (n) frag.appendChild(n); });
+      return frag;
+    }
+    const el = doc.createElement(tag.toLowerCase());
+    for (const a of node.attributes) if (ATTR_KEEP.has(a.name)) el.setAttribute(a.name, a.value);
+    [...node.childNodes].forEach(c => { const n = conv(c); if (n) el.appendChild(n); });
+    return el;
+  }
+  while (outEl.firstChild) outEl.removeChild(outEl.firstChild);
+  [...liveEl.childNodes].forEach(c => { const n = conv(c); if (n) outEl.appendChild(n); });
+}
+
+// Write one edited block back into the pristine document.
+// Preferred path: the tag structure is unchanged, so only the text runs are copied across.
+// Links, <sup> citation markers, <strong>, the accordion chevron span and every attribute
+// come through byte-for-byte untouched.
+function applyEdit(outEl, liveEl){
+  const clone = liveEl.cloneNode(true);
+  clone.normalize(); outEl.normalize();
+  const ln = textNodesOf(clone), on = textNodesOf(outEl);
+  if (ln.length === on.length && tagSigOf(clone) === tagSigOf(outEl)){
+    for (let k = 0; k < on.length; k++) on[k].data = cleanRun(ln[k].data);
+    return 'text';
+  }
+  rebuildInto(outEl, clone);
+  return 'markup';
+}
+
+// ---------------------------------------------------------------- wiring
 const SUPPORTED = 'showDirectoryPicker' in window;
 if (!SUPPORTED) {
   $('#support').innerHTML = '<span class="unsupported">This editor needs Google Chrome (or Edge). Please open it in Chrome.</span>';
@@ -180,27 +278,42 @@ async function loadPage(){
   const doc = new DOMParser().parseFromString(originalText, 'text/html');
   assignIds(doc, (el,id) => { origMap[id] = norm(el.textContent); });
 
-  // Add <base> so relative assets (images, fonts) resolve
-  const base = doc.createElement('base'); base.href = location.origin + '/';
-  doc.head.insertBefore(base, doc.head.firstChild);
-  // Inline the real site stylesheet so the preview is always styled (robust to how opened)
+  // Resolve relative assets. <base> only helps when served over http; images are read
+  // straight from the folder so they render either way.
+  if (location.protocol === 'http:' || location.protocol === 'https:'){
+    const base = doc.createElement('base'); base.href = location.origin + '/';
+    doc.head.insertBefore(base, doc.head.firstChild);
+  }
+  await resolveImages(doc);
+
+  // Inline the real site stylesheet so the preview is always styled correctly
   const siteCss = await getSiteCss();
   if (siteCss){ const sc = doc.createElement('style'); sc.id = 'cc-sitecss'; sc.textContent = siteCss; doc.head.appendChild(sc); }
   const st = doc.createElement('style'); st.id = 'cc-style';
-  st.textContent = '[data-cc-id]:hover{outline:2px dashed #6e9bb6;outline-offset:2px;cursor:text}[data-cc-id]:focus{outline:2px solid #3e6e8e;outline-offset:2px;background:rgba(110,155,182,.08)}';
+  st.textContent = '[data-cc-id]:hover{outline:2px dashed #6e9bb6;outline-offset:2px;cursor:text}'
+                 + '[data-cc-id]:focus{outline:2px solid #3e6e8e;outline-offset:2px;background:rgba(110,155,182,.08)}'
+                 + '[data-cc-id] a{cursor:text}';
   doc.head.appendChild(st);
 
   const frame = $('#frame');
   frame.onload = () => {
     try {
       const d = frame.contentDocument;
-      d.querySelectorAll('[data-cc-id]').forEach(el => el.setAttribute('contenteditable','true'));
+      const boxes = d.querySelectorAll('[data-cc-id]');
+      boxes.forEach(el => el.setAttribute('contenteditable','true'));
       d.addEventListener('input', () => { dirty = true; setStatus('Unsaved changes','err'); });
       d.addEventListener('keydown', e => { if (e.key==='Enter'){ e.preventDefault(); d.execCommand('insertLineBreak'); } });
-      // lock all navigation so the preview always matches the selected file
+      // Paste as plain text so Word/Docs formatting never enters the page
+      d.addEventListener('paste', e => {
+        if (!e.target.closest || !e.target.closest('[data-cc-id]')) return;
+        e.preventDefault();
+        const t = (e.clipboardData || window.clipboardData).getData('text/plain');
+        d.execCommand('insertText', false, t.replace(/\s*\n\s*/g,' '));
+      });
+      // Lock all navigation so the preview always matches the selected file
       d.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a'); if (a) e.preventDefault(); }, true);
       loadedPage = page;   // mark which file the preview actually corresponds to
-      setStatus('Ready — click any text to edit');
+      setStatus('Ready — ' + boxes.length + ' editable areas');
     } catch(err){ setStatus('Load error: '+err.message,'err'); }
   };
   frame.srcdoc = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
@@ -210,7 +323,6 @@ async function savePage(){
   if (!dirHandle) return;
   const page = $('#pageSel').value;
   // SAFETY: never write unless the preview actually matches the selected page.
-  // (Prevents one page's content from being saved into another file.)
   if (loadedPage !== page){
     setStatus('Not saved — this page hasn’t finished loading. Click “Discard & reload” first.','err');
     return;
@@ -218,24 +330,31 @@ async function savePage(){
   try {
     setStatus('Saving…');
     // Rebuild from a FRESH clean copy of the original file — never from the live (possibly
-    // extension-contaminated) DOM. Apply only the text that actually changed.
+    // extension-contaminated) DOM. Apply only the blocks whose text actually changed.
     const outDoc = new DOMParser().parseFromString(originalText, 'text/html');
     const idmap = {};
     assignIds(outDoc, (el,id) => { idmap[id] = el; });
 
     const live = $('#frame').contentDocument;
-    let changes = 0;
+    let changes = 0, rebuilt = 0;
     live.querySelectorAll('[data-cc-id]').forEach(el => {
       const id = el.getAttribute('data-cc-id');
-      const nt = norm(el.textContent);
-      if (idmap[id] && nt !== origMap[id]) {
-        idmap[id].textContent = el.textContent.replace(/ /g,' ').replace(/\n/g,' ').trim();
-        changes++;
-      }
+      if (!idmap[id]) return;
+      if (norm(el.textContent) === origMap[id]) return;
+      if (applyEdit(idmap[id], el) === 'markup') rebuilt++;
+      changes++;
     });
     outDoc.querySelectorAll('[data-cc-id]').forEach(e => e.removeAttribute('data-cc-id'));
+    outDoc.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
 
     const out = '<!DOCTYPE html>\n' + outDoc.documentElement.outerHTML + '\n';
+
+    // SAFETY: refuse to write a file that lost its <head>, its <body> or most of its size.
+    if (!/<head[\s>]/i.test(out) || !/<body[\s>]/i.test(out) || out.length < originalText.length * 0.5){
+      setStatus('Not saved — the rebuilt page looked wrong. Click “Discard & reload” and try again.','err');
+      return;
+    }
+
     const fh = await dirHandle.getFileHandle(page);
     const w = await fh.createWritable();
     await w.write(out); await w.close();
@@ -243,7 +362,9 @@ async function savePage(){
     // refresh the baseline so further edits diff against the saved version
     originalText = out;
     dirty = false;
-    setStatus('Saved ✓  ' + changes + ' change' + (changes===1?'':'s') + '  ·  ' + new Date().toLocaleTimeString(), 'ok');
+    setStatus('Saved ✓  ' + changes + ' change' + (changes===1?'':'s')
+      + (rebuilt ? '  ·  ' + rebuilt + ' with markup changes' : '')
+      + '  ·  ' + new Date().toLocaleTimeString(), 'ok');
   } catch (e) {
     setStatus('Save failed: ' + e.message, 'err');
   }

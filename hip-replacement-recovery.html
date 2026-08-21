@@ -22,7 +22,7 @@
 <meta name="twitter:title" content="Hip Replacement Recovery Timeline | Andrew B. Harris, MD">
 <meta name="twitter:description" content="A clear hip replacement recovery timeline from a Chicago hip surgeon: walking, driving, and returning to activity, plus what is normal week by week. Offices in Skokie, the North Shore, and Chicago.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/headshot.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=11">
+<link rel="stylesheet" href="assets/css/style.css?v=12">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -49,7 +49,7 @@
       "name": "How long does hip replacement recovery take?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Most patients walk with assistance the same day or the next day, are moving comfortably around the house within a few weeks, and return to most normal activities within about two to three months. It can take up to a year to feel the full benefit of the new hip."
+        "text": "Most patients walk with assistance the same day or the next day, are moving comfortably around the house within a few weeks, and return to most normal activities within about two to three months. It can take up to a year to feel the full benefit of the new hip, particularly if you had more stiffness or weakness prior to hip replacement surgery."
       }
     },
     {
@@ -65,7 +65,7 @@
       "name": "When can I drive after hip replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Many patients return to driving around a few weeks after surgery, once they are off strong pain medication and can move safely. Dr. Harris will give guidance based on your progress and which hip was operated on."
+        "text": "Not while you are taking opioid pain medication, and not until you can move your foot to the brake without hesitating. A left hip usually allows driving sooner than a right hip. Most patients are back to driving within a few weeks."
       }
     },
     {
@@ -73,22 +73,116 @@
       "name": "Is hip replacement outpatient or same-day?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "For many healthy patients, especially with the anterior approach, hip replacement can be done as an outpatient, same-day procedure with recovery continued at home. Whether that is right for you depends on your health and home setup."
+        "text": "For many healthy patients, especially with a modern surgical approach (anterior or STAR), hip replacement can be done as an outpatient, same-day procedure with recovery continued at home. Whether that is right for you depends on your age, other health conditions, and home setup."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will I need physical therapy after a hip replacement?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends. Some patients do best with formal outpatient physical therapy. Others do just as well with a self-directed home exercise program. Both approaches work, and which one makes sense depends on the patient and the exact surgery performed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long will I need pain medication?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dr. Harris uses a multimodal approach that minimizes narcotics, combining several non-narcotic medications that work in different ways, along with ice, elevation, and regular movement. Some patients need no opioid medication at all. Most who do need it for one to two weeks, and then stop."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When can I go back to work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Desk work is usually possible within two to four weeks, and often sooner if you can work from home. Physically demanding work takes longer, depending on how much standing, lifting, and climbing is involved."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are there movements I should avoid after a hip replacement?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually there are some movements to avoid or limit for about six to eight weeks while the soft tissues heal. What those are depends on the specific operation you had, so follow the instructions you are given."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I run or play sports after a hip replacement?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most patients have no lifetime restrictions. Walking, swimming, cycling, golf, and hiking are all reasonable and encouraged. Whether high-impact repetitive activity such as distance running shortens the life of a hip replacement is still debated among surgeons, so it is worth discussing individually with Dr. Harris regarding the activities that are important to you and the exact surgery you had performed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does a hip replacement last?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Modern hip replacements are built to last. Registry data covering nearly two million hips shows more than nine in ten still in place at twenty years, and about the same at thirty. In practical terms, the large majority of hip replacements are still working three decades later, and many patients will never need another operation on that hip."
       }
     }
   ]
 }
 </script>
+<style>
+.res-tabs > input { position:absolute; opacity:0; pointer-events:none; }
+.res-tablist { display:flex; flex-wrap:wrap; gap:0; border-bottom:1px solid var(--border-hair); margin-bottom:4px; }
+.res-tablist label { cursor:pointer; padding:14px 22px 13px; font-family:var(--font-sans); font-size:13.5px;
+  font-weight:600; letter-spacing:0.01em; color:var(--slate); border-bottom:2px solid transparent;
+  margin-bottom:-1px; transition:color .15s ease, border-color .15s ease; }
+.res-tablist label:hover { color:var(--gold); }
+.res-panel { display:none; padding-top:12px; }
+#restab-a:checked ~ .res-tablist label[for="restab-a"],
+#restab-b:checked ~ .res-tablist label[for="restab-b"] { color:var(--ink); border-bottom-color:var(--gold); }
+#restab-a:checked ~ .res-panel-a, #restab-b:checked ~ .res-panel-b { display:block; }
+.res-tabs > input:focus-visible ~ .res-tablist label { outline:2px solid var(--gold); outline-offset:2px; }
+@media (max-width:640px){
+  .res-tablist { flex-direction:column; gap:0; border-bottom:none; }
+  .res-tablist label { padding:12px 0 12px 14px; border-bottom:1px solid var(--border-hair);
+    border-left:3px solid transparent; margin-bottom:0; }
+  #restab-a:checked ~ .res-tablist label[for="restab-a"],
+  #restab-b:checked ~ .res-tablist label[for="restab-b"] {
+    border-bottom-color:var(--border-hair); border-left-color:var(--gold); background:var(--ivory); }
+}
+</style>
+<style>
+.cite { position:relative; display:inline-block; line-height:1; padding:0 1px;
+  color:var(--gold); text-decoration:none; }
+.cite:hover, .cite:focus-visible { text-decoration:underline; }
+.cite::after {
+  content: attr(data-tip);
+  position:absolute; bottom:calc(100% + 9px); left:50%; transform:translateX(-50%);
+  width:max-content; max-width:300px;
+  background:var(--navy); color:#fff; text-align:left;
+  font-family:var(--font-sans); font-size:12.5px; font-weight:400; line-height:1.45;
+  letter-spacing:0; padding:10px 13px; border-radius:3px;
+  box-shadow:0 12px 28px -10px rgba(20,32,43,.5);
+  opacity:0; visibility:hidden; transition:opacity .13s ease; pointer-events:none; z-index:120;
+}
+.cite::before {
+  content:''; position:absolute; bottom:calc(100% + 3px); left:50%; transform:translateX(-50%);
+  border:6px solid transparent; border-top-color:var(--navy);
+  opacity:0; visibility:hidden; transition:opacity .13s ease; pointer-events:none; z-index:121;
+}
+.cite:hover::after, .cite:hover::before,
+.cite:focus-visible::after, .cite:focus-visible::before { opacity:1; visibility:visible; }
+.cite-edge::after { left:auto; right:0; transform:none; }
+.cite-edge::before { left:auto; right:8px; transform:none; }
+@media (hover:none){ .cite::after, .cite::before { display:none; } }
+</style>
 </head>
 <body>
 <header class="site-header">
   <div class="wrap">
-    <a href="index.html" class="brand"><img src="assets/img/abh-mark.png" alt="" class="brand-mark" width="46" height="46"><span class="brand-text">Andrew B. Harris, MD<span class="brand-sub">Hip &amp; Knee &middot; Chicago</span></span></a>
+    <a href="index.html" class="brand"><img src="assets/img/abh-mark.png" alt="" class="brand-mark" width="46" height="46"><span class="brand-text">Andrew B. Harris, MD<span class="brand-sub">Hip &amp; Knee · Chicago</span></span></a>
     <nav class="nav-links" id="navLinks">
       <a href="index.html">Home</a>
       <a href="about.html">Meet Dr. Harris</a>
       <div class="nav-item">
-        <a href="procedures.html" class="nav-parent" aria-expanded="false" aria-haspopup="true">Procedures<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="procedures.html" class="nav-parent" aria-expanded="false" aria-haspopup="true">Procedures<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
         <div class="nav-menu">
           <a href="procedures.html" class="nav-top">All Procedures</a>
           <a href="hip-replacement-chicago.html" class="nav-top">Hip Replacement</a>
@@ -104,7 +198,7 @@
         </div>
       </div>
       <div class="nav-item">
-        <a href="patient-resources.html" class="nav-parent active" aria-expanded="false" aria-haspopup="true">Patient Resources<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="patient-resources.html" class="nav-parent active" aria-expanded="false" aria-haspopup="true">Patient Resources<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
         <div class="nav-menu">
           <a href="patient-resources.html" class="nav-top">All Patient Resources</a>
           <span class="nav-group">Hip</span>
@@ -120,7 +214,7 @@
         </div>
       </div>
       <div class="nav-item">
-        <a href="skokie-joint-replacement-surgeon.html" class="nav-parent" aria-expanded="false" aria-haspopup="true">Locations<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="skokie-joint-replacement-surgeon.html" class="nav-parent" aria-expanded="false" aria-haspopup="true">Locations<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
         <div class="nav-menu">
           <a href="skokie-joint-replacement-surgeon.html" class="nav-top">Skokie</a>
           <a href="north-shore-joint-replacement.html" class="nav-top">North Shore</a>
@@ -137,24 +231,24 @@
     <div class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; <a href="patient-resources.html">Patient Resources</a> &nbsp;/&nbsp; Hip Replacement Recovery</div>
     <div class="eyebrow">Patient Guide</div>
     <h1>Hip Replacement Recovery: What to Expect</h1>
-    <p class="page-lead">A clear, realistic look at hip replacement recovery, week by week, from Dr. Harris.</p>
+    <p class="page-lead">A realistic look at the expected recovery after a modern hip replacement</p>
   </div>
 </div>
 <section class="section-white">
   <div class="wrap">
     <div class="intro-grid">
       <div>
-        <p>Recovery from a <a href="hip-replacement-chicago.html" class="text-link">hip replacement</a> is steady and, for most people, faster than they expect, especially with the muscle-sparing <a href="anterior-hip-replacement.html" class="text-link">anterior approach</a>. Most patients are up and walking with help the same day, home within a day or two (or the same day for outpatient surgery), and back to most daily activities within two to three months.</p>
-        <p>Swelling, stiffness, bruising, and disturbed sleep are all normal early on and improve over weeks. Recovery is real work: following your physical therapy plan matters as much as the operation itself.</p>
+        <p>Recovery from a modern <a href="hip-replacement-chicago.html" class="text-link">hip replacement</a> is faster than most people expect. Most patients are up and walking with help the same day, home on the same day of surgery<sup style="font-size:11px; line-height:0;"><a href="#ref-1" class="cite" data-tip="Radtke et al., J Arthroplasty 2024. 91% of hip replacements planned as same-day discharge went home the same day." aria-label="Reference 1">1</a></sup>, and back to most daily activities within two to three months (or less)<sup style="font-size:11px; line-height:0;"><a href="#ref-2" class="cite" data-tip="Sato et al., J Arthroplasty 2023. Recovery curves after hip replacement in 1,898 patients." aria-label="Reference 2">2</a></sup>. </p>
+        <p>The problems patients most commonly run into early are bruising, stiffness, pain, and disturbed sleep. Patients who take an active role in their own recovery tend to have better outcomes, and going in with realistic expectations has been shown to matter as well.</p>
       </div>
       <div>
-        <h2 style="margin-bottom:12px;">A typical timeline</h2>
+        <h2 style="margin-bottom:12px;">A typical timeline for most patients</h2>
         <ul class="leadership-list">
-          <li><strong>Day of surgery:</strong> stand and take steps with assistance</li>
-          <li><strong>First 1&ndash;2 weeks:</strong> walking with a walker or cane, focus on comfort and safe movement</li>
-          <li><strong>2&ndash;6 weeks:</strong> less need for walking aids, gradual return to light activity and driving</li>
-          <li><strong>6&ndash;12 weeks:</strong> most daily activities resume; strength and endurance keep building</li>
-          <li><strong>Up to a year:</strong> continued improvement as you feel the full benefit</li>
+          <li><strong>Day of surgery</strong> · stand and take steps with assistance</li>
+          <li><strong>First 1 to 2 weeks</strong> · walking with a walker or cane, focus on comfort and safe movement</li>
+          <li><strong>2 to 6 weeks</strong> · less need for walking aids, gradual return to light activity and driving</li>
+          <li><strong>6 to 12 weeks</strong> · most daily activities resume, strength and endurance keep building</li>
+          <li><strong>A year and beyond</strong> · improvement can continue well past the first year, particularly for patients who had significant weakness or stiffness before surgery</li>
         </ul>
       </div>
     </div>
@@ -162,23 +256,185 @@
 </section>
 <section class="section-ivory">
   <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Immediately after Surgery<br></div><h2>The first two weeks</h2></div>
+    <div class="bio" style="max-width:820px;">
+      <p>The goal early on is comfort, safe walking, and protecting the incision. Patients are instructed to use a walker at first and move to a cane as balance and confidence return. Dr. Harris asks patients to stay on a walking aid for a set period rather than giving it up as soon as it feels possible. The main risk in the first few weeks is a fall, and a walker or cane is the simplest way to prevent one. Most patients only need one for a short time. In one study that surveyed patients every week after surgery, 91% were using a walking aid in the first week and 15% still were at six weeks.<sup style="font-size:11px; line-height:0;"><a href="#ref-3" class="cite" data-tip="Coxe et al., HSS J 2023. 312 patients surveyed every week for the first six weeks." aria-label="Reference 3">3</a></sup></p>
+      <p>Swelling is very common after hip replacement, though a number of steps are taken during and after surgery to limit it. When it does occur, gravity pulls fluid down the leg, so it can show up in the thigh and sometimes into the calf and ankle. Sleep is often the hardest part of the first two weeks, although most people find a position that works to sleep as much as they can through the night. </p>
+      <h2 style="margin-top:44px;">Movements to limit early on</h2>
+      <p style="margin-top:16px;">There are usually some movements to avoid or limit for roughly six to eight weeks after surgery while the soft tissues heal. What those are depends on the specific operation you had, so the instructions you are given may not match what a friend was told after their hip replacement. Dr. Harris’ team will go through your specific post-surgery movement limitations before you leave.</p>
+    </div>
+  </div>
+</section>
+<section class="section-white">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Building Strength and Flexibility while keeping pain controlled</div><h2>Physical therapy</h2></div>
+    <div class="bio" style="max-width:820px;">
+      <p>How much formal therapy a patient needs after hip replacement surgery varies. Some patients do best with outpatient physical therapy, meaning going to a PT office for scheduled appointments and sessions. Others do just as well with a self-directed home exercise program. Both of these options may work for different individual patients. The option that makes sense depends on the patient and on the exact surgery performed. A randomized trial found that formal physical therapy is not required after a routine hip replacement, and a review of seven trials found no meaningful difference in strength, function, or quality of life between supervised therapy and a home program.<sup style="font-size:11px; line-height:0;"><a href="#ref-4" class="cite" data-tip="Austin et al., J Bone Joint Surg Am 2017. Randomized trial of formal physical therapy after hip replacement." aria-label="Reference 4">4</a><span style="color:var(--gold);">,</span><a href="#ref-5" class="cite" data-tip="Chaudhry et al., Cureus 2022. Systematic review of 7 randomized trials, home exercise versus supervised therapy." aria-label="Reference 5">5</a></sup></p>
+      <p>What does not vary is that some amount of effort is required by the patient in order to achieve a full recovery. Regular, purposeful walking is the foundation and most important aspect of recovery, and the exercises you are given are there to rebuild the muscle that may have atrophied after years of dealing with arthritis or a period of weakness and lack of activity immediately after surgery.</p>
+      <h2 style="margin-top:44px;">Pain control</h2>
+      <p style="margin-top:16px;">Dr. Harris uses a modern approach to pain control after hip replacement that minimizes narcotics such as oxycodone and Percocet, and instead relies on a multimodal regimen, meaning several different medications that work in different ways and are taken together.</p>
+      <p>There are good reasons to keep narcotics to a minimum. They cause nausea, constipation, drowsiness, and mental fog. They also disrupt sleep rather than improving it. Narcotic medications make it harder to get up and walk, which is the single most important thing a patient can do in the first weeks. They also carry a risk of dependence (although this risk is low in most patients). Several non-narcotic medications used together often control pain at least as well, with far fewer of those effects.</p>
+      <p>Minimizing narcotics does not mean accepting more pain. Both goals are very important, and keeping pain under control is a central part of the plan rather than something traded away.</p>
+      <p>Not everything that helps is a medication. Ice, elevating the leg, and changing position regularly all reduce pain and swelling, and they work alongside the medications rather than instead of them.</p>
+      <p>Some patients need no opioid medication at all. Most who do need it for one to two weeks, and then stop. Pain that is well controlled early makes it easier to walk, and walking is what drives the rest of recovery.</p>
+    </div>
+  </div>
+</section>
+<section class="section-ivory">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Getting Back to Normal</div><h2>Driving</h2></div>
+    <div class="bio" style="max-width:820px;">
+      <p>Two things determine when you can drive again after hip replacement surgery.</p>
+      <p>The first is that you cannot drive if you are still taking narcotic pain medication. The second is whether you can safely control the car, which means moving your foot to the brake without hesitating and getting in and out without difficulty.</p>
+      <p>A left hip usually allows a return to driving sooner than a right hip, since an automatic transmission does not require you to use a clutch with your left leg. Most patients are driving again within a few weeks. In one study that followed patients week by week, 60% were driving by four weeks and 77% by six weeks.<sup style="font-size:11px; line-height:0;"><a href="#ref-3" class="cite" data-tip="Coxe et al., HSS J 2023. 312 patients surveyed every week for the first six weeks." aria-label="Reference 3">3</a></sup> Dr. Harris will give you guidance based on your progress and which hip was operated on.</p>
+      <h2 style="margin-top:44px;">Going back to work</h2>
+      <p style="margin-top:16px;">Desk work is usually possible within two to four weeks, and often sooner if you can work from home and change position when you need to. Physically demanding work takes longer to return to and is best done slowly over time. The exact time you could possibly return to a more physically demanding job depends on how much standing, lifting, and climbing the job involves. In the same group of patients, half had returned to work of some kind by four weeks.<sup style="font-size:11px; line-height:0;"><a href="#ref-3" class="cite" data-tip="Coxe et al., HSS J 2023. 312 patients surveyed every week for the first six weeks." aria-label="Reference 3">3</a></sup></p>
+    </div>
+  </div>
+</section>
+<section class="section-white">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">What to Watch For</div><h2>What is normal, and what is not</h2></div>
+    <div class="bio" style="max-width:820px;">
+      <p>There may be some small speedbumps along the way, such as bruising and discomfort. For many patients these are minimal. Unplanned trips to an emergency department after hip replacement are uncommon, and when they do happen they are usually in the first two weeks, most often for pain or swelling.<sup style="font-size:11px; line-height:0;"><a href="#ref-6" class="cite" data-tip="Maldonado-Rodriguez et al., J Arthroplasty 2020. Systematic review of 1.48 million joint replacements." aria-label="Reference 6">6</a></sup></p>
+      <p>A few things are not a normal part of the recovery process, and these specific issues may need attention rather than waiting for your next appointment:</p>
+      <ul class="leadership-list" style="margin-top:20px;">
+        <li>Sudden severe pain, or a sudden inability to put weight through the leg</li>
+        <li>Calf pain, or severe swelling of one leg that is clearly worse than the other</li>
+        <li>Shortness of breath</li>
+      </ul>
+      <p style="margin-top:22px;">Shortness of breath, especially if it comes on suddenly or with chest pain, is an emergency. </p>
+    </div>
+  </div>
+</section>
+<section class="section-ivory">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">The Long View</div><h2>Long-term activity</h2></div>
+    <div class="bio" style="max-width:820px;">
+      <p>Most patients have no lifetime restrictions after a hip replacement. Walking, swimming, cycling, golf, hiking, and doubles tennis are all reasonable and many patients return to these activities after surgery. Staying active is good for you and good for the muscles surrounding your hip replacement.</p>
+      <p>High-impact repetitive activity is a more open question. Whether distance running or extreme sports shorten the life of a hip replacement is still debated among surgeons, and the honest answer is that we do not have a definitive one. Dr. Harris discusses this individually rather than issuing a blanket rule.</p>
+      <h2 style="margin-top:44px;">Does the surgical approach change recovery?</h2>
+      <p style="margin-top:16px;">The <a href="anterior-hip-replacement.html" class="text-link">anterior approach</a> and the <a href="star-approach-hip-replacement.html" class="text-link">STAR approach</a> are both modern, muscle-sparing techniques to perform hip replacement surgery, and patients often find the first few weeks easier than they expect. By three months the difference between approaches matters much less than the work you put in and how your hip was doing before surgery. Patients can do exceptionally well with both approaches. A study using motion sensors found slightly faster walking with the anterior approach at one month and no difference between the approaches by four months.<sup style="font-size:11px; line-height:0;"><a href="#ref-7" class="cite" data-tip="Nelms et al., J Arthroplasty 2020. Accelerometer study of gait after anterior versus posterior approach." aria-label="Reference 7">7</a></sup> The STAR approach has been reported to shorten operating time and hospital stay and to reduce the amount of opioid medication patients need compared with a standard posterior approach.<sup style="font-size:11px; line-height:0;"><a href="#ref-8" class="cite" data-tip="Anatone et al., Bone Joint Open 2026. STAR approach compared with the standard posterior approach." aria-label="Reference 8">8</a></sup> A separate matched comparison of STAR against another muscle-sparing posterior technique found shorter hospital stays and better function at one and three months.<sup style="font-size:11px; line-height:0;"><a href="#ref-9" class="cite" data-tip="Kenanidis et al., SICOT-J 2023. Matched comparison of the STAR approach with another muscle-sparing posterior technique." aria-label="Reference 9">9</a></sup></p>
+    </div>
+  </div>
+</section>
+<section class="section-white">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Follow-Up</div><h2>What happens at your follow-up visits</h2></div>
+    <div class="bio" style="max-width:820px;">
+      <p>You will be seen in the office after surgery to check the incision, review your progress, and take an X-ray of the new hip. Later visits space out as you reach your final level of long-term recovery. Over a period of years, a hip replacement is worth checking periodically even when it feels perfect, because problems are easier to address when they are found early.</p>
+    </div>
+  </div>
+</section>
+<section class="section-ivory">
+  <div class="wrap">
     <div class="section-head"><div class="eyebrow">Common Questions</div><h2>Frequently asked questions</h2></div>
-    <div class="card-grid cols-2">
-      <div class="proc-card">
-        <h3>How long does hip replacement recovery take?</h3>
-        <p>Most patients walk with assistance the same day or the next day, are moving comfortably around the house within a few weeks, and return to most normal activities within about two to three months. It can take up to a year to feel the full benefit of the new hip.</p>
+    <div class="accordion">
+
+      <details>
+        <summary>How long does hip replacement recovery take? <span class="acc-icon"></span></summary>
+        <div class="accordion-body">
+          <p>Most patients walk with assistance the same day or the next day, are moving comfortably around the house within a few weeks, and return to most normal activities within about two to three months. It can take up to a year to feel the full benefit of the new hip, particularly if you had more stiffness or weakness prior to hip replacement surgery.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>When can I walk after hip replacement? <span class="acc-icon"></span></summary>
+        <div class="accordion-body">
+          <p>Most patients stand and take steps with assistance the day of surgery. Many use a walker or cane for the first few weeks, then progress to walking without aids as comfort and strength return.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>When can I drive after hip replacement? <span class="acc-icon"></span></summary>
+        <div class="accordion-body">
+          <p>Not while you are taking opioid pain medication, and not until you can move your foot to the brake without hesitating. A left hip usually allows driving sooner than a right hip. Most patients are back to driving within a few weeks.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Is hip replacement outpatient or same-day? <span class="acc-icon"></span></summary>
+        <div class="accordion-body">
+          <p>For many healthy patients, especially with a modern surgical approach (anterior or STAR), hip replacement can be done as an outpatient, same-day procedure with recovery continued at home. Whether that is right for you depends on your age, other health conditions, and home setup.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Will I need physical therapy after a hip replacement? <span class="acc-icon"></span></summary>
+        <div class="accordion-body">
+          <p>It depends. Some patients do best with formal outpatient physical therapy. Others do just as well with a self-directed home exercise program. Both approaches work, and which one makes sense depends on the patient and the exact surgery performed.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>How long will I need pain medication? <span class="acc-icon"></span></summary>
+        <div class="accordion-body">
+          <p>Dr. Harris uses a multimodal approach that minimizes narcotics, combining several non-narcotic medications that work in different ways, along with ice, elevation, and regular movement. Some patients need no opioid medication at all. Most who do need it for one to two weeks, and then stop.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>When can I go back to work? <span class="acc-icon"></span></summary>
+        <div class="accordion-body">
+          <p>Desk work is usually possible within two to four weeks, and often sooner if you can work from home. Physically demanding work takes longer, depending on how much standing, lifting, and climbing is involved.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Are there movements I should avoid after a hip replacement? <span class="acc-icon"></span></summary>
+        <div class="accordion-body">
+          <p>Usually there are some movements to avoid or limit for about six to eight weeks while the soft tissues heal. What those are depends on the specific operation you had, so follow the instructions you are given.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Can I run or play sports after a hip replacement? <span class="acc-icon"></span></summary>
+        <div class="accordion-body">
+          <p>Most patients have no lifetime restrictions. Walking, swimming, cycling, golf, and hiking are all reasonable and encouraged. Whether high-impact repetitive activity such as distance running shortens the life of a hip replacement is still debated among surgeons, so it is worth discussing individually with Dr. Harris regarding the activities that are important to you and the exact surgery you had performed.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>How long does a hip replacement last? <span class="acc-icon"></span></summary>
+        <div class="accordion-body">
+          <p>Modern hip replacements are built to last. Registry data covering nearly two million hips shows more than nine in ten still in place at twenty years, and about the same at thirty. In practical terms, the large majority of hip replacements are still working three decades later, and many patients will never need another operation on that hip.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+<section class="section-white">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Resources</div><h2>Further reading</h2></div>
+    <div class="res-tabs" style="max-width:880px;">
+      <input type="radio" name="restab" id="restab-a" checked>
+      <input type="radio" name="restab" id="restab-b">
+      <div class="res-tablist">
+        <label for="restab-a">Additional patient educational materials</label>
+        <label for="restab-b">Sources for readers with a medical or scientific background</label>
       </div>
-      <div class="proc-card">
-        <h3>When can I walk after hip replacement?</h3>
-        <p>Most patients stand and take steps with assistance the day of surgery. Many use a walker or cane for the first few weeks, then progress to walking without aids as comfort and strength return.</p>
+      <div class="res-panel res-panel-a">
+        <ul class="leadership-list" style="margin-top:20px;">
+        <li><a href="https://www.orthoinfo.org/recovery/total-hip-replacement-exercise-guide" class="text-link" target="_blank" rel="noopener">Total Hip Replacement Exercise Guide</a> &middot; OrthoInfo, American Academy of Orthopaedic Surgeons</li>
+        <li><a href="https://www.orthoinfo.org/recovery/how-to-use-crutches-canes-and-walkers" class="text-link" target="_blank" rel="noopener">How to Use Crutches, Canes, and Walkers</a> &middot; OrthoInfo, American Academy of Orthopaedic Surgeons</li>
+        <li><a href="https://hipknee.aahks.org/going-home-after-surgery/" class="text-link" target="_blank" rel="noopener">Going Home After Surgery</a> &middot; American Association of Hip and Knee Surgeons</li>
+        <li><a href="https://hipknee.aahks.org/how-to-relieve-pain-after-hip-or-knee-surgery/" class="text-link" target="_blank" rel="noopener">How to Relieve Pain After Hip or Knee Replacement Surgery</a> &middot; American Association of Hip and Knee Surgeons</li>
+        <li><a href="https://www.orthoinfo.org/recovery/activities-after-hip-replacement" class="text-link" target="_blank" rel="noopener">Activities After Total Hip Replacement</a> &middot; OrthoInfo, American Academy of Orthopaedic Surgeons</li>
+      </ul>
       </div>
-      <div class="proc-card">
-        <h3>When can I drive after hip replacement?</h3>
-        <p>Many patients return to driving around a few weeks after surgery, once they are off strong pain medication and can move safely. Dr. Harris will give guidance based on your progress and which hip was operated on.</p>
-      </div>
-      <div class="proc-card">
-        <h3>Is hip replacement outpatient or same-day?</h3>
-        <p>For many healthy patients, especially with the anterior approach, hip replacement can be done as an outpatient, same-day procedure with recovery continued at home. Whether that is right for you depends on your health and home setup.</p>
+      <div class="res-panel res-panel-b">
+        <ol style="list-style:none; margin-top:20px; border-top:1px solid var(--border-hair);">
+        <li id="ref-1" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">1.</span> Radtke LE, Blackburn BE, Kapron CR, et al. Outpatient total joint arthroplasty at a high-volume academic center: an analysis of failure to launch. <em>J Arthroplasty.</em> 2024;39(9 Suppl 2):S134-S142. <a href="https://doi.org/10.1016/j.arth.2024.01.027" class="text-link" target="_blank" rel="noopener">Subscription</a></li>
+        <li id="ref-2" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">2.</span> Sato EH, Stevenson KL, Blackburn BE, et al. Recovery curves for patient reported outcomes and physical function after total hip arthroplasty. <em>J Arthroplasty.</em> 2023;38(7S):S65-S71. <a href="https://doi.org/10.1016/j.arth.2023.04.012" class="text-link" target="_blank" rel="noopener">Subscription</a></li>
+        <li id="ref-3" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">3.</span> Coxe FR, Kahlenberg CA, Garvey M, et al. Early recovery outcomes in patients undergoing contemporary posterior approach total hip arthroplasty: each week shows progress. <em>HSS J.</em> 2023;20(2):245-253. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11393627/" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-4" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">4.</span> Austin MS, Urbani BT, Fleischman AN, et al. Formal physical therapy after total hip arthroplasty is not required: a randomized controlled trial. <em>J Bone Joint Surg Am.</em> 2017;99(8):648-655. <a href="https://doi.org/10.2106/JBJS.16.00674" class="text-link" target="_blank" rel="noopener">Subscription</a></li>
+        <li id="ref-5" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">5.</span> Chaudhry YP, Hayes H, Wells Z, et al. Unsupervised home exercises versus formal physical therapy after primary total hip arthroplasty: a systematic review. <em>Cureus.</em> 2022;14(9):e29322. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9484297/" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-6" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">6.</span> Maldonado-Rodriguez N, Ekhtiari S, Khan MM, et al. Emergency department presentation after total hip and knee arthroplasty: a systematic review. <em>J Arthroplasty.</em> 2020;35(10):3038-3045.e1. <a href="https://doi.org/10.1016/j.arth.2020.05.022" class="text-link" target="_blank" rel="noopener">Subscription</a></li>
+        <li id="ref-7" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">7.</span> Nelms NJ, Birch CE, Halsey DH, et al. Assessment of early gait recovery after anterior approach compared to posterior approach total hip arthroplasty: a smartphone accelerometer-based study. <em>J Arthroplasty.</em> 2020;35(2):465-470. <a href="https://doi.org/10.1016/j.arth.2019.09.030" class="text-link" target="_blank" rel="noopener">Subscription</a></li>
+        <li id="ref-8" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">8.</span> Anatone AJ, Selkridge IK, Karasavvidis T, et al. Transition from the posterior to the Superior Transverse Anatomic Reconstruction (STAR) approach for total hip arthroplasty: no learning curve and improved early postoperative outcomes. <em>Bone Joint Open.</em> 2026;7(3):303-308. <a href="https://boneandjoint.org.uk/Article/10.1302/2633-1462.73.BJO-2025-0122.R1" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+        <li id="ref-9" style="padding:11px 0; border-bottom:1px solid var(--border-hair); font-size:14.5px; color:var(--ink-soft); line-height:1.55;"><span style="color:var(--gold); font-weight:600;">9.</span> Kenanidis E, Milonakis N, Georgios F, Potoupnis M, Tsiridis E. Superior Transverse Atraumatic Reconstruction (STAR) approach provides a better-compared outcome to standard Direct Superior Approach (DSA): a matched, prospective comparative single-surgeon study. <em>SICOT-J.</em> 2023;9:10. <a href="https://doi.org/10.1051/sicotj/2023008" class="text-link" target="_blank" rel="noopener">Free full text</a></li>
+      </ol>
       </div>
     </div>
   </div>
@@ -195,7 +451,7 @@
     <div class="footer-grid">
       <div>
         <h4>Andrew B. Harris, MD</h4>
-        <span class="footer-sub">Hip &amp; Knee &middot; Chicago</span>
+        <span class="footer-sub">Hip &amp; Knee · Chicago</span>
         <div class="footer-links">
           <a href="https://scholar.google.com/citations?user=HISx5XcAAAAJ&amp;hl=en" class="icon-link icon-link-light" target="_blank" rel="noopener" title="Google Scholar" aria-label="Google Scholar profile">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12, 4 22, 9 12, 14 2, 9"></polygon><path d="M7 11 L7 15 L12 17 L17 15 L17 11"></path><path d="M22 9 L22 14"></path></svg>
@@ -231,14 +487,35 @@
       <div>
         <h4>Contact</h4>
         <p>
-          <a href="contact.html">Send a message &rarr;</a>
+          <a href="contact.html">Send a message →</a>
         </p>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Andrew B. Harris, MD</span>
+      <span>© 2026 Andrew B. Harris, MD</span>
     </div>
   </div>
 </footer>
 <script src="assets/js/nav.js"></script>
+<script>
+(function(){
+  function openRefs(hash){
+    if(!hash || hash.indexOf('#ref-')!==0) return;
+    var t=document.getElementById('restab-b'); if(t){ t.checked=true; }
+    var el=document.getElementById(hash.slice(1));
+    if(el){ requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      el.scrollIntoView({block:'center', behavior:'smooth'}); }); }); }
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest ? e.target.closest('a[href^="#ref-"]') : null;
+    if(!a) return;
+    e.preventDefault();
+    var hash=a.getAttribute('href');
+    if(history.replaceState){ history.replaceState(null,'',hash); }
+    openRefs(hash);
+  });
+  openRefs(location.hash);
+})();
+</script>
+
 </body></html>
