@@ -73,7 +73,7 @@
       "name": "Is hip replacement outpatient or same-day?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "For many healthy patients, especially with a modern surgical approach (anterior or STAR), hip replacement can be done as an outpatient, same-day procedure with recovery continued at home. Whether that is right for you depends on your age, other health conditions, and home setup."
+        "text": "For many healthy patients, hip replacement can be done as an outpatient, same-day procedure with recovery continued at home, including with the anterior and STAR approaches. Whether that is right for you depends on your age, other health conditions, and home setup."
       }
     },
     {
@@ -173,6 +173,73 @@
 .cite-edge::before { left:auto; right:8px; transform:none; }
 @media (hover:none){ .cite::after, .cite::before { display:none; } }
 </style>
+<style>
+/* ---- Recovery timeline (intro column) ---- */
+.rec-tl { list-style:none; position:relative; padding-left:24px; margin-top:6px; }
+.rec-tl::before { content:''; position:absolute; left:3px; top:8px; bottom:10px; width:1px; background:var(--border-hair); }
+.rec-tl li { position:relative; padding:0 0 20px; }
+.rec-tl li:last-child { padding-bottom:0; }
+.rec-tl li::before { content:''; position:absolute; left:-24px; top:7px; width:7px; height:7px;
+  border-radius:50%; background:var(--gold); box-shadow:0 0 0 3px var(--white); }
+.rt-k { display:block; font-family:var(--font-serif); font-size:17px; font-weight:500;
+  color:var(--ink); line-height:1.3; letter-spacing:-0.005em; }
+.rt-d { display:block; font-size:14.5px; line-height:1.6; color:var(--ink-soft); margin-top:3px; }
+
+/* ---- Weekly milestones figure ---- */
+.rec-chart { margin:34px 0 0; }
+.rc-ylab { font-family:var(--font-sans); font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--slate); margin-bottom:18px; padding-bottom:11px; border-bottom:1px solid var(--border-hair);
+  max-width:580px; }
+.rc-grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:36px; max-width:580px; }
+.rc-title { font-family:var(--font-serif); font-size:16.5px; font-weight:500; color:var(--ink);
+  line-height:1.3; letter-spacing:-0.005em; margin-bottom:26px; display:flex; align-items:baseline; gap:9px; }
+.rc-title::before { content:''; width:9px; height:9px; border-radius:2px; background:var(--rc-c);
+  flex:0 0 auto; transform:translateY(-1px); }
+.rc-body { display:flex; align-items:stretch; gap:9px; }
+.rc-yaxis { display:flex; flex-direction:column; justify-content:space-between; height:128px;
+  font-family:var(--font-sans); font-size:10px; color:var(--slate); text-align:right;
+  flex:0 0 21px; width:21px; line-height:1; }
+.rc-yaxis span { transform:translateY(-50%); }
+.rc-yaxis span:first-child { transform:translateY(-2px); }
+.rc-yaxis span:last-child { transform:translateY(2px); }
+.rc-plotcol { flex:1 1 auto; min-width:0; }
+.rc-plot { position:relative; height:128px; display:flex; align-items:flex-end; gap:9px;
+  background-image:repeating-linear-gradient(to top, #edeae3 0 1px, transparent 1px 25%);
+  border-bottom:1px solid #cfc8bb; border-left:1px solid #ded8cc; }
+.rc-col { position:relative; flex:1 1 0; min-width:0; height:100%; }
+.rc-bar { position:absolute; left:14%; right:14%; bottom:0; background:var(--rc-c); border-radius:2px 2px 0 0; }
+.rc-val { position:absolute; left:0; right:0; text-align:center; font-family:var(--font-sans);
+  font-size:10.5px; font-weight:600; letter-spacing:-0.02em; color:var(--ink); line-height:1;
+  white-space:nowrap; overflow:visible; }
+.rc-xaxis { display:flex; gap:9px; margin-top:8px; }
+.rc-xaxis span { flex:1 1 0; text-align:center; font-family:var(--font-sans); font-size:10.5px;
+  letter-spacing:0.04em; color:var(--slate); }
+.rc-xlab { display:none; font-family:var(--font-sans); font-size:10px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--slate); text-align:center; margin-top:9px; }
+.rc-xlab-all { font-family:var(--font-sans); font-size:10px; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--slate); text-align:center; margin-top:14px; max-width:580px; }
+.rc-walk { --rc-c:#c05f2c; } .rc-driv { --rc-c:#2f6fb5; }
+.rec-chart figcaption { font-size:14px; color:var(--ink-soft); line-height:1.65; margin-top:26px;
+  padding-top:15px; border-top:1px solid var(--border-hair); }
+.rc-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+@media (max-width:760px){
+  .rc-grid { grid-template-columns:1fr; gap:30px; }
+  .rc-plot, .rc-yaxis { height:112px; }
+  .rc-xlab { display:block; }
+  .rc-xlab-all { display:none; }
+}
+/* tooltips are decorative; suppress them where the viewport is too narrow to hold one */
+@media (max-width:1080px){ .cite::after, .cite::before { display:none; } }
+
+/* ---- Page-header motif ---- */
+.page-header { position:relative; overflow:hidden; }
+.page-header .wrap { position:relative; z-index:2; }
+.ph-motif { position:absolute; right:-70px; top:50%; transform:translateY(-50%);
+  width:420px; height:420px; z-index:1; pointer-events:none; opacity:0.5; }
+.ph-motif svg { width:100%; height:100%; display:block; }
+@media (max-width:1080px){ .ph-motif { right:-140px; opacity:0.35; } }
+@media (max-width:860px){ .ph-motif { display:none; } }
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -227,6 +294,22 @@
   </div>
 </header>
 <div class="page-header">
+  <div class="ph-motif" aria-hidden="true">
+    <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#38637f" stroke-linecap="round">
+        <circle cx="210" cy="210" r="46"  stroke-opacity="0.30" stroke-width="1"/>
+        <circle cx="210" cy="210" r="78"  stroke-opacity="0.26" stroke-width="1"/>
+        <circle cx="210" cy="210" r="110" stroke-opacity="0.22" stroke-width="1"/>
+        <circle cx="210" cy="210" r="142" stroke-opacity="0.18" stroke-width="1"/>
+        <circle cx="210" cy="210" r="174" stroke-opacity="0.13" stroke-width="1"/>
+        <path d="M210 210 L210 28"   stroke-opacity="0.20" stroke-width="1"/>
+        <path d="M210 210 L339 81"   stroke-opacity="0.16" stroke-width="1"/>
+        <path d="M210 210 L392 210"  stroke-opacity="0.12" stroke-width="1"/>
+        <path d="M62 210 A148 148 0 0 1 210 62" stroke-opacity="0.55" stroke-width="1.5"/>
+      </g>
+      <circle cx="210" cy="210" r="5" fill="#38637f" fill-opacity="0.55"/>
+    </svg>
+  </div>
   <div class="wrap">
     <div class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; <a href="patient-resources.html">Patient Resources</a> &nbsp;/&nbsp; Hip Replacement Recovery</div>
     <div class="eyebrow">Patient Guide</div>
@@ -243,12 +326,12 @@
       </div>
       <div>
         <h2 style="margin-bottom:12px;">A typical timeline for most patients</h2>
-        <ul class="leadership-list">
-          <li><strong>Day of surgery</strong> · stand and take steps with assistance</li>
-          <li><strong>First 1 to 2 weeks</strong> · walking with a walker or cane, focus on comfort and safe movement</li>
-          <li><strong>2 to 6 weeks</strong> · less need for walking aids, gradual return to light activity and driving</li>
-          <li><strong>6 to 12 weeks</strong> · most daily activities resume, strength and endurance keep building</li>
-          <li><strong>A year and beyond</strong> · improvement can continue well past the first year, particularly for patients who had significant weakness or stiffness before surgery</li>
+        <ul class="rec-tl">
+          <li><span class="rt-k">Day of surgery</span><span class="rt-d">stand and take steps with assistance</span></li>
+          <li><span class="rt-k">First 1 to 2 weeks</span><span class="rt-d">walking with a walker or cane, focus on comfort and safe movement</span></li>
+          <li><span class="rt-k">2 to 6 weeks</span><span class="rt-d">less need for walking aids, gradual return to light activity and driving</span></li>
+          <li><span class="rt-k">6 to 12 weeks</span><span class="rt-d">most daily activities resume, strength and endurance keep building</span></li>
+          <li><span class="rt-k">A year and beyond</span><span class="rt-d">improvement can continue well past the first year, particularly for patients who had significant weakness or stiffness before surgery</span></li>
         </ul>
       </div>
     </div>
@@ -288,7 +371,51 @@
       <p>The first is that you cannot drive if you are still taking narcotic pain medication. The second is whether you can safely control the car, which means moving your foot to the brake without hesitating and getting in and out without difficulty.</p>
       <p>A left hip usually allows a return to driving sooner than a right hip, since an automatic transmission does not require you to use a clutch with your left leg. Most patients are driving again within a few weeks. In one study that followed patients week by week, 60% were driving by four weeks and 77% by six weeks.<sup style="font-size:11px; line-height:0;"><a href="#ref-3" class="cite" data-tip="Coxe et al., HSS J 2023. 312 patients surveyed every week for the first six weeks." aria-label="Reference 3">3</a></sup> Dr. Harris will give you guidance based on your progress and which hip was operated on.</p>
       <h2 style="margin-top:44px;">Going back to work</h2>
-      <p style="margin-top:16px;">Desk work is usually possible within two to four weeks, and often sooner if you can work from home and change position when you need to. Physically demanding work takes longer to return to and is best done slowly over time. The exact time you could possibly return to a more physically demanding job depends on how much standing, lifting, and climbing the job involves. In the same group of patients, half had returned to work of some kind by four weeks.<sup style="font-size:11px; line-height:0;"><a href="#ref-3" class="cite" data-tip="Coxe et al., HSS J 2023. 312 patients surveyed every week for the first six weeks." aria-label="Reference 3">3</a></sup></p>
+      <p style="margin-top:16px;">Desk work is usually possible within two to four weeks, and often sooner if you can work from home and change position when you need to. Physically demanding work takes longer to return to and is best done slowly over time. The exact time you could possibly return to a more physically demanding job depends on how much standing, lifting, and climbing the job involves.</p>
+      <figure class="rec-chart">
+      <div class="rc-ylab">Patients reaching the milestone (%)</div>
+      <div class="rc-grid">
+        <div class="rc-panel rc-walk">
+          <div class="rc-title">Using a walker or cane</div>
+          <div class="rc-body">
+            <div class="rc-yaxis" aria-hidden="true"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div>
+            <div class="rc-plotcol">
+              <div class="rc-plot">
+              <div class="rc-col"><span class="rc-val" style="bottom:91%; margin-bottom:6px;">91%</span><div class="rc-bar" style="height:91%;"></div></div>
+              <div class="rc-col"><span class="rc-val" style="bottom:78%; margin-bottom:6px;">78%</span><div class="rc-bar" style="height:78%;"></div></div>
+              <div class="rc-col"><span class="rc-val" style="bottom:56%; margin-bottom:6px;">56%</span><div class="rc-bar" style="height:56%;"></div></div>
+              <div class="rc-col"><span class="rc-val" style="bottom:35%; margin-bottom:6px;">35%</span><div class="rc-bar" style="height:35%;"></div></div>
+              <div class="rc-col"><span class="rc-val" style="bottom:27%; margin-bottom:6px;">27%</span><div class="rc-bar" style="height:27%;"></div></div>
+              <div class="rc-col"><span class="rc-val" style="bottom:15%; margin-bottom:6px;">15%</span><div class="rc-bar" style="height:15%;"></div></div>
+              </div>
+              <div class="rc-xaxis"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+              <div class="rc-xlab">Weeks after surgery</div>
+            </div>
+          </div>
+        </div>
+        <div class="rc-panel rc-driv">
+          <div class="rc-title">Driving again</div>
+          <div class="rc-body">
+            <div class="rc-yaxis" aria-hidden="true"></div>
+            <div class="rc-plotcol">
+              <div class="rc-plot">
+              <div class="rc-col"><span class="rc-val" style="bottom:3%; margin-bottom:6px;">3%</span><div class="rc-bar" style="height:3%;"></div></div>
+              <div class="rc-col"><span class="rc-val" style="bottom:25%; margin-bottom:6px;">25%</span><div class="rc-bar" style="height:25%;"></div></div>
+              <div class="rc-col"><span class="rc-val" style="bottom:44%; margin-bottom:6px;">44%</span><div class="rc-bar" style="height:44%;"></div></div>
+              <div class="rc-col"><span class="rc-val" style="bottom:60%; margin-bottom:6px;">60%</span><div class="rc-bar" style="height:60%;"></div></div>
+              <div class="rc-col"><span class="rc-val" style="bottom:66%; margin-bottom:6px;">66%</span><div class="rc-bar" style="height:66%;"></div></div>
+              <div class="rc-col"><span class="rc-val" style="bottom:77%; margin-bottom:6px;">77%</span><div class="rc-bar" style="height:77%;"></div></div>
+              </div>
+              <div class="rc-xaxis"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+              <div class="rc-xlab">Weeks after surgery</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rc-xlab-all">Weeks after surgery</div>
+      <div class="rc-sr"><table><caption>Percentage of patients reaching each milestone, by week after hip replacement</caption><thead><tr><th>Week</th><th>Using a walker or cane</th><th>Driving again</th></tr></thead><tbody><tr><th>Week 1</th><td>91%</td><td>3%</td></tr><tr><th>Week 2</th><td>78%</td><td>25%</td></tr><tr><th>Week 3</th><td>56%</td><td>44%</td></tr><tr><th>Week 4</th><td>35%</td><td>60%</td></tr><tr><th>Week 5</th><td>27%</td><td>66%</td></tr><tr><th>Week 6</th><td>15%</td><td>77%</td></tr></tbody></table></div>
+      <figcaption>Weekly progress in a study of 312 hip replacement patients who were surveyed every week for the first six weeks.<sup style="font-size:11px; line-height:0;"><a href="#ref-3" class="cite" data-tip="Coxe et al., HSS J 2023. 312 patients surveyed every week for the first six weeks." aria-label="Reference 3">3</a></sup> Every week showed measurable improvement over the one before it.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -314,7 +441,7 @@
       <p>Most patients have no lifetime restrictions after a hip replacement. Walking, swimming, cycling, golf, hiking, and doubles tennis are all reasonable and many patients return to these activities after surgery. Staying active is good for you and good for the muscles surrounding your hip replacement.</p>
       <p>High-impact repetitive activity is a more open question. Whether distance running or extreme sports shorten the life of a hip replacement is still debated among surgeons, and the honest answer is that we do not have a definitive one. Dr. Harris discusses this individually rather than issuing a blanket rule.</p>
       <h2 style="margin-top:44px;">Does the surgical approach change recovery?</h2>
-      <p style="margin-top:16px;">The <a href="anterior-hip-replacement.html" class="text-link">anterior approach</a> and the <a href="star-approach-hip-replacement.html" class="text-link">STAR approach</a> are both modern, muscle-sparing techniques to perform hip replacement surgery, and patients often find the first few weeks easier than they expect. By three months the difference between approaches matters much less than the work you put in and how your hip was doing before surgery. Patients can do exceptionally well with both approaches. A study using motion sensors found slightly faster walking with the anterior approach at one month and no difference between the approaches by four months.<sup style="font-size:11px; line-height:0;"><a href="#ref-7" class="cite" data-tip="Nelms et al., J Arthroplasty 2020. Accelerometer study of gait after anterior versus posterior approach." aria-label="Reference 7">7</a></sup> The STAR approach has been reported to shorten operating time and hospital stay and to reduce the amount of opioid medication patients need compared with a standard posterior approach.<sup style="font-size:11px; line-height:0;"><a href="#ref-8" class="cite" data-tip="Anatone et al., Bone Joint Open 2026. STAR approach compared with the standard posterior approach." aria-label="Reference 8">8</a></sup> A separate matched comparison of STAR against another muscle-sparing posterior technique found shorter hospital stays and better function at one and three months.<sup style="font-size:11px; line-height:0;"><a href="#ref-9" class="cite" data-tip="Kenanidis et al., SICOT-J 2023. Matched comparison of the STAR approach with another muscle-sparing posterior technique." aria-label="Reference 9">9</a></sup></p>
+      <p style="margin-top:16px;">The <a href="anterior-hip-replacement.html" class="text-link">anterior approach</a> and the <a href="star-approach-hip-replacement.html" class="text-link">STAR approach</a> are both modern, muscle-sparing techniques to perform hip replacement surgery, and patients often find the first few weeks easier than they expect. By three months the difference between approaches matters much less than the work you put in and how your hip was doing before surgery. Patients can do exceptionally well with both approaches. A study using motion sensors found small differences in walking between the anterior and posterior approaches in the first month, and no measurable difference by four months.<sup style="font-size:11px; line-height:0;"><a href="#ref-7" class="cite" data-tip="Nelms et al., J Arthroplasty 2020. Accelerometer study of gait after anterior versus posterior approach." aria-label="Reference 7">7</a></sup> The STAR approach preserves the piriformis and quadratus femoris muscles, and has been reported to produce excellent early outcomes.<sup style="font-size:11px; line-height:0;"><a href="#ref-8" class="cite" data-tip="Anatone et al., Bone Joint Open 2026. Outcomes of the STAR approach for total hip replacement." aria-label="Reference 8">8</a><span style="color:var(--gold);">,</span><a href="#ref-9" class="cite" data-tip="Kenanidis et al., SICOT-J 2023. Prospective single-surgeon series of the STAR approach." aria-label="Reference 9">9</a></sup></p>
     </div>
   </div>
 </section>
@@ -355,7 +482,7 @@
       <details>
         <summary>Is hip replacement outpatient or same-day? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>For many healthy patients, especially with a modern surgical approach (anterior or STAR), hip replacement can be done as an outpatient, same-day procedure with recovery continued at home. Whether that is right for you depends on your age, other health conditions, and home setup.</p>
+          <p>For many healthy patients, hip replacement can be done as an outpatient, same-day procedure with recovery continued at home, including with the anterior and STAR approaches. Whether that is right for you depends on your age, other health conditions, and home setup.</p>
         </div>
       </details>
 
