@@ -1762,6 +1762,14 @@ section {
   margin: 0;
 }
 .form-note { font-size: 13px; color: var(--slate); margin-top: 14px; }
+.form-disclaimer {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--slate);
+  border-top: 1px solid var(--border-hair);
+  padding-top: 12px;
+  margin-top: 14px;
+}
 .contact-form .btn { margin-top: 6px; cursor: pointer; }
 .form-success {
   display: none;
