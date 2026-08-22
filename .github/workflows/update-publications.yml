@@ -1,11 +1,17 @@
 name: Update publications from ORCID
 
-# Keeps the publication list on publications.html in sync with Dr. Harris's
-# ORCID record, using Crossref for the full citation details (author list,
-# journal, volume, pages).
+# Mirrors the publication list on publications.html to Dr. Harris's ORCID
+# record, using Crossref for the full citation details (author list, journal,
+# volume, pages).
 #
-# It does NOT push straight to main. If the list changed, it opens a pull
-# request so the diff can be reviewed before anything goes live.
+# Fully automatic: it commits and pushes straight to main, and GitHub Pages
+# rebuilds the site about a minute later. No pull request, no approval step.
+# ORCID is the source of truth - if a paper is not on ORCID, it will not be
+# on the site.
+#
+# --allow-shrink is passed deliberately, so the list follows ORCID down as
+# well as up. The MIN_EXPECTED floor inside the script still applies, so a
+# broken or partial API response cannot wipe the page.
 #
 # Runs on the 1st of each month, and can be triggered by hand from the
 # Actions tab with the "Run workflow" button.
@@ -22,7 +28,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   update:
@@ -40,11 +45,9 @@ jobs:
 
       # No pip install needed - the script uses only the standard library.
       - name: Regenerate the publication list
-        run: python3 scripts/update_publications.py
+        run: python3 scripts/update_publications.py --allow-shrink
 
-      - name: Open a pull request if the list changed
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit and push if the list changed
         run: |
           set -euo pipefail
 
@@ -53,16 +56,9 @@ jobs:
             exit 0
           fi
 
-          BRANCH="auto/publications-$(date +%Y%m%d-%H%M)"
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH"
           git add publications.html
           git commit -m "Update publications from ORCID"
-          git push origin "$BRANCH"
-
-          gh pr create \
-            --base main \
-            --head "$BRANCH" \
-            --title "Update publications from ORCID" \
-            --body "The publication list changed. Review the diff below, then Merge to publish. If the generated citations look worse than what is on the site now, close this PR instead and nothing changes."
+          git push
+          echo "Pushed to main. GitHub Pages will rebuild shortly."

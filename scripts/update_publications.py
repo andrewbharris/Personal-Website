@@ -30,7 +30,11 @@ The script is deliberately conservative. It writes NOTHING and exits non-zero if
   - the markers are missing from publications.html
   - the result would shrink the list by more than SHRINK_TOLERANCE, which
     normally means the ORCID record is behind the CV (--allow-shrink overrides)
-The existing hand-maintained list is never destroyed by a bad fetch.
+The existing list is never destroyed by a bad fetch.
+
+Note: CI runs with --allow-shrink, because ORCID is the source of truth and the
+site is meant to mirror it in both directions. The MIN_EXPECTED floor still
+applies there, so a broken or partial API response cannot empty the page.
 
 Run locally:   python3 scripts/update_publications.py
                python3 scripts/update_publications.py --dry-run
