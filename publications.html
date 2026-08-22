@@ -418,9 +418,13 @@
     for (var i = VISIBLE; i < total; i++) {
       items[i].hidden = !expanded;
     }
-    btn.textContent = expanded
-      ? 'Show fewer'
-      : 'Show all ' + total + ' publications';
+    btn.textContent = expanded ? 'Show fewer' : 'Show more';
+    // The visible label stays generic so it never has to track the count,
+    // but screen readers still get the specific action.
+    btn.setAttribute(
+      'aria-label',
+      expanded ? 'Show fewer publications' : 'Show all ' + total + ' publications'
+    );
     btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
   }
 
