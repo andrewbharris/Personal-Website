@@ -1,8 +1,19 @@
-name: Update publications from Google Scholar
+name: Update publications from ORCID
 
 # Keeps the publication list on publications.html in sync with Dr. Harris's
-# Google Scholar profile. Runs on the 1st of each month, and can also be
-# triggered by hand from the Actions tab (Run workflow).
+# ORCID record, using Crossref for the full citation details (author list,
+# journal, volume, pages).
+#
+# It does NOT push straight to main. If the list changed, it opens a pull
+# request so the diff can be reviewed before anything goes live.
+#
+# Runs on the 1st of each month, and can be triggered by hand from the
+# Actions tab with the "Run workflow" button.
+#
+# History: this used to scrape Google Scholar with the `scholarly` package.
+# That never completed a successful run - Google blocks datacenter IPs, and
+# the 2026-08-01 run hung for the full 6-hour Actions timeout. ORCID and
+# Crossref are open APIs that do not block automated traffic.
 
 on:
   schedule:
@@ -11,10 +22,13 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 15     # a stuck fetch can never burn 6 hours again
+
     steps:
       - name: Check out the site
         uses: actions/checkout@v4
@@ -24,22 +38,31 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
-        run: pip install scholarly
+      # No pip install needed - the script uses only the standard library.
+      - name: Regenerate the publication list
+        run: python3 scripts/update_publications.py
 
-      - name: Regenerate publication list
-        id: regen
-        run: python scripts/update_publications.py
-        continue-on-error: true   # a blocked Scholar fetch shouldn't fail the run
-
-      - name: Commit changes if the list changed
+      - name: Open a pull request if the list changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [[ -n "$(git status --porcelain publications.html)" ]]; then
-            git config user.name  "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add publications.html
-            git commit -m "Auto-update publications from Google Scholar"
-            git push
-          else
+          set -euo pipefail
+
+          if [[ -z "$(git status --porcelain publications.html)" ]]; then
             echo "No changes to publications.html."
+            exit 0
           fi
+
+          BRANCH="auto/publications-$(date +%Y%m%d-%H%M)"
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add publications.html
+          git commit -m "Update publications from ORCID"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "Update publications from ORCID" \
+            --body "The publication list changed. Review the diff below, then Merge to publish. If the generated citations look worse than what is on the site now, close this PR instead and nothing changes."
