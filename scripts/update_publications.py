@@ -28,10 +28,13 @@ The script is deliberately conservative. It writes NOTHING and exits non-zero if
   - ORCID or Crossref cannot be reached
   - fewer than MIN_EXPECTED publications come back (assume a partial fetch)
   - the markers are missing from publications.html
+  - the result would shrink the list by more than SHRINK_TOLERANCE, which
+    normally means the ORCID record is behind the CV (--allow-shrink overrides)
 The existing hand-maintained list is never destroyed by a bad fetch.
 
 Run locally:   python3 scripts/update_publications.py
-              python3 scripts/update_publications.py --dry-run
+               python3 scripts/update_publications.py --dry-run
+               python3 scripts/update_publications.py --allow-shrink
 In CI:         see .github/workflows/update-publications.yml
 """
 
@@ -52,6 +55,7 @@ START = "<!-- PUBLICATIONS:START -->"
 END = "<!-- PUBLICATIONS:END -->"
 
 MIN_EXPECTED = 25          # safety floor; below this we assume a partial fetch
+SHRINK_TOLERANCE = 0.10    # refuse a sync that drops >10% of the existing list
 TIMEOUT = 30               # seconds per HTTP request
 CROSSREF_BATCH = 25        # DOIs per Crossref query
 USER_AGENT = (
@@ -296,6 +300,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true",
                     help="print what would change without writing the file")
+    ap.add_argument("--allow-shrink", action="store_true",
+                    help="permit a sync that removes more than "
+                         "10%% of the current list (use only when ORCID is known good)")
     args = ap.parse_args()
 
     try:
@@ -323,20 +330,50 @@ def main():
     existing = re.search(re.escape(START) + r"(.*?)" + re.escape(END), text, re.DOTALL)
     existing_count = len(re.findall(r"<li", existing.group(1))) if existing else 0
 
+    # Would this sync shrink the list materially? The ORCID record is the source
+    # of truth here, but it can lag the CV: on 2026-08-22 it held 115 works
+    # against 143 on the page, so a straight sync would have quietly dropped 28
+    # publications.
+    lost = existing_count - len(items)
+    shrinking = bool(
+        existing_count and len(items) < existing_count * (1 - SHRINK_TOLERANCE)
+    )
+
+    # --dry-run is purely informational and always exits 0, so it can report a
+    # shrink rather than failing on it.
+    if args.dry_run:
+        print(f"DRY RUN: would write {len(items)} publications "
+              f"(page currently has {existing_count}).")
+        if shrinking:
+            print(f"  WARNING: that is {lost} fewer. A real run would refuse "
+                  f"this unless given --allow-shrink.")
+        print("First three entries:")
+        for line in items[:3]:
+            print("  " + re.sub(r"<[^>]+>", "", line).strip()[:160])
+        return 0
+
+    # Refuse any real run that would remove more than SHRINK_TOLERANCE of the
+    # list. Override with --allow-shrink once ORCID is correct and the smaller
+    # number is genuinely the right one.
+    if shrinking and not args.allow_shrink:
+        print(
+            f"REFUSING TO WRITE: this would cut the list from {existing_count} to "
+            f"{len(items)} publications, dropping {lost}.\n"
+            f"That almost always means the ORCID record is behind the CV rather "
+            f"than that the papers went away.\n"
+            f"Fix: add the missing works at orcid.org (Works -> Add works -> "
+            f"Search & link) and run this again.\n"
+            f"If the smaller number really is correct, re-run with --allow-shrink.",
+            file=sys.stderr,
+        )
+        return 1
+
     new = re.sub(
         re.escape(START) + r".*?" + re.escape(END),
         lambda _m: f"{START}\n    {fragment}\n    {END}",
         text,
         flags=re.DOTALL,
     )
-
-    if args.dry_run:
-        print(f"DRY RUN: would write {len(items)} publications "
-              f"(page currently has {existing_count}).")
-        print("First three entries:")
-        for line in items[:3]:
-            print("  " + re.sub(r"<[^>]+>", "", line).strip()[:160])
-        return 0
 
     if new != text:
         PAGE.write_text(new, encoding="utf-8")
