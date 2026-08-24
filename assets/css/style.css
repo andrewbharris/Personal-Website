@@ -703,24 +703,40 @@ p {
   font-size: 17px;
 }
 
+/* Society names set as type instead of a logo mark. */
+.logotype.society {
+  font-size: 16px;
+  min-height: 52px;
+}
+
+/* Initial-set emblems standing in for institution and society logos.
+   Typography only, in the site serif, so no third-party mark is reproduced. */
 .mono-badge {
-  width: 80px;
-  height: 80px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
-  border: 1px solid var(--border-hair);
-  background: var(--white);
+  border: 1px solid rgba(56, 99, 127, 0.35);
+  background: var(--ivory-warm);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-serif);
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
   letter-spacing: 0.01em;
-  color: var(--gold);
+  color: var(--navy);
   flex-shrink: 0;
 }
 
-.mono-badge.sm-text { font-size: 17px; }
+/* Longer acronyms need to step down so they stay inside the circle. */
+.mono-badge.sm-text { font-size: 14.5px; letter-spacing: 0.02em; }
+.mono-badge.xs-text { font-size: 12px; letter-spacing: 0.03em; }
+
+@media (max-width: 700px) {
+  .mono-badge { width: 58px; height: 58px; font-size: 17px; }
+  .mono-badge.sm-text { font-size: 12.5px; }
+  .mono-badge.xs-text { font-size: 10.5px; }
+}
 
 .timeline-logo-col .mono-badge {
   margin-top: 2px;
@@ -1082,9 +1098,9 @@ section {
 
 .timeline-item {
   display: grid;
-  grid-template-columns: 130px 1px 1fr;
+  grid-template-columns: 6px 1px 1fr;
   gap: 0;
-  min-height: 130px;
+  min-height: 108px;
 }
 
 .timeline-logo-col {
@@ -1163,7 +1179,7 @@ section {
 }
 
 @media (max-width: 640px) {
-  .timeline-item { grid-template-columns: 80px 1px 1fr; }
+  .timeline-item { grid-template-columns: 6px 1px 1fr; }
   .timeline-logo-col img { max-width: 64px; max-height: 52px; }
   .timeline-content { padding-left: 18px; }
 }
@@ -1571,17 +1587,22 @@ section {
 /* ===== About page: society logos with names (bigger, full color) ===== */
 .society-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px 16px;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 22px 0;
   margin-top: 6px;
 }
 .society-item {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   text-align: center;
-  gap: 12px;
+  gap: 11px;
+  padding: 0 14px;
+  border-right: 1px solid var(--border-hair);
 }
+
+.society-item:last-child { border-right: none; }
 .society-item img {
   height: 84px;
   width: auto;
