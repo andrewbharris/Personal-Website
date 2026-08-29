@@ -154,8 +154,9 @@
 .cite:hover, .cite:focus-visible { text-decoration:underline; }
 .cite::after {
   content: attr(data-tip);
-  position:absolute; bottom:calc(100% + 9px); left:50%; transform:translateX(-50%);
-  width:max-content; max-width:300px;
+  position:absolute; bottom:calc(100% + 9px); left:50%;
+  transform:translateX(calc(-50% + var(--tip-shift, 0px)));
+  width:max-content; max-width:300px; white-space:normal;
   background:var(--navy); color:#fff; text-align:left;
   font-family:var(--font-sans); font-size:12.5px; font-weight:400; line-height:1.45;
   letter-spacing:0; padding:10px 13px; border-radius:3px;
@@ -597,7 +598,7 @@
 <section class="section-warm">
   <div class="wrap" style="text-align:center; max-width:640px;">
     <h2>Where to go from here</h2>
-    <p style="margin-top:14px;">If you are still deciding, the <a href="signs-you-need-a-hip-replacement.html">signs you may need a hip replacement</a> guide may help. When you want to talk it through, send a message and someone will follow up.</p>
+    <p style="margin-top:14px;">If you are still deciding, the <a href="signs-you-need-a-hip-replacement.html">signs you may need a hip replacement</a> guide may help. When you want to talk it through, send a message.</p>
     <div style="margin-top:28px;"><a href="contact.html" class="btn btn-primary">Contact</a></div>
   </div>
 </section>
@@ -673,4 +674,40 @@
 })();
 </script>
 
+<script>
+/* Keep citation tooltips inside the viewport. Measures the tip text in an offscreen
+   probe, then nudges the tooltip horizontally via --tip-shift. The arrow stays put. */
+(function(){
+  var probe = null;
+  function place(a){
+    var tip = a.getAttribute('data-tip');
+    if(!tip) return;
+    if(!probe){
+      probe = document.createElement('div');
+      probe.setAttribute('aria-hidden','true');
+      probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;'+
+        'left:-9999px;top:0;width:max-content;max-width:300px;white-space:normal;'+
+        'font-family:var(--font-sans);font-size:12.5px;font-weight:400;'+
+        'line-height:1.45;letter-spacing:0;padding:10px 13px;';
+      document.body.appendChild(probe);
+    }
+    probe.textContent = tip;
+    var w = probe.getBoundingClientRect().width;
+    var r = a.getBoundingClientRect();
+    var c = r.left + r.width / 2;
+    var vw = document.documentElement.clientWidth, m = 12, d = 0;
+    if (c - w/2 < m) d = m - (c - w/2);
+    else if (c + w/2 > vw - m) d = (vw - m) - (c + w/2);
+    a.style.setProperty('--tip-shift', Math.round(d) + 'px');
+  }
+  function onEvt(e){
+    var t = e.target;
+    if(!t || !t.closest) return;
+    var a = t.closest('a.cite');
+    if(a) place(a);
+  }
+  document.addEventListener('pointerenter', onEvt, true);
+  document.addEventListener('focus', onEvt, true);
+})();
+</script>
 </body></html>
