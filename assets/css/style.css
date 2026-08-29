@@ -1059,8 +1059,8 @@ section {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
-  gap: 40px;
+  grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(0, 1fr));
+  gap: 36px;
   padding-bottom: 28px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
   margin-bottom: 20px;
@@ -1305,7 +1305,7 @@ section {
   .stat-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat { border-right: 1px solid var(--border-hair); }
   .stat:nth-child(2n) { border-right: none; }
-  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+  .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 36px; }
   section { padding: 46px 0; }
 }
 
@@ -1905,5 +1905,6 @@ section {
 }
 
 @media (max-width: 560px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
   .pub-actions { flex-direction: column; align-items: flex-start; gap: 18px; }
 }
