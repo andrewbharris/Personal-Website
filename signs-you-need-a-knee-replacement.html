@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="Signs You May Need a Knee Replacement | Andrew B. Harris, MD">
 <meta name="twitter:description" content="Signs you may need a knee replacement, from a Chicago knee surgeon. Learn the symptoms of knee arthritis, total vs partial knee replacement, and what to try first. Offices in Skokie, the North Shore, and Chicago.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/headshot.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=20">
+<link rel="stylesheet" href="assets/css/style.css?v=21">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -175,7 +175,11 @@
 .cite:focus-visible::after, .cite:focus-visible::before { opacity:1; visibility:visible; }
 .cite-edge::after { left:auto; right:0; transform:none; }
 .cite-edge::before { left:auto; right:8px; transform:none; }
-@media (hover:none), (max-width:720px){ .cite::after, .cite::before { display:none; } }
+/* The tooltip is 300px wide and centred on the citation. Once the prose
+   column's right edge passes (viewport - 150px) it overhangs and creates a
+   horizontal scrollbar. That happens below roughly 1080px, so tooltips are
+   shown only on wide screens; the numeral still links to the reference list. */
+@media (hover:none), (max-width:1100px){ .cite::after, .cite::before { display:none; } }
 
 /* ---- Shared figure furniture (house style) ---- */
 .sfig { margin:30px 0 0; }

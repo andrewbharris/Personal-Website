@@ -1015,8 +1015,8 @@ section {
 
 .proc-index .proc-card {
   display: grid;
-  grid-template-columns: 90px 1fr 1.35fr;
-  gap: 40px;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+  gap: 48px;
   align-items: baseline;
   background: transparent;
   border: none;
@@ -1027,11 +1027,6 @@ section {
 
 .proc-index .proc-card:hover {
   background: var(--white);
-}
-
-.proc-index .num {
-  margin-bottom: 0;
-  font-size: 18px;
 }
 
 .proc-index h3 {
@@ -1460,12 +1455,20 @@ section {
   flex-direction: column;
 }
 .theme-icon {
-  width: 44px;
-  height: 44px;
+  width: 88px;
+  height: 88px;
   color: var(--gold);
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .theme-icon svg { width: 100%; height: 100%; display: block; }
+/* Illustrations carry far more detail than a line icon, so they need the
+   larger box to stay legible. */
+.theme-icon img,
+.theme-icon picture { width: 100%; height: 100%; display: block; object-fit: contain; }
+
+@media (max-width: 700px) {
+  .theme-icon { width: 76px; height: 76px; }
+}
 .theme-card h3 { margin-bottom: 12px; }
 .theme-card > p { font-size: 15px; margin-bottom: 20px; }
 .theme-refs {
@@ -1907,4 +1910,32 @@ section {
 @media (max-width: 560px) {
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
   .pub-actions { flex-direction: column; align-items: flex-start; gap: 18px; }
+}
+
+
+/* ===== Accessibility ===== */
+
+/* Keyboard focus. Forms already style their own focus; this covers links,
+   buttons, and the nav. :focus-visible means mouse users never see it. */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* Respect the OS "reduce motion" setting. Median patient here is in their
+   sixties or seventies; vestibular sensitivity is not an edge case. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
