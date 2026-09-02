@@ -151,16 +151,78 @@ const EDITABLE = new Set(['P','LI','H1','H2','H3','H4','H5','H6','SUMMARY','FIGC
   'SECTION','ARTICLE','ASIDE','MAIN','DD','DT','TD','TH','CAPTION','BLOCKQUOTE','LABEL','LEGEND']);
 const isLeaf = el => { for (const c of el.children){ if (BLOCK.has(c.tagName)) return false; } return true; };
 
+// Elements that must never be pulled into a loose-text run. Editing inside SVG or a form
+// control through contenteditable does not work reliably, so those stay locked.
+const RUN_BLOCKERS = new Set(['SVG','CANVAS','IFRAME','SCRIPT','STYLE','BUTTON','INPUT','SELECT',
+  'TEXTAREA','VIDEO','AUDIO','OBJECT','EMBED','PICTURE','IMG','FORM','NOSCRIPT','TEMPLATE']);
+
+const isExcluded = el =>
+  !!(el.closest('header.site-header, footer.site-footer, .site-header, .site-footer')
+     || el.closest('ol.pub-list'));
+
+// LOOSE TEXT RUNS.
+// A container that holds block children is never an edit box itself (isLeaf is false), so any
+// text sitting directly inside it — a sentence after a </ul>, a <span> label beside a bar, a
+// "Read the guide →" link at the foot of a card — belonged to no box at all and could not be
+// edited. This finds each such run and gives it one.
+//   - A run that is exactly one inline element becomes the box itself. No DOM change, so
+//     nothing in the layout can shift.
+//   - A run with bare text (or several nodes) is wrapped in <span data-cc-wrap>. That wrapper
+//     is unwrapped again before the file is written, so it never reaches disk.
+function markLooseRuns(doc){
+  [...doc.body.querySelectorAll('*')].forEach(el => {
+    if (RUN_BLOCKERS.has(el.tagName) || isExcluded(el)) return;
+    let hasBlockChild = false;
+    for (const c of el.children) if (BLOCK.has(c.tagName)) { hasBlockChild = true; break; }
+    if (!hasBlockChild) return;                 // this element is a leaf, it is its own box
+
+    let run = [];
+    const flush = () => {
+      const nodes = run; run = [];
+      if (!nodes.length) return;
+      let txt = '', bareText = false, els = [];
+      for (const n of nodes){
+        if (n.nodeType === 3){ txt += n.data; if (norm(n.data)) bareText = true; }
+        else if (n.nodeType === 1){
+          if (!INLINE_KEEP.has(n.tagName)) return;   // not safe to edit as text
+          txt += n.textContent; els.push(n);
+        }
+      }
+      if (!norm(txt)) return;                        // whitespace only
+      if (els.length === 1 && !bareText){
+        els[0].setAttribute('data-cc-loose','1');    // use the element itself, no wrapper
+        return;
+      }
+      const w = doc.createElement('span');
+      w.setAttribute('data-cc-loose','1');
+      w.setAttribute('data-cc-wrap','1');
+      nodes[0].parentNode.insertBefore(w, nodes[0]);
+      nodes.forEach(n => w.appendChild(n));
+    };
+    [...el.childNodes].forEach(c => {
+      if (c.nodeType === 8) { flush(); return; }                       // comment breaks a run
+      if (c.nodeType === 1 && BLOCK.has(c.tagName)) { flush(); return; }
+      if (c.nodeType === 1 && RUN_BLOCKERS.has(c.tagName)) { flush(); return; }
+      run.push(c);
+    });
+    flush();
+  });
+}
+
 // Assign a stable data-cc-id to every editable element, in document order.
 // MUST produce identical ids at load time and at save time so they line up.
 function assignIds(doc, cb){
+  markLooseRuns(doc);
   const cand = [];
   doc.body.querySelectorAll('*').forEach(el => {
+    if (el.hasAttribute('data-cc-loose')){        // a loose run; already vetted and scoped
+      if (norm(el.textContent)) cand.push(el);
+      return;
+    }
     if (!EDITABLE.has(el.tagName)) return;  // an <a>, <strong>, <span> etc. is never its own
                                             // edit box; its text is editable through the
                                             // block that contains it
-    if (el.closest('header.site-header, footer.site-footer, .site-header, .site-footer')) return;
-    if (el.closest('ol.pub-list')) return;   // auto-generated list
+    if (isExcluded(el)) return;
     if (!isLeaf(el)) return;
     if (!norm(el.textContent)) return;
     cand.push(el);
@@ -344,6 +406,14 @@ async function savePage(){
       if (applyEdit(idmap[id], el) === 'markup') rebuilt++;
       changes++;
     });
+    // Remove every trace of the editor. The loose-run wrappers are unwrapped so the file on
+    // disk keeps exactly the markup it started with.
+    outDoc.querySelectorAll('[data-cc-wrap]').forEach(w => {
+      const p = w.parentNode; if (!p) return;
+      while (w.firstChild) p.insertBefore(w.firstChild, w);
+      p.removeChild(w); p.normalize();
+    });
+    outDoc.querySelectorAll('[data-cc-loose]').forEach(e => e.removeAttribute('data-cc-loose'));
     outDoc.querySelectorAll('[data-cc-id]').forEach(e => e.removeAttribute('data-cc-id'));
     outDoc.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
 

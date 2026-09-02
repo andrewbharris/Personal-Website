@@ -1887,16 +1887,55 @@ section {
 /* ===== Page-header implant motif (traced from ABH drawings, 2026-08-21) =====
    The SVG carries its own gradient mask, so the silhouette dissolves toward the
    lower left. It is sized to bleed off the right edge of the band on purpose. */
-.page-header { position: relative; overflow: hidden; }
+/* ===== Page-header motif =====
+   A detailed transparent rendering of the joint, cropped at the right edge of the band and
+   carried down past the bottom border into the white section, where a gradient dissolves it.
+   Geometry and opacities are Andy's, handed over as working pages.
+
+   Two things are done differently from that handoff, deliberately:
+   1. The handoff used `html, body { overflow-x: hidden }` plus `.site-header{position:relative}`
+      to stop the right-hand bleed causing a scrollbar. That kills the sticky site header. Here
+      .ph-motif is itself the clipping frame: it sits flush right and clips ONLY horizontally
+      (overflow-x:clip, overflow-y:visible), so the image can bleed right and down while the
+      header keeps position:sticky. clip rather than hidden, because hidden would make it a
+      scroll container.
+   2. The images are WebP, not the source PNGs. The PNGs are 1.7 MB and 1.9 MB, above the fold,
+      on nine pages.
+
+   The ::after gradient assumes the section under the band is white. That holds on all nine
+   motif pages (every one is followed by section-white). Check before using it elsewhere. */
+.page-header { position: relative; overflow: visible; z-index: 1; }
 .page-header .wrap { position: relative; z-index: 2; }
-.ph-motif {
-  position: absolute; right: -46px; top: 50%; transform: translateY(-50%);
-  width: 330px; height: 330px; z-index: 1; pointer-events: none; opacity: 0.62;
+.page-header::after {
+  content: ''; position: absolute; right: 0; top: calc(100% - 2px);
+  width: 420px; height: 180px; z-index: 2; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.88) 52%, #fff 82%);
 }
-.ph-motif svg { width: 100%; height: 100%; display: block; }
-@media (max-width: 1180px) { .ph-motif { right: -86px; opacity: 0.5; } }
-@media (max-width: 1000px) { .ph-motif { right: -130px; opacity: 0.38; } }
-@media (max-width: 860px)  { .ph-motif { display: none; } }
+.page-header + section { position: relative; }
+.page-header + section .wrap { position: relative; z-index: 3; }
+
+.ph-motif {
+  position: absolute; top: 50%; transform: translateY(-50%); right: 0;
+  width: 420px; height: 500px;
+  overflow-x: clip; overflow-y: visible;
+  z-index: 1; pointer-events: none;
+}
+.ph-motif img {
+  position: absolute; top: 0; width: 400px; height: 100%; display: block;
+  object-fit: contain; object-position: center;
+}
+.ph-motif-hip  { opacity: .44; }  .ph-motif-hip img  { right: -12px; }
+.ph-motif-knee { opacity: .50; }  .ph-motif-knee img { right: -4px; }
+
+@media (max-width: 1180px) {
+  .ph-motif-hip  { opacity: .34; }  .ph-motif-hip img  { right: -56px; }
+  .ph-motif-knee { opacity: .40; }  .ph-motif-knee img { right: -48px; }
+}
+@media (max-width: 1000px) {
+  .ph-motif-hip  { opacity: .26; }  .ph-motif-hip img  { right: -100px; }
+  .ph-motif-knee { opacity: .30; }  .ph-motif-knee img { right: -92px; }
+}
+@media (max-width: 860px)  { .ph-motif, .page-header::after { display: none; } }
 
 /* Publications list actions row */
 .pub-actions {
