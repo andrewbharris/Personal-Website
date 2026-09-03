@@ -954,6 +954,10 @@ section {
 
 .stat:last-child { border-right: none; }
 
+/* Strip items that link out. Resting state is unchanged; hover only. */
+a.stat { transition: background 0.18s ease; }
+a.stat:hover { background: var(--ivory); }
+
 /* fixed heading area so the descriptions line up across all three */
 .stat .num {
   font-family: var(--font-serif);
