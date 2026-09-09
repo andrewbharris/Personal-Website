@@ -2051,7 +2051,37 @@ summary:focus-visible,
 }
 
 @media (max-width: 1180px) { .hm-l { opacity: 0.44; } }
-/* below 1000px the photo stacks under the text and the text column recentres, leaving a wide
-   left margin; bring the frame in so the head sits in that margin, clear of the type */
-@media (max-width: 1000px) { .hm-l { opacity: 0.33; left: calc(50% - 640px); } }
-@media (max-width: 860px)  { .hm-l { display: none; } }
+/* Below 880px the site's own mobile rules stack the portrait above the text; the motif only
+   works beside the side-by-side hero, so it goes with it. */
+@media (max-width: 880px) { .hm-l { display: none; } }
+
+
+/* ===== Mid-width layout, 881 to 1100px (2026-09-09) =====
+   Between the desktop sizes and the 880px mobile rules the header wrapped onto two rows and
+   the portrait dropped under the text, leaving a tall hero with an empty right side. Tighten
+   the header and shrink the two hero columns so both stay on one row through this range,
+   and pull the motif frame in so the femoral head still sits on the "H" of Harris. */
+@media (min-width: 881px) and (max-width: 1100px) {
+  .site-header .wrap { padding: 14px 24px; }
+  .brand { font-size: 18px; gap: 12px; }
+  .brand-mark { width: 40px; height: 40px; }
+  .nav-links a { font-size: 12.5px; margin-right: 12px; }
+  .nav-links .nav-cta { padding: 8px 12px; }
+  .hero .wrap { gap: 44px; }
+  .hero-text { flex: 0 1 440px; max-width: 440px; }
+  .hero h1 { font-size: 50px; }
+  .hero-photo-col { flex: 0 0 300px; width: 300px; }
+  .hero-photo-col .photo-frame { max-width: 300px; }
+  .hm-l { left: calc(50% - 632px); }
+  /* the 50px headline sits 44px higher than the 62px one; lift the drawing to match */
+  .hm-l img { top: -409px; }
+}
+
+/* Tighter still from 881 to 950px: at 881 the brand (232px) plus the nav (645px) overran the
+   header's 833px by about 70px, so shave the nav spacing, type and brand a little more. */
+@media (min-width: 881px) and (max-width: 950px) {
+  .site-header .wrap { padding: 12px 16px; column-gap: 14px; }
+  .brand { font-size: 17px; gap: 8px; }
+  .nav-links a { font-size: 12px; margin-right: 7px; }
+  .nav-links .nav-cta { padding: 7px 9px; }
+}
