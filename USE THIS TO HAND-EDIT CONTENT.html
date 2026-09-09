@@ -33,6 +33,9 @@
   .setup ol{margin:0 0 18px 20px;font-size:14.5px;line-height:1.7;color:var(--soft)}
   .setup button{font:inherit;font-weight:600;font-size:14px;padding:12px 22px;border-radius:8px;border:0;background:var(--acc);color:#fff;cursor:pointer}
   .setup button:hover{background:var(--acc-lt)}
+  .setup button.secondary{background:#fff;color:var(--soft);border:1px solid var(--hair)}
+  .setup button.secondary:hover{background:#f4f4f2;color:var(--char)}
+  .setup .remembered{font-size:13px;color:var(--soft);margin:14px 0 8px}
   .unsupported{color:#b4453e;font-weight:600}
 </style>
 </head>
@@ -43,11 +46,15 @@
   <h1>Edit your website</h1>
   <p>Click any text on your site and type over it, then save your changes straight back to the files &mdash; no coding.</p>
   <ol>
-    <li>Click the button below and choose your <b>&ldquo;Working Version&rdquo;</b> folder.</li>
-    <li>When Chrome asks, choose <b>View files</b>, then <b>Save changes</b> to allow editing.</li>
+    <li>Click the button below and choose your <b>&ldquo;Working Version&rdquo;</b> folder. The editor remembers it, so next time you only click <b>Open Working Version</b>.</li>
+    <li>When Chrome asks, choose <b>View files</b>, then <b>Save changes</b> to allow editing. If Chrome offers <b>Allow on every visit</b>, pick it and the editor will open the folder on its own from then on.</li>
     <li>Pick a page, click any text, and type. Hit <b>Save</b> when you&rsquo;re done with a page.</li>
   </ol>
   <p id="support"></p>
+  <div id="resumeWrap" style="display:none">
+    <p class="remembered">Last used: <b id="resumeName">Working Version</b></p>
+    <button id="resumeBtn">Open Working Version</button>
+  </div>
   <button id="chooseBtn">Choose website folder</button>
 </div>
 
@@ -340,19 +347,109 @@ if (!SUPPORTED) {
   $('#chooseBtn').disabled = true;
 }
 
+// ------------------------------------------------ remembered folder (IndexedDB)
+// The File System Access API will not let a page open a folder on its own, but a
+// directory handle can be stored in IndexedDB and reused. If Chrome kept the
+// permission ("Allow on every visit"), the editor opens Working Version with no
+// clicks at all. Otherwise it is one click on "Open Working Version", with no
+// folder navigation.
+const IDB_NAME='abh-editor', IDB_STORE='handles', IDB_KEY='workingVersion';
+let savedHandle = null;
+function idb(){
+  return new Promise((res,rej)=>{
+    const r = indexedDB.open(IDB_NAME,1);
+    r.onupgradeneeded = () => r.result.createObjectStore(IDB_STORE);
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+async function rememberDir(h){
+  try{ const db = await idb();
+    await new Promise((res,rej)=>{ const t=db.transaction(IDB_STORE,'readwrite');
+      t.objectStore(IDB_STORE).put(h,IDB_KEY); t.oncomplete=res; t.onerror=()=>rej(t.error); });
+  }catch(e){}
+}
+async function recallDir(){
+  try{ const db = await idb();
+    return await new Promise((res,rej)=>{ const t=db.transaction(IDB_STORE,'readonly');
+      const q=t.objectStore(IDB_STORE).get(IDB_KEY);
+      q.onsuccess=()=>res(q.result||null); q.onerror=()=>rej(q.error); });
+  }catch(e){ return null; }
+}
+async function forgetDir(){
+  try{ const db = await idb();
+    await new Promise(res=>{ const t=db.transaction(IDB_STORE,'readwrite');
+      t.objectStore(IDB_STORE).delete(IDB_KEY); t.oncomplete=res; t.onerror=res; });
+  }catch(e){}
+}
+
+async function enterEditor(){
+  let n = 0;
+  try {
+    n = await buildPageList();
+  } catch (e) {
+    await forgetDir();
+    savedHandle = null; dirHandle = null;
+    $('#resumeWrap').style.display = 'none';
+    $('#chooseBtn').textContent = 'Choose website folder';
+    $('#chooseBtn').className = '';
+    alert('That folder could not be opened. It may have been moved or renamed. Please choose it again.');
+    return false;
+  }
+  if (!n){
+    $('#setup').style.display = 'none';
+    $('#editor').style.display = 'flex';
+    setStatus('No pages found in that folder. Did you pick "Working Version"?','err');
+    return false;
+  }
+  await rememberDir(dirHandle);
+  $('#setup').style.display = 'none';
+  $('#editor').style.display = 'flex';
+  loadPage();
+  return true;
+}
+
 $('#chooseBtn').addEventListener('click', async () => {
   try {
-    dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+    const opts = { mode:'readwrite', id:'abh-working-version' };
+    if (savedHandle) opts.startIn = savedHandle;
+    dirHandle = await window.showDirectoryPicker(opts);
     if (await dirHandle.requestPermission({ mode: 'readwrite' }) !== 'granted') {
       alert('Please allow "Save changes" so edits can be written.'); return;
     }
-    $('#setup').style.display = 'none';
-    $('#editor').style.display = 'flex';
-    const n = await buildPageList();
-    if (!n){ setStatus('No pages found in that folder. Did you pick "Working Version"?','err'); return; }
-    loadPage();
+    savedHandle = dirHandle;
+    await enterEditor();
   } catch (e) {}
 });
+
+$('#resumeBtn').addEventListener('click', async () => {
+  if (!savedHandle) return;
+  try {
+    if (await savedHandle.requestPermission({ mode:'readwrite' }) !== 'granted'){
+      alert('Please allow "Save changes" so edits can be written.'); return;
+    }
+    dirHandle = savedHandle;
+    await enterEditor();
+  } catch (e) {}
+});
+
+(async function initRemembered(){
+  if (!SUPPORTED) return;
+  savedHandle = await recallDir();
+  if (!savedHandle) return;
+  let perm = 'prompt';
+  try { perm = await savedHandle.queryPermission({ mode:'readwrite' }); } catch(e){ perm = 'prompt'; }
+  if (perm === 'granted'){
+    dirHandle = savedHandle;
+    await enterEditor();
+    return;
+  }
+  $('#resumeName').textContent = savedHandle.name;
+  $('#resumeBtn').textContent = 'Open ' + savedHandle.name;
+  $('#resumeWrap').style.display = 'block';
+  $('#chooseBtn').textContent = 'Choose a different folder';
+  $('#chooseBtn').className = 'secondary';
+})();
 
 $('#pageSel').addEventListener('change', () => {
   if (dirty && !confirm('Discard unsaved changes on this page?')) { return; }

@@ -322,19 +322,38 @@ p {
     position: static;
     min-width: 0;
     margin: 6px 0 4px;
+    background: transparent;
     border: none;
-    border-left: 2px solid var(--border-hair);
+    border-right: 2px solid var(--border-hair);
     box-shadow: none;
-    padding: 2px 0 2px 14px;
+    padding: 2px 14px 2px 0;
     transform: none;
     display: none;
   }
   .nav-item.open .nav-menu { display: block; }
   .nav-menu a { white-space: normal; padding: 7px 0; }
-  .nav-sublist { margin: 0 0 4px 8px; padding-left: 10px; }
-  .nav-menu .nav-sub { padding: 5px 10px 5px 0; }
+  .nav-sublist {
+    margin: 0 8px 4px 0;
+    padding-left: 0;
+    padding-right: 10px;
+    border-left: 0;
+    border-right: 1px solid var(--border-hair);
+  }
+  .nav-menu .nav-sub { padding: 5px 0 5px 10px; }
   .nav-group { padding: 9px 0 2px; }
   .nav-item::after { display: none; }
+
+  /* An open dropdown claims its own full row and stays right-aligned with the nav.
+     Left inline it stayed in the wrapping row, and the remaining links ended up
+     vertically centred beside a ~290px tall panel. That is what looked broken in a
+     narrow window. The panel also drops its card background here: inline it should
+     read as an indented sub-list, not a floating menu. */
+  .nav-item.open {
+    flex: 0 0 100%;
+    margin-right: 0;
+    text-align: right;
+    padding-top: 4px;
+  }
 }
 
 .nav-cta {
@@ -1292,6 +1311,12 @@ a.stat:hover { background: var(--ivory); }
   .nav-links .nav-cta {
     padding: 9px 15px;
   }
+
+  /* header is centred at this width, so the open dropdown centres with it */
+  .nav-item.open { text-align: center; }
+  .nav-menu { border-right: 0; padding-right: 0; }
+  .nav-sublist { margin-right: 0; padding-right: 0; border-right: 0; }
+  .nav-menu .nav-sub { padding-left: 0; }
 }
 
 @media (max-width: 880px) {
