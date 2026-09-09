@@ -23,6 +23,14 @@
   .btn-ghost:hover{background:#2e3f4d}
   .status{font-size:12.5px;color:var(--acc-lt);margin-left:auto}
   .status.ok{color:#7fd6a8}.status.err{color:#e79a9a}
+  .disk{display:none;align-items:center;gap:12px;flex-wrap:wrap;background:#fff4e0;
+    border-bottom:1px solid #e8cf9f;color:#6b4d12;font-size:13px;padding:9px 18px}
+  .disk.show{display:flex}
+  .disk b{color:#4a3407}
+  .disk button{font:inherit;font-weight:600;font-size:12.5px;padding:6px 12px;border-radius:5px;
+    border:1px solid #d8b877;background:#fff;color:#6b4d12;cursor:pointer}
+  .disk button:hover{background:#fdf0d8}
+  .disk button.danger{border-color:#d99a9a;color:#8d3a3a}
   .hint{background:#eaf1f5;border-bottom:1px solid var(--hair);color:var(--soft);font-size:12.5px;padding:8px 18px}
   .hint b{color:var(--char)}
   .frame-wrap{flex:1;overflow:auto;background:#dfe3e6;padding:14px}
@@ -68,6 +76,11 @@
     <button class="btn-ghost" id="reloadBtn">Discard &amp; reload</button>
     <span class="status" id="status"></span>
   </div>
+  <div class="disk" id="diskBanner">
+    <span id="diskMsg"></span>
+    <button id="diskReload">Reload from disk</button>
+    <button id="diskOverwrite" class="danger">Keep my edits and overwrite</button>
+  </div>
   <div class="hint">Click any text to edit it (editable areas highlight on hover). <b>Menus, headers, and footers are locked</b> &mdash; they repeat across pages, so ask Claude to change those. Link text can be edited; the destination it points to cannot. Press <b>Save changes</b> before switching pages. Only the exact text you change is written; everything else stays untouched.</div>
   <div class="frame-wrap"><iframe id="frame" title="Page preview" sandbox="allow-same-origin allow-scripts"></iframe></div>
 </div>
@@ -79,6 +92,9 @@ const norm = s => (s||'').replace(NBSP,' ').replace(/\s+/g,' ').trim();
 const cleanRun = s => (s||'').replace(NBSP,' ').replace(/\n/g,' ');
 let dirHandle = null, dirty = false, originalText = '', origMap = {}, cssCache = null,
     loadedPage = null, blobCache = {};
+// Disk watching. loadedMtime is the mtime of the file the preview was built from.
+// allowOverwrite is set only by an explicit click on "Keep my edits and overwrite".
+let loadedMtime = 0, allowOverwrite = false, watchTimer = null, listTimer = null;
 
 // ---------------------------------------------------------------- file helpers
 // Read any file inside the granted folder. Used for the stylesheet and for images,
@@ -384,6 +400,7 @@ async function forgetDir(){
 }
 
 async function enterEditor(){
+  startWatching();
   let n = 0;
   try {
     n = await buildPageList();
@@ -464,13 +481,74 @@ window.addEventListener('beforeunload', e => { if (dirty){ e.preventDefault(); e
 
 function setStatus(msg, cls){ const s=$('#status'); s.textContent=msg; s.className='status '+(cls||''); }
 
-async function loadPage(){
+// ---------------------------------------------------------------- disk watcher
+// The File System Access API has no change events we can rely on, so poll the open
+// file's lastModified. Cheap: one metadata read every few seconds, paused when the
+// tab is hidden.
+const WATCH_MS = 2500, LIST_MS = 20000;
+
+function hideDiskBanner(){ $('#diskBanner').classList.remove('show'); }
+function showDiskBanner(){
+  $('#diskMsg').innerHTML = '<b>' + loadedPage + '</b> changed on disk while you were editing. '
+    + 'Saving now would overwrite those changes.';
+  $('#diskBanner').classList.add('show');
+}
+
+async function checkDisk(){
+  if (!dirHandle || !loadedPage) return;
+  if (document.hidden) return;
+  let f;
+  try { f = await (await dirHandle.getFileHandle(loadedPage)).getFile(); }
+  catch(e){ return; }                     // file gone or renamed: leave it to the user
+  if (f.lastModified === loadedMtime) return;
+  if (!dirty){
+    // Nothing to lose, so just pick up the newer file.
+    await loadPage('reloaded, this file changed on disk at ' + new Date().toLocaleTimeString());
+    return;
+  }
+  showDiskBanner();                        // unsaved edits: never decide for the user
+}
+
+async function refreshList(){
+  if (!dirHandle || document.hidden) return;
+  const sel = $('#pageSel'), keep = sel.value;
+  const before = [...sel.options].map(o => o.value).join('|');
+  try { await buildPageList(); } catch(e){ return; }
+  const after = [...sel.options].map(o => o.value).join('|');
+  if (after !== before) setStatus('Page list updated', 'ok');
+  if ([...sel.options].some(o => o.value === keep)) sel.value = keep;
+}
+
+function startWatching(){
+  if (watchTimer) return;
+  watchTimer = setInterval(checkDisk, WATCH_MS);
+  listTimer  = setInterval(refreshList, LIST_MS);
+  // Coming back to the tab is the moment a stale preview matters most.
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checkDisk(); });
+  window.addEventListener('focus', checkDisk);
+}
+
+$('#diskReload').addEventListener('click', async () => {
+  hideDiskBanner();
+  await loadPage('reloaded from disk at ' + new Date().toLocaleTimeString());
+});
+$('#diskOverwrite').addEventListener('click', () => {
+  allowOverwrite = true;
+  hideDiskBanner();
+  setStatus('Your edits will overwrite the newer file on disk when you save.','err');
+});
+
+async function loadPage(note){
   dirty = false; origMap = {}; loadedPage = null;
   const page = $('#pageSel').value;
   setStatus('Loading…');
   try {
     const fh = await dirHandle.getFileHandle(page);
-    originalText = await (await fh.getFile()).text();
+    const f  = await fh.getFile();
+    originalText = await f.text();
+    loadedMtime = f.lastModified;      // baseline for the disk watcher
+    allowOverwrite = false;
+    hideDiskBanner();
   } catch(e){ setStatus('Could not open '+page+': '+e.message,'err'); return; }
 
   // Parse a clean copy, tag editable elements, record their original text
@@ -512,7 +590,8 @@ async function loadPage(){
       // Lock all navigation so the preview always matches the selected file
       d.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a'); if (a) e.preventDefault(); }, true);
       loadedPage = page;   // mark which file the preview actually corresponds to
-      setStatus('Ready — ' + boxes.length + ' editable areas');
+      setStatus('Ready — ' + boxes.length + ' editable areas'
+                + (note ? '  ·  ' + note : ''), note ? 'ok' : '');
     } catch(err){ setStatus('Load error: '+err.message,'err'); }
   };
   frame.srcdoc = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
@@ -563,11 +642,25 @@ async function savePage(){
     }
 
     const fh = await dirHandle.getFileHandle(page);
+
+    // SAFETY: refuse to write over a file that changed on disk after this preview was built.
+    // Claude edits these files between sessions; without this a stale tab silently reverts them.
+    const cur = await fh.getFile();
+    if (cur.lastModified !== loadedMtime && !allowOverwrite){
+      showDiskBanner(true);
+      setStatus('Not saved \u2014 ' + page + ' changed on disk. Choose an option above.','err');
+      return;
+    }
+
     const w = await fh.createWritable();
     await w.write(out); await w.close();
 
-    // refresh the baseline so further edits diff against the saved version
+    // refresh the baseline so further edits diff against the saved version,
+    // and re-baseline the watcher so our own write does not look like an outside change
     originalText = out;
+    try { loadedMtime = (await fh.getFile()).lastModified; } catch(e){}
+    allowOverwrite = false;
+    hideDiskBanner();
     dirty = false;
     setStatus('Saved ✓  ' + changes + ' change' + (changes===1?'':'s')
       + (rebuilt ? '  ·  ' + rebuilt + ' with markup changes' : '')
