@@ -2007,3 +2007,51 @@ summary:focus-visible,
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ===== Home hero motif (2026-09-09) ===== */
+/* --- Home hero motif: hip, mirrored left, hard stop at the border (1600px tall) --- */
+.hero { position: relative; overflow: visible; z-index: 1; }
+.hero .wrap { position: relative; z-index: 2; }
+
+/* The frame is the clip. bottom:0 puts its lower edge exactly on the hero's border,
+   and overflow:hidden makes that edge a clean slice, so nothing reaches the panels.
+   It is anchored to the hero rather than given a fixed height, so the cut stays on
+   the border when the hero grows at narrower widths. */
+.hm-l {
+  position: absolute; top: -70px; bottom: 0;
+  /* pinned to the centred content, not the window edge: 50% - 720px is 0 on a 1440px
+     window and moves left as the window narrows, so the head keeps its place against
+     the headline instead of drifting under it */
+  left: calc(50% - 720px);
+  width: 520px; overflow: hidden;
+  z-index: 1; pointer-events: none; opacity: 0.55;
+}
+
+/* Height and width are both stated, and the width is height x 700/1050 exactly,
+   so the drawing cannot stretch. scaleX(-1) is a mirror, not a scale. */
+.hm-l img {
+  position: absolute;
+  height: 1600px; width: 1067px;
+  max-width: none;          /* style.css sets img{max-width:100%}; without this the
+                               drawing is clamped to the 520px frame while its height
+                               stays at 1600px, which squashes it and shoves the femoral
+                               head off the left edge. This one line is the whole fix. */
+  top: -365px; left: -54px;
+  display: block; transform: scaleX(-1);
+}
+
+/* Ivory wash, measured from the frame's left edge, so it moves with the frame. */
+.hm-l::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to right,
+    rgba(250,249,247,0) 54.8%,
+    rgba(250,249,247,.86) 86.5%,
+    rgba(250,249,247,.96) 100%);
+}
+
+@media (max-width: 1180px) { .hm-l { opacity: 0.44; } }
+/* below 1000px the photo stacks under the text and the text column recentres, leaving a wide
+   left margin; bring the frame in so the head sits in that margin, clear of the type */
+@media (max-width: 1000px) { .hm-l { opacity: 0.33; left: calc(50% - 640px); } }
+@media (max-width: 860px)  { .hm-l { display: none; } }

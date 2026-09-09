@@ -22,7 +22,7 @@
 <meta name="twitter:title" content="Hip Replacement Recovery Timeline | Andrew B. Harris, MD">
 <meta name="twitter:description" content="A clear hip replacement recovery timeline from a Chicago hip surgeon: walking, driving, and returning to activity, plus what is normal week by week. Offices in Skokie, the North Shore, and Chicago.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/og-card.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=24">
+<link rel="stylesheet" href="assets/css/style.css?v=25">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -204,9 +204,7 @@
 .rc-yaxis { display:flex; flex-direction:column; justify-content:space-between; height:128px;
   font-family:var(--font-sans); font-size:10px; color:var(--slate); text-align:right;
   flex:0 0 21px; width:21px; line-height:1; }
-.rc-yaxis span { transform:translateY(-50%); }
-.rc-yaxis span:first-child { transform:translateY(-2px); }
-.rc-yaxis span:last-child { transform:translateY(2px); }
+.rc-yaxis span { line-height:0; }   /* zero-height labels so space-between lands them on the true gridlines: 0, 32, 64, 96, 128 of a 128px scale. The old rule shifted every label up by half its height, then first/last OVERRODE that with fixed nudges instead of adding to it, which put every label up to 7.5px off and made the bars read low. */
 .rc-plotcol { flex:1 1 auto; min-width:0; }
 .rc-plot { position:relative; height:128px; display:flex; align-items:flex-end; gap:9px;
   background-image:repeating-linear-gradient(to top, #edeae3 0 1px, transparent 1px 25%);
@@ -253,6 +251,7 @@
           <div class="nav-sublist">
             <a href="anterior-hip-replacement.html" class="nav-sub">Anterior Approach</a>
             <a href="star-approach-hip-replacement.html" class="nav-sub">STAR Approach</a>
+          <a href="robotic-hip-replacement.html" class="nav-sub">Robotic Hip Replacement</a>
           </div>
           <a href="knee-replacement-chicago.html" class="nav-top">Knee Replacement</a>
           <div class="nav-sublist">

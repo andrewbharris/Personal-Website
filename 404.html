@@ -1,4 +1,20 @@
 <!DOCTYPE html>
+<!--
+  NOT BROKEN IF IT LOOKS BROKEN LOCALLY.
+
+  Every path on this page is ROOT-RELATIVE ("/assets/...", "/about.html") on purpose.
+  GitHub Pages serves this file at whatever URL the visitor requested, so a request for
+  /a/b/c gets this page rendered AT that path. Relative paths would resolve to
+  /a/b/assets/... and break. Root-relative paths work at any depth.
+
+  The side effect: opening this file by double-clicking it (a file:// URL) makes the browser
+  look for /assets/css/style.css at the root of the hard drive, so no CSS loads and the nav
+  caret SVG renders full size as a giant blue chevron. That is expected. To preview it
+  properly, serve the folder over HTTP, or just visit andrewbharrismd.com/anything on the
+  live site.
+
+  Do not "fix" this by switching to relative paths.
+-->
 <html lang="en">
 <head>
 <title>Page Not Found | Andrew B. Harris, MD</title>
@@ -12,7 +28,7 @@
 <meta name="theme-color" content="#14202b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,1,400&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/style.css?v=24">
+<link rel="stylesheet" href="/assets/css/style.css?v=25">
 </head>
 <body>
 
@@ -30,6 +46,7 @@
           <div class="nav-sublist">
             <a href="/anterior-hip-replacement.html" class="nav-sub">Anterior Approach</a>
             <a href="/star-approach-hip-replacement.html" class="nav-sub">STAR Approach</a>
+            <a href="/robotic-hip-replacement.html" class="nav-sub">Robotic Hip Replacement</a>
           </div>
           <a href="/knee-replacement-chicago.html" class="nav-top">Knee Replacement</a>
           <div class="nav-sublist">

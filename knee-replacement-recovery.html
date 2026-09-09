@@ -22,7 +22,7 @@
 <meta name="twitter:title" content="Knee Replacement Recovery Timeline | Andrew B. Harris, MD">
 <meta name="twitter:description" content="A knee replacement recovery timeline from a Chicago knee surgeon: swelling, motion, therapy, driving, and kneeling, with what is normal and what is not.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/og-card.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=24">
+<link rel="stylesheet" href="assets/css/style.css?v=25">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -212,8 +212,7 @@
 .sw-yaxis { display:flex; flex-direction:column; justify-content:space-between; height:190px;
   font-family:var(--font-sans); font-size:10px; color:var(--slate); text-align:right;
   flex:0 0 30px; width:30px; line-height:1; }
-.sw-yaxis span:first-child { transform:translateY(-2px); }
-.sw-yaxis span:last-child { transform:translateY(2px); }
+.sw-yaxis span { line-height:0; }   /* same fix as rc-yaxis on the hip recovery page */
 .sw-plotcol { flex:1 1 auto; min-width:0; }
 .sw-plot { position:relative; height:190px;
   background-image:repeating-linear-gradient(to top, #edeae3 0 1px, transparent 1px 25%);
@@ -264,6 +263,7 @@
           <div class="nav-sublist">
             <a href="anterior-hip-replacement.html" class="nav-sub">Anterior Approach</a>
             <a href="star-approach-hip-replacement.html" class="nav-sub">STAR Approach</a>
+          <a href="robotic-hip-replacement.html" class="nav-sub">Robotic Hip Replacement</a>
           </div>
           <a href="knee-replacement-chicago.html" class="nav-top">Knee Replacement</a>
           <div class="nav-sublist">
