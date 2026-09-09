@@ -56,38 +56,7 @@
   <div class="bar">
     <span class="title">Edit Website</span>
     <span style="font-size:12.5px;color:#9fb3c2">Editing:</span>
-    <select id="pageSel">
-      <optgroup label="Main pages">
-        <option value="index.html">Home</option>
-        <option value="about.html">Meet Dr. Harris</option>
-        <option value="procedures.html">Procedures</option>
-        <option value="patient-resources.html">Patient Resources</option>
-        <option value="publications.html">Research</option>
-        <option value="contact.html">Contact</option>
-      </optgroup>
-      <optgroup label="Procedures &amp; approaches">
-        <option value="anterior-hip-replacement.html">Anterior Hip Replacement</option>
-        <option value="star-approach-hip-replacement.html">STAR Approach Hip Replacement</option>
-        <option value="robotic-knee-replacement.html">Robotic Knee Replacement</option>
-        <option value="revision-joint-replacement.html">Revision Joint Replacement</option>
-      </optgroup>
-      <optgroup label="Chicago (by procedure)">
-        <option value="joint-replacement-surgeon-chicago.html">Joint Replacement Surgeon in Chicago</option>
-        <option value="hip-replacement-chicago.html">Hip Replacement in Chicago</option>
-        <option value="knee-replacement-chicago.html">Knee Replacement in Chicago</option>
-      </optgroup>
-      <optgroup label="Office locations">
-        <option value="skokie-joint-replacement-surgeon.html">Skokie Office (primary)</option>
-        <option value="north-shore-joint-replacement.html">North Shore</option>
-        <option value="chicago-office.html">Chicago Office (Swedish)</option>
-      </optgroup>
-      <optgroup label="Patient guides">
-        <option value="signs-you-need-a-hip-replacement.html">Signs You May Need a Hip Replacement</option>
-        <option value="signs-you-need-a-knee-replacement.html">Signs You May Need a Knee Replacement</option>
-        <option value="hip-replacement-recovery.html">Hip Replacement Recovery</option>
-        <option value="knee-replacement-recovery.html">Knee Replacement Recovery</option>
-      </optgroup>
-    </select>
+    <select id="pageSel"></select>
     <button class="btn-save" id="saveBtn">Save changes</button>
     <button class="btn-ghost" id="reloadBtn">Discard &amp; reload</button>
     <span class="status" id="status"></span>
@@ -295,6 +264,75 @@ function applyEdit(outEl, liveEl){
   return 'markup';
 }
 
+// ------------------------------------------------- page list (built from the folder)
+// The list is NOT hardcoded. Every .html file in the folder is discovered at startup,
+// so a page added later shows up here without touching this file. KNOWN only supplies
+// nicer labels and grouping; anything unrecognised lands in "Other pages".
+const GROUP_ORDER = ['Main pages','Procedures & approaches','Patient guides',
+                     'Chicago (by procedure)','Office locations','Other pages'];
+const KNOWN = {
+  'index.html':                                   ['Main pages','Home'],
+  'about.html':                                   ['Main pages','Meet Dr. Harris'],
+  'procedures.html':                              ['Main pages','Procedures'],
+  'patient-resources.html':                       ['Main pages','Patient Resources'],
+  'publications.html':                            ['Main pages','Research'],
+  'contact.html':                                 ['Main pages','Contact'],
+  'anterior-hip-replacement.html':                ['Procedures & approaches','Anterior Hip Replacement'],
+  'star-approach-hip-replacement.html':           ['Procedures & approaches','STAR Approach Hip Replacement'],
+  'robotic-knee-replacement.html':                ['Procedures & approaches','Robotic Knee Replacement'],
+  'revision-joint-replacement.html':              ['Procedures & approaches','Revision Joint Replacement'],
+  'signs-you-need-a-hip-replacement.html':        ['Patient guides','Signs You May Need a Hip Replacement'],
+  'signs-you-need-a-knee-replacement.html':       ['Patient guides','Signs You May Need a Knee Replacement'],
+  'hip-replacement-recovery.html':                ['Patient guides','Hip Replacement Recovery'],
+  'knee-replacement-recovery.html':               ['Patient guides','Knee Replacement Recovery'],
+  'alternatives-to-hip-and-knee-replacement.html':['Patient guides','Alternatives to Hip & Knee Replacement'],
+  'joint-replacement-surgeon-chicago.html':       ['Chicago (by procedure)','Joint Replacement Surgeon in Chicago'],
+  'hip-replacement-chicago.html':                 ['Chicago (by procedure)','Hip Replacement in Chicago'],
+  'knee-replacement-chicago.html':                ['Chicago (by procedure)','Knee Replacement in Chicago'],
+  'skokie-joint-replacement-surgeon.html':        ['Office locations','Skokie Office (primary)'],
+  'north-shore-joint-replacement.html':           ['Office locations','North Shore'],
+  'chicago-office.html':                          ['Office locations','Chicago Office (Swedish)']
+};
+// Never offer these for editing: the editor itself, and the Search Console
+// verification file, which must never be altered.
+const SKIP = f => f === 'USE THIS TO HAND-EDIT CONTENT.html' || /^google[0-9a-f]+\.html$/i.test(f);
+const labelFrom = f => f.replace(/\.html$/,'').replace(/[-_]+/g,' ')
+                        .replace(/\b\w/g, c => c.toUpperCase());
+
+async function buildPageList(){
+  const files = [];
+  for await (const [name, handle] of dirHandle.entries()){
+    if (handle.kind !== 'file') continue;          // skip guides/, assets/ etc.
+    if (!/\.html$/i.test(name) || SKIP(name)) continue;
+    files.push(name);
+  }
+  files.sort();
+  const groups = {};
+  for (const f of files){
+    const [g, label] = KNOWN[f] || ['Other pages', labelFrom(f)];
+    (groups[g] = groups[g] || []).push([f, label]);
+  }
+  const sel = $('#pageSel');
+  sel.innerHTML = '';
+  const order = GROUP_ORDER.filter(g => groups[g])
+                  .concat(Object.keys(groups).filter(g => !GROUP_ORDER.includes(g)).sort());
+  for (const g of order){
+    const og = document.createElement('optgroup');
+    og.label = g;
+    // Keep curated groups in the KNOWN order; sort discovered ones alphabetically.
+    const rows = g === 'Other pages'
+      ? groups[g].slice().sort((a,b) => a[1].localeCompare(b[1]))
+      : groups[g].slice().sort((a,b) => Object.keys(KNOWN).indexOf(a[0]) - Object.keys(KNOWN).indexOf(b[0]));
+    for (const [value, label] of rows){
+      const o = document.createElement('option');
+      o.value = value; o.textContent = label;
+      og.appendChild(o);
+    }
+    sel.appendChild(og);
+  }
+  return files.length;
+}
+
 // ---------------------------------------------------------------- wiring
 const SUPPORTED = 'showDirectoryPicker' in window;
 if (!SUPPORTED) {
@@ -310,6 +348,8 @@ $('#chooseBtn').addEventListener('click', async () => {
     }
     $('#setup').style.display = 'none';
     $('#editor').style.display = 'flex';
+    const n = await buildPageList();
+    if (!n){ setStatus('No pages found in that folder. Did you pick "Working Version"?','err'); return; }
     loadPage();
   } catch (e) {}
 });
