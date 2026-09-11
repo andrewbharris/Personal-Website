@@ -22,7 +22,7 @@
 <meta name="twitter:title" content="North Shore Joint Replacement Surgeon | Andrew B. Harris, MD">
 <meta name="twitter:description" content="Hip and knee replacement for patients across Chicago's North Shore. Dr. Andrew B. Harris sees North Shore and northern-suburb patients, with an office in Lincolnshire.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/og-card.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=27">
+<link rel="stylesheet" href="assets/css/style.css?v=29">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -47,6 +47,10 @@
 .locmap-wrap { margin:34px 0 0; }
 .locmap { height:540px; border:1px solid var(--border-hair); background:var(--ivory); }
 .locmap .leaflet-container { font-family:var(--font-sans); background:var(--ivory); }
+/* required map credit: kept visible, just smaller and quieter */
+.locmap .leaflet-control-attribution { font-size:10.5px; line-height:1.5; padding:1px 6px; color:#5b646c; background:rgba(255,255,255,0.72); }
+.locmap .leaflet-control-attribution a { color:#5b646c; }
+.locmap .leaflet-control-attribution a:hover { color:var(--gold); }
 .locmap-note { font-size:13px; color:var(--slate); margin-top:10px; line-height:1.6; }
 .locmap-note a { color:var(--gold); }
 .lm-pin { display:block; border-radius:50%; box-sizing:border-box; }
@@ -138,7 +142,7 @@
    </div>
       <div class="locmap-wrap">
         <div class="locmap" id="locmap" role="img" aria-label="Map of Dr. Harris's three office locations across Chicago and the North Shore"></div>
-        <p class="locmap-note">All three locations. The North Shore office is in Lincolnshire; Dr. Harris also sees patients in Skokie and in Lincoln Square in the city. Map data &copy; OpenStreetMap contributors.</p>
+        <p class="locmap-note">All three locations. The North Shore office is in Lincolnshire; Dr. Harris also sees patients in Skokie and in Lincoln Square in the city.</p>
       </div>
  </div></section>
 <section class="section-warm">
@@ -193,8 +197,10 @@
         </p>
       </div>
     </div>
+    <p class="footer-disclaimer">This website is general education, not medical advice. Reading it or sending a message does not by itself create a doctor&ndash;patient relationship. Talk with your own doctor about your situation. In an emergency, call 911. This is Dr. Harris&rsquo;s personal website, and the views here are his own.</p>
     <div class="footer-bottom">
       <span>&copy; 2026 Andrew B. Harris, MD</span>
+      <span class="footer-legal"><a href="policies.html#privacy">Privacy</a><span class="sep" aria-hidden="true">&middot;</span><a href="policies.html#disclaimer">Disclaimer &amp; terms</a><span class="sep" aria-hidden="true">&middot;</span><a href="policies.html#accessibility">Accessibility</a></span>
     </div>
   </div>
 </footer>
@@ -238,6 +244,7 @@
   function start(){
     if (started) return; started = true;
     var map = L.map(el, {scrollWheelZoom:false, zoomControl:true, attributionControl:true});
+    map.attributionControl.setPrefix(false);   // drop the optional 'Leaflet' link; the required map credits stay
     var errors = 0;
     var layer = L.tileLayer(TILES, {
       maxZoom: 18,
