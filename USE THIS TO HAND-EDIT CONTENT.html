@@ -216,6 +216,13 @@ function assignIds(doc, cb){
                                             // block that contains it
     if (isExcluded(el)) return;
     if (!isLeaf(el)) return;
+    // A container that holds a form control is never an edit box. Its visible text can be
+    // written by the page's own scripts at run time (the publications "Show more" button is
+    // empty on disk and filled in by JS), so the live preview and the file on disk legitimately
+    // disagree, applyEdit falls to the rebuild path, and the control gets destroyed. Actual
+    // body text next to a control still gets its own box through markLooseRuns, and a <label>
+    // is its own leaf, so nothing that is really copy becomes uneditable here.
+    if (el.querySelector('button, input, select, textarea, form')) return;
     if (!norm(el.textContent)) return;
     cand.push(el);
   });
@@ -257,6 +264,10 @@ function rebuildInto(outEl, liveEl){
     if (node.nodeType !== 1) return null;
     const tag = node.tagName;
     if (tag === 'SCRIPT' || tag === 'STYLE') return null;
+    // Anything in RUN_BLOCKERS is carried across verbatim rather than unwrapped. Unwrapping
+    // is what deleted the publications toggle button: the element is dropped and only its
+    // text survives. Same class of bug as the accordion chevron.
+    if (RUN_BLOCKERS.has(tag)) return node.cloneNode(true);
     if (!INLINE_KEEP.has(tag)){
       const frag = doc.createDocumentFragment();
       [...node.childNodes].forEach(c => { const n = conv(c); if (n) frag.appendChild(n); });
