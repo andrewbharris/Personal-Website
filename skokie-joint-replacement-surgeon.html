@@ -22,7 +22,7 @@
 <meta name="twitter:title" content="Skokie Joint Replacement Surgeon | Andrew B. Harris, MD">
 <meta name="twitter:description" content="A joint replacement surgeon in Skokie, IL. Dr. Andrew B. Harris offers hip and knee replacement on Chicago's North Shore.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/og-card.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=29">
+<link rel="stylesheet" href="assets/css/style.css?v=30">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -79,16 +79,21 @@
           <span class="nav-group">Hip</span>
           <div class="nav-sublist">
             <a href="hip-replacement-chicago.html" class="nav-sub">Hip Replacement</a>
+            <a href="robotic-hip-replacement.html" class="nav-sub">Robotic-Assisted Hip Replacement</a>
             <a href="anterior-hip-replacement.html" class="nav-sub">Anterior Approach</a>
             <a href="star-approach-hip-replacement.html" class="nav-sub">STAR Approach</a>
-            <a href="robotic-hip-replacement.html" class="nav-sub">Robotic Hip Replacement</a>
           </div>
           <span class="nav-group">Knee</span>
           <div class="nav-sublist">
             <a href="knee-replacement-chicago.html" class="nav-sub">Knee Replacement</a>
-            <a href="robotic-knee-replacement.html" class="nav-sub">Robotic Knee Replacement</a>
+            <a href="robotic-knee-replacement.html" class="nav-sub">Robotic-Assisted Knee Replacement</a>
+            <a href="partial-knee-replacement.html" class="nav-sub">Partial Knee Replacement</a>
+            <a href="patellofemoral-joint-replacement.html" class="nav-sub">Patellofemoral Joint Replacement</a>
           </div>
-          <a href="revision-joint-replacement.html" class="nav-top">Revision Joint Replacement</a>
+          <span class="nav-group">Revision</span>
+          <div class="nav-sublist">
+            <a href="revision-joint-replacement.html" class="nav-sub">Revision Joint Replacement</a>
+          </div>
         </div>
       </div>
       <div class="nav-item">
@@ -224,9 +229,6 @@
     {k:"northshore", lat:42.1976, lon:-87.9261, name:"Lincolnshire", href:"north-shore-joint-replacement.html"},
     {k:"chicago", lat:41.9690, lon:-87.6890, name:"Lincoln Square", href:"chicago-office.html"}
   ];
-  var ANCHORS = [
-    [41.8827,-87.6233]
-  ];
   var el = document.getElementById('locmap');
   if (!el || typeof L === 'undefined') return;
   var started = false;
@@ -242,7 +244,11 @@
 
   function start(){
     if (started) return; started = true;
-    var map = L.map(el, {scrollWheelZoom:false, zoomControl:true, attributionControl:true});
+    // zoomSnap:0 lets fitBounds land on a fractional zoom. Leaflet's default snaps
+    // DOWN to a whole zoom level, which on this container overshot by nearly a
+    // factor of two and is what made the map open so far out.
+    var map = L.map(el, {scrollWheelZoom:false, zoomControl:true, attributionControl:true,
+                         zoomSnap:0, zoomDelta:0.5});
     map.attributionControl.setPrefix(false);   // drop the optional 'Leaflet' link; the required map credits stay
     var errors = 0;
     var layer = L.tileLayer(TILES, {
@@ -271,7 +277,8 @@
       L.tooltip({permanent:true, direction:'right', offset:[12,0], className:'lm-label'})
         .setContent(o.name).setLatLng([o.lat, o.lon]).addTo(map);
     });
-    ANCHORS.forEach(function(p){ pts.push(p); });
+    // Bounds are the three offices. A downtown anchor used to sit in here and it
+    // dragged the view a third of a degree south of anything the page is about.
     map.fitBounds(L.latLngBounds(pts).pad(0.12));
     map.once('click', function(){ map.scrollWheelZoom.enable(); });
   }
