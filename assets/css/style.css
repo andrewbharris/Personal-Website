@@ -45,6 +45,12 @@ body {
 img {
   max-width: 100%;
   display: block;
+  /* An <img> width/height attribute is a presentational hint, so on any image whose
+     CSS sets width but not height (hero portrait, .photo-pair) the raw pixel height
+     leaks through and the image renders at full natural height. Adding the attributes
+     is required to stop layout shift, so neutralise the hint here once rather than
+     per rule. Any rule that wants a real height overrides this by specificity. */
+  height: auto;
 }
 
 a {
