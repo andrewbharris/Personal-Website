@@ -102,6 +102,24 @@ p {
   z-index: 100;
 }
 
+/* The header wraps to several rows once the nav no longer fits on one line: 89px at
+   900px wide, 148px at 860px, 215px on a phone. Sticky at those heights means a
+   quarter of a phone screen is permanently gone while reading, so below 860px the
+   header scrolls away instead. Sticky is untouched at every width where the header
+   is one row.
+
+   This is NOT the banned motif workaround. That one was `html, body { overflow-x:
+   hidden }` breaking sticky on an ancestor, then overriding position to paper over
+   it, which killed the sticky header at ALL widths as a side effect. Here nothing
+   touches ancestor overflow, desktop is unchanged, and 860px is the same breakpoint
+   where the page-header motif already hides.
+
+   `relative`, not `static`, so `z-index: 100` still applies and an open dropdown
+   stays above the page content beneath it. */
+@media (max-width: 860px) {
+  .site-header { position: relative; }
+}
+
 .site-header .wrap {
   display: flex;
   align-items: center;
