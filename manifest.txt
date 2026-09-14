@@ -41,6 +41,7 @@ assets/img/harris_wife_hss.jpg
 assets/img/headshot.jpg
 assets/img/headshot_fellowship.jpg
 assets/img/hip-arthritis-normal-vs-arthritic.webp
+assets/img/hip-pain-map.webp
 assets/img/hip-replacement-motif-detailed.webp
 assets/img/knee-arthritis-normal-vs-arthritic.webp
 assets/img/knee-replacement-motif-detailed.webp
