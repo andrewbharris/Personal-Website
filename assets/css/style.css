@@ -2111,12 +2111,18 @@ summary:focus-visible,
 }
 
 /* ===== Disclaimers and policy links (2026-09-11) ===== */
+/* Legal boilerplate. It has to be present and readable, but it was reading louder
+   than the copyright line under it (12.5px at 0.6 alpha against 12px at 0.35), so it
+   dominated the footer. Smaller, dimmer, and in a narrower column so it reads as a
+   footnote instead of a paragraph band.
+   0.5 alpha is the floor: white at 0.5 over --navy is 5.1:1, which clears WCAG AA.
+   0.45 drops to 4.4:1 and fails, so do not dim this further. */
 .footer-disclaimer {
-  font-size: 12.5px;
-  line-height: 1.6;
-  color: rgba(255,255,255,0.6);
-  max-width: 980px;
-  margin: 0 0 8px;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.5);
+  max-width: 720px;
+  margin: 4px 0 14px;
 }
 .footer-bottom { flex-wrap: wrap; gap: 8px 24px; }
 .footer-legal a { color: rgba(255,255,255,0.6); }
