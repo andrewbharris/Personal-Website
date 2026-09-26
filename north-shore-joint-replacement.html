@@ -42,27 +42,11 @@
   }
 }
 </script>
-<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
 <style>
-.locmap-wrap { margin:34px 0 0; }
-.locmap { height:540px; border:1px solid var(--border-hair); background:var(--ivory); }
-.locmap .leaflet-container { font-family:var(--font-sans); background:var(--ivory); }
-/* required map credit: kept visible, just smaller and quieter */
-.locmap .leaflet-control-attribution { font-size:10.5px; line-height:1.5; padding:1px 6px; color:#5b646c; background:rgba(255,255,255,0.72); }
-.locmap .leaflet-control-attribution a { color:#5b646c; }
-.locmap .leaflet-control-attribution a:hover { color:var(--gold); }
+.locmap-wrap { margin:34px 0 0; max-width:760px; }
+.locmap { width:100%; height:auto; display:block; border:1px solid var(--border-hair); }
 .locmap-note { font-size:13px; color:var(--slate); margin-top:10px; line-height:1.6; }
 .locmap-note a { color:var(--gold); }
-.lm-pin { display:block; border-radius:50%; box-sizing:border-box; }
-.lm-pin.is-here { width:22px; height:22px; background:var(--navy); border:4px solid #fff;
-  box-shadow:0 0 0 3px rgba(56,99,127,.35), 0 3px 10px -2px rgba(20,32,43,.5); }
-.lm-pin.is-other { width:16px; height:16px; background:#fff; border:4px solid var(--navy);
-  box-shadow:0 2px 7px -2px rgba(20,32,43,.5); }
-.lm-label { font-family:var(--font-sans); font-size:13px; font-weight:600; color:var(--ink);
-  white-space:nowrap; text-shadow:0 0 4px #fff,0 0 4px #fff,0 0 4px #fff,0 0 4px #fff; }
-.leaflet-popup-content { font-family:var(--font-sans); font-size:14px; }
-.leaflet-popup-content a { color:var(--gold); }
-@media (max-width:700px){ .locmap { height:380px; } }
 </style>
 </head>
 <body>
@@ -145,10 +129,14 @@
      He also sees patients in <a href="skokie-joint-replacement-surgeon.html" class="text-link">Skokie</a> and in the <a href="chicago-office.html" class="text-link">city of Chicago</a>.
      New to this? Start with <a href="patient-resources.html" class="text-link">patient guides and conditions</a>.</p>
    </div>
-      <div class="locmap-wrap">
-        <div class="locmap" id="locmap" role="img" aria-label="Map of Dr. Harris's three office locations across Chicago and the North Shore"></div>
-        <p class="locmap-note">All three locations. The North Shore office is in Lincolnshire; Dr. Harris also sees patients in Skokie and in Lincoln Square in the city.</p>
-      </div>
+      <figure class="locmap-wrap">
+        <picture>
+          <source media="(max-width:700px)" srcset="assets/img/offices-map-northshore-narrow.webp" width="1038" height="1260">
+          <img class="locmap" src="assets/img/offices-map-northshore.webp" width="1520" height="1024"
+               loading="lazy" decoding="async" alt="Map of the Chicago area showing Dr. Harris's three offices: Lincolnshire on the North Shore, Skokie, and Lincoln Square in Chicago.">
+        </picture>
+        <figcaption class="locmap-note">All three locations. The North Shore office is in Lincolnshire; Dr. Harris also sees patients in Skokie and in Lincoln Square in the city. <a href="https://www.google.com/maps/@42.07,-87.82,11z" target="_blank" rel="noopener">Open this area in Google Maps</a>.</figcaption>
+      </figure>
  </div></section>
 <section class="section-warm">
   <div class="wrap" style="text-align:center; max-width:640px;">
@@ -210,99 +198,4 @@
   </div>
 </footer>
 <script src="assets/js/nav.js"></script>
-<script src="assets/vendor/leaflet/leaflet.js"></script>
-<script>
-(function(){
-  // Stadia Maps. Tiles work with no key on localhost/127.0.0.1, so the map can be
-  // checked locally before signing up. PRODUCTION NEEDS A KEY: create one at
-  // stadiamaps.com, allowlist andrewbharrismd.com, and paste it here.
-  // Domain-locked to andrewbharrismd.com, so it is safe in public page source.
-  var STADIA_KEY = "d5bc0922-61a2-449c-9af6-f524fd41c3ed";
-  // Stadia serves localhost/127.0.0.1 keyless. A domain-locked key sent FROM localhost
-  // would be rejected, so use the key only off localhost and keep local testing working.
-  var isLocal = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
-  var TILES = "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
-              + ((STADIA_KEY && !isLocal) ? "?api_key=" + STADIA_KEY : "");
-
-  var HERE = "northshore";
-  var LOCS = [
-    {k:"skokie", lat:42.0334, lon:-87.7334, name:"Skokie", href:"skokie-joint-replacement-surgeon.html"},
-    {k:"northshore", lat:42.1976, lon:-87.9261, name:"Lincolnshire", href:"north-shore-joint-replacement.html"},
-    {k:"chicago", lat:41.9690, lon:-87.6890, name:"Lincoln Square", href:"chicago-office.html"}
-  ];
-  var el = document.getElementById('locmap');
-  if (!el || typeof L === 'undefined') return;
-  var started = false;
-
-
-  function fallback(){
-    // never leave a patient looking at a grid of broken tiles
-    var names = LOCS.map(function(o){ return o.name; }).join(", ");
-    el.innerHTML = '<p style="margin:0;padding:28px;font-size:15px;color:var(--ink-soft);'
-      + 'line-height:1.6;text-align:center;">Dr. Harris sees patients in ' + names + '.</p>';
-    el.style.height = 'auto';
-  }
-
-  function start(){
-    if (started) return; started = true;
-    // zoomSnap:0 lets fitBounds land on a fractional zoom. Leaflet's default snaps
-    // DOWN to a whole zoom level, which on this container overshot by nearly a
-    // factor of two and is what made the map open so far out.
-    var map = L.map(el, {scrollWheelZoom:false, zoomControl:true, attributionControl:true,
-                         zoomSnap:0, zoomDelta:0.5});
-    map.attributionControl.setPrefix(false);   // drop the optional 'Leaflet' link; the required map credits stay
-    var errors = 0;
-    var layer = L.tileLayer(TILES, {
-      maxZoom: 18,
-      attribution: '&copy; <a href="https://stadiamaps.com/attribution/" target="_blank" rel="noopener">Stadia Maps</a>, '
-        + '&copy; <a href="https://openmaptiles.org/" target="_blank" rel="noopener">OpenMapTiles</a> '
-        + '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
-    });
-    layer.on('tileerror', function(){ if (++errors > 8){ map.remove(); fallback(); } });
-    layer.addTo(map);
-
-    var pts = [];
-    LOCS.forEach(function(o){
-      pts.push([o.lat, o.lon]);
-      var here = (o.k === HERE);
-      var icon = L.divIcon({
-        className: '',
-        html: '<span class="lm-pin ' + (here ? 'is-here' : 'is-other') + '"></span>',
-        iconSize: here ? [22,22] : [16,16],
-        iconAnchor: here ? [11,11] : [8,8]
-      });
-      var m = L.marker([o.lat, o.lon], {icon: icon, title: o.name, alt: o.name}).addTo(map);
-      m.bindPopup(here
-        ? '<strong>' + o.name + '</strong>'
-        : '<strong>' + o.name + '</strong><br><a href="' + o.href + '">See this location</a>');
-      L.tooltip({permanent:true, direction:'right', offset:[12,0], className:'lm-label'})
-        .setContent(o.name).setLatLng([o.lat, o.lon]).addTo(map);
-    });
-    // Bounds are the three offices. A downtown anchor used to sit in here and it
-    // dragged the view a third of a degree south of anything the page is about.
-    map.fitBounds(L.latLngBounds(pts).pad(0.12));
-    map.once('click', function(){ map.scrollWheelZoom.enable(); });
-  }
-
-  function begin(){
-    // No key off localhost means every tile comes back 401. Those arrive as valid
-    // PNGs, so Leaflet fires 'load' not 'tileerror' and the error tiles render.
-    // Decide before drawing anything rather than trying to catch it afterwards.
-    if (!STADIA_KEY && !isLocal){ fallback(); return; }
-    // A wrong or expired key fails the same silent way, so probe one tile first.
-    if (!window.fetch){ start(); return; }
-    var probe = TILES.replace('{z}','11').replace('{x}','527').replace('{y}','764').replace('{r}','');
-    fetch(probe, {cache:'no-store'})
-      .then(function(r){ if (r.ok) start(); else fallback(); })
-      .catch(function(){ start(); });   // probe blocked by CORS, not proof of failure
-  }
-
-  if ('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(es){
-      es.forEach(function(e){ if (e.isIntersecting){ io.disconnect(); begin(); } });
-    }, {rootMargin: '250px'});
-    io.observe(el);
-  } else { begin(); }
-})();
-</script>
 </body></html>

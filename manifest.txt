@@ -48,6 +48,12 @@ assets/img/knee-replacement-motif-detailed.webp
 assets/img/knee-replacement-options-four-panel.webp
 assets/img/leg-length-offset.webp
 assets/img/medial-arthritis-three-panel.webp
+assets/img/offices-map-chicago-narrow.webp
+assets/img/offices-map-chicago.webp
+assets/img/offices-map-northshore-narrow.webp
+assets/img/offices-map-northshore.webp
+assets/img/offices-map-skokie-narrow.webp
+assets/img/offices-map-skokie.webp
 assets/img/og-card.jpg
 assets/img/oref_podium.jpg
 assets/img/partial-knee-replacement-motif-detailed.webp
