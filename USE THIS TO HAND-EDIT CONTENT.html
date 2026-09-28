@@ -105,6 +105,15 @@ async function readFile(path){
   for (let i = 0; i < parts.length - 1; i++) h = await h.getDirectoryHandle(parts[i]);
   return (await h.getFileHandle(parts[parts.length - 1])).getFile();
 }
+// Same walk, but returns the FileHandle, so a page inside a subfolder (guides/) can be saved.
+async function handleFor(path){
+  const parts = path.split('/').filter(Boolean);
+  let h = dirHandle;
+  for (let i = 0; i < parts.length - 1; i++) h = await h.getDirectoryHandle(parts[i]);
+  return h.getFileHandle(parts[parts.length - 1]);
+}
+// "guides/x.html" -> "guides/"   |   "about.html" -> ""
+const dirOf = p => p.includes('/') ? p.slice(0, p.lastIndexOf('/') + 1) : '';
 async function getSiteCss(){
   if (cssCache !== null) return cssCache;
   try { cssCache = await (await readFile('assets/css/style.css')).text(); }
@@ -120,12 +129,30 @@ async function blobFor(path){
 // Point every local <img> at a blob read straight from the folder. Without this the
 // logo and figures show as broken icons when the editor is opened by double-clicking
 // the HTML file (location.origin is "null" under file://).
-async function resolveImages(doc){
+async function resolveImages(doc, base){
   for (const img of doc.querySelectorAll('img[src]')){
     const raw = img.getAttribute('src') || '';
     if (!raw || /^(https?:|data:|blob:|\/\/)/i.test(raw)) continue;
-    const url = await blobFor(raw.split('?')[0].replace(/^\.\//,''));
+    const url = await blobFor((base || '') + raw.split('?')[0].replace(/^\.\//,''));
     if (url){ img.setAttribute('src', url); img.removeAttribute('srcset'); }
+  }
+}
+
+// Rewrite url(...) inside a style block to blobs, so a page that loads its own fonts from a
+// subfolder previews with the right typeface instead of falling back to a system face.
+async function resolveStyleUrls(doc, base){
+  for (const st of doc.querySelectorAll('style')){
+    const css = st.textContent;
+    const re = /url\((['"]?)([^'")]+)\1\)/g;
+    const hits = []; let m;
+    while ((m = re.exec(css))) hits.push([m.index, m[0].length, m[2]]);
+    let out = '', last = 0;
+    for (const [i, len, raw] of hits){
+      if (/^(https?:|data:|blob:|\/\/)/i.test(raw)) continue;
+      const u = await blobFor((base || '') + raw.replace(/^\.\//,''));
+      if (u){ out += css.slice(last, i) + 'url("' + u + '")'; last = i + len; }
+    }
+    if (last) st.textContent = out + css.slice(last);
   }
 }
 
@@ -325,7 +352,9 @@ const KNOWN = {
   'knee-replacement-chicago.html':                ['Chicago (by procedure)','Knee Replacement in Chicago'],
   'skokie-joint-replacement-surgeon.html':        ['Office locations','Skokie Office (primary)'],
   'north-shore-joint-replacement.html':           ['Office locations','North Shore'],
-  'chicago-office.html':                          ['Office locations','Chicago Office (Swedish)']
+  'chicago-office.html':                          ['Office locations','Chicago Office (Swedish)'],
+  'guides/hip-arthritis-guide.html':              ['Patient guides','Hip Arthritis Treatment Guide'],
+  'guides/knee-arthritis-guide.html':             ['Patient guides','Knee Arthritis Treatment Guide']
 };
 // Never offer these for editing: the editor itself, and the Search Console
 // verification file, which must never be altered.
@@ -340,6 +369,13 @@ async function buildPageList(){
     if (!/\.html$/i.test(name) || SKIP(name)) continue;
     files.push(name);
   }
+  // The two arthritis treatment guides live in guides/ and are editable as well.
+  try {
+    const gd = await dirHandle.getDirectoryHandle('guides');
+    for await (const [name, handle] of gd.entries()){
+      if (handle.kind === 'file' && /\.html$/i.test(name)) files.push('guides/' + name);
+    }
+  } catch(e){ /* no guides folder */ }
   files.sort();
   const groups = {};
   for (const f of files){
@@ -509,7 +545,7 @@ async function checkDisk(){
   if (!dirHandle || !loadedPage) return;
   if (document.hidden) return;
   let f;
-  try { f = await (await dirHandle.getFileHandle(loadedPage)).getFile(); }
+  try { f = await (await handleFor(loadedPage)).getFile(); }
   catch(e){ return; }                     // file gone or renamed: leave it to the user
   if (f.lastModified === loadedMtime) return;
   if (!dirty){
@@ -554,7 +590,7 @@ async function loadPage(note){
   const page = $('#pageSel').value;
   setStatus('Loading…');
   try {
-    const fh = await dirHandle.getFileHandle(page);
+    const fh = await handleFor(page);
     const f  = await fh.getFile();
     originalText = await f.text();
     loadedMtime = f.lastModified;      // baseline for the disk watcher
@@ -572,10 +608,11 @@ async function loadPage(note){
     const base = doc.createElement('base'); base.href = location.origin + '/';
     doc.head.insertBefore(base, doc.head.firstChild);
   }
-  await resolveImages(doc);
+  await resolveImages(doc, dirOf(page));
+  await resolveStyleUrls(doc, dirOf(page));
 
   // Inline the real site stylesheet so the preview is always styled correctly
-  const siteCss = await getSiteCss();
+  const siteCss = dirOf(page) ? '' : await getSiteCss();
   if (siteCss){ const sc = doc.createElement('style'); sc.id = 'cc-sitecss'; sc.textContent = siteCss; doc.head.appendChild(sc); }
   const st = doc.createElement('style'); st.id = 'cc-style';
   st.textContent = '[data-cc-id]:hover{outline:2px dashed #6e9bb6;outline-offset:2px;cursor:text}'
@@ -652,7 +689,7 @@ async function savePage(){
       return;
     }
 
-    const fh = await dirHandle.getFileHandle(page);
+    const fh = await handleFor(page);
 
     // SAFETY: refuse to write over a file that changed on disk after this preview was built.
     // Claude edits these files between sessions; without this a stale tab silently reverts them.

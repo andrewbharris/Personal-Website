@@ -32,7 +32,7 @@
       "name": "What are the alternatives to a knee replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Exercise and physical therapy, weight management, anti-inflammatory medication, self-management and low-impact movement such as walking, cycling, swimming or tai chi have the strongest evidence. Steroid injections, acupuncture, heat and cold, acetaminophen and a cane or brace help some people. None of these treatments, however, can reverse arthritis."
+        "text": "Exercise and physical therapy, weight management, anti-inflammatory medication, self-management and low-impact movement such as walking, cycling, swimming or tai chi have the strongest evidence. Steroid injections, acupuncture, heat and cold, acetaminophen and a cane or brace help some people. None of these treatments, however, can reverse arthritis. Which of these suits your joint is something to go through with your doctor."
       }
     },
     {
@@ -56,7 +56,7 @@
       "name": "How can I avoid a knee replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "There is no guaranteed way, but the options with real evidence behind them are exercise and physical therapy, weight management and anti-inflammatory medication. Many people are treated without surgery for years, and some never need an operation."
+        "text": "There is no guaranteed way, but the options with real evidence behind them are exercise and physical therapy, weight management and anti-inflammatory medication. Many people are treated without surgery for years, and some never need an operation. How much these do for you varies, so build the plan with your doctor."
       }
     },
     {
@@ -88,7 +88,7 @@
       "name": "Do gel injections work for knee arthritis?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The major guidelines do not recommend them, though some patients individually do find some benefit. They are less reliable than a steroid injection, and they may or may not do anything for a given person. They are still sometimes used, particularly for people who are determined to avoid surgery and have not had enough relief from anything else."
+        "text": "The major guidelines do not recommend them, though some patients individually do find some benefit. They are less reliable than a steroid injection, and they may or may not do anything for a given person. They are still sometimes used, particularly for people who are determined to avoid surgery and have not had enough relief from anything else. Whether a gel injection makes sense for you is a conversation to have with your surgeon."
       }
     },
     {
@@ -112,7 +112,7 @@
       "name": "Can I have an injection if I am considering a joint replacement?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Timing matters. An injection within three months of a planned joint replacement is associated with a higher risk of infection after surgery, so it is worth discussing before either is booked."
+        "text": "Timing matters. An injection within three months of a planned joint replacement is associated with a higher risk of infection after surgery, so tell your surgeon about any recent injection before either is booked."
       }
     }
   ]
@@ -203,10 +203,11 @@
 .gframe { overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch;
   border:1px solid var(--border-hair); background:#fff; }
 .gframe iframe { display:block; width:100%; min-width:480px; border:0; }
-/* Natural heights at an 818px frame. The script refines these when it can read the
-   iframe, which it cannot do over file://, so these must stay close to reality. */
-.gpanel-hip .gframe iframe { height:2750px; }
-.gpanel-knee .gframe iframe { height:3048px; }
+/* Natural heights at an 818px frame, measured 2026-09-28. The script below refines these
+   when it can read the iframe, which it cannot do over file://, so these must stay close
+   to reality. Re-measure after any edit to a guide. */
+.gpanel-hip .gframe iframe { height:2547px; }
+.gpanel-knee .gframe iframe { height:2703px; }
 .gopen { margin-top:14px; font-size:14.5px; }
 .gsmall { display:none; color:var(--slate); }
 /* The guide is embedded above on wide screens, so "Open the guide" would just repeat it.
@@ -426,7 +427,7 @@
       <details>
         <summary>What are the alternatives to a knee replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Exercise and physical therapy, weight management, anti-inflammatory medication, self-management and low-impact movement such as walking, cycling, swimming or tai chi have the strongest evidence. Steroid injections, acupuncture, heat and cold, acetaminophen and a cane or brace help some people. None of these treatments, however, can reverse arthritis.</p>
+          <p>Exercise and physical therapy, weight management, anti-inflammatory medication, self-management and low-impact movement such as walking, cycling, swimming or tai chi have the strongest evidence. Steroid injections, acupuncture, heat and cold, acetaminophen and a cane or brace help some people. None of these treatments, however, can reverse arthritis. Which of these suits your joint is something to go through with your doctor.</p>
         </div>
       </details>
 
@@ -447,7 +448,7 @@
       <details>
         <summary>How can I avoid a knee replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>There is no guaranteed way, but the options with real evidence behind them are exercise and physical therapy, weight management and anti-inflammatory medication. Many people are treated without surgery for years, and some never need an operation.</p>
+          <p>There is no guaranteed way, but the options with real evidence behind them are exercise and physical therapy, weight management and anti-inflammatory medication. Many people are treated without surgery for years, and some never need an operation. How much these do for you varies, so build the plan with your doctor.</p>
         </div>
       </details>
 
@@ -475,7 +476,7 @@
       <details>
         <summary>Do gel injections work for knee arthritis? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>The major guidelines do not recommend them, though some patients individually do find some benefit. They are less reliable than a steroid injection, and they may or may not do anything for a given person. They are still sometimes used, particularly for people who are determined to avoid surgery and have not had enough relief from anything else.</p>
+          <p>The major guidelines do not recommend them, though some patients individually do find some benefit. They are less reliable than a steroid injection, and they may or may not do anything for a given person. They are still sometimes used, particularly for people who are determined to avoid surgery and have not had enough relief from anything else. Whether a gel injection makes sense for you is a conversation to have with your surgeon.</p>
         </div>
       </details>
 
@@ -496,7 +497,7 @@
       <details>
         <summary>Can I have an injection if I am considering a joint replacement? <span class="acc-icon"></span></summary>
         <div class="accordion-body">
-          <p>Timing matters. An injection within three months of a planned joint replacement is associated with a higher risk of infection after surgery, so it is worth discussing before either is booked.</p>
+          <p>Timing matters. An injection within three months of a planned joint replacement is associated with a higher risk of infection after surgery, so tell your surgeon about any recent injection before either is booked.</p>
         </div>
       </details>
 
@@ -548,7 +549,7 @@
 </section>
 <script>
 /* Size each guide iframe to its content. Same origin, so this is allowed. The guides are
-   self-extracting bundles, so the height is not final until they finish unpacking.
+   plain HTML with web fonts, so the height is not final until the fonts load.
    Collapse before measuring, otherwise the document just reports the iframe's own height. */
 (function(){
   function measure(f){

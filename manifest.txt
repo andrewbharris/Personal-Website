@@ -79,6 +79,11 @@ assets/vendor/leaflet/leaflet.js
 chicago-office.html
 contact.html
 googled3e0a4f038a908da.html
+guides/abh-mark-0fc6a590f9.svg
+guides/fonts/0d04bb72e5.woff2
+guides/fonts/30cc49f716.woff2
+guides/fonts/37354b7587.woff2
+guides/fonts/cf687812cd.woff2
 guides/hip-arthritis-guide.html
 guides/hip-arthritis-guide.pdf
 guides/knee-arthritis-guide.html
