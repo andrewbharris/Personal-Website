@@ -2007,6 +2007,41 @@ a.stat:hover { background: var(--ivory); }
 
 /* ===== Accessibility ===== */
 
+/* Skip link. First element in <body> on every page. Sits above the viewport until it
+   takes keyboard focus, then drops in over the sticky header (z-index 100) and the open
+   dropdown (200). Mouse users never see it. The target is id="main" tabindex="-1" on the
+   first element after </header>; the tabindex lets every browser move focus there, and
+   the outline is suppressed on it because a ring around the whole hero is noise. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 300;
+  padding: 12px 18px;
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transform: translateY(-120%);
+  transition: transform 0.12s ease-out;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--gold-light);
+  outline-offset: -5px;
+  border-radius: 0;
+}
+#main:focus,
+#main:focus-visible { outline: none; }
+/* Where the header is sticky, land #main just below it instead of under it. */
+@media (min-width: 861px) {
+  #main { scroll-margin-top: 92px; }
+}
+
 /* Keyboard focus. Forms already style their own focus; this covers links,
    buttons, and the nav. :focus-visible means mouse users never see it. */
 a:focus-visible,
