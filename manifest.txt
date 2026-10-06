@@ -90,6 +90,7 @@ guides/hip-arthritis-guide.html
 guides/hip-arthritis-guide.pdf
 guides/knee-arthritis-guide.html
 guides/knee-arthritis-guide.pdf
+guides/qr-andrewbharrismd.svg
 hip-replacement-chicago.html
 hip-replacement-recovery.html
 index.html
