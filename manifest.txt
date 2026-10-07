@@ -96,6 +96,7 @@ hip-replacement-chicago.html
 hip-replacement-recovery.html
 index.html
 joint-replacement-surgeon-chicago.html
+knee-arthritis.html
 knee-replacement-chicago.html
 knee-replacement-recovery.html
 north-shore-joint-replacement.html

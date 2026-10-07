@@ -915,7 +915,10 @@ section {
 /* Inline links inside prose. These inherit the size of the sentence they sit
    in, so they stop breaking the line rhythm. Weight and underline carry the
    signal instead of size + weight + colour + a heavy rule all at once. */
-.text-link {
+/* Links inside a CTA band's sentence ("What to read next") take the same treatment,
+   so a named guide is visibly a link. Added 2026-10-07 after Andy spotted plain text. */
+.text-link,
+.section-warm p a {
   font-size: inherit;
   font-weight: 500;
   letter-spacing: inherit;
@@ -927,7 +930,8 @@ section {
   transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
-.text-link:hover {
+.text-link:hover,
+.section-warm p a:hover {
   color: var(--gold);
   text-decoration-color: var(--gold);
 }
@@ -2196,13 +2200,6 @@ summary:focus-visible,
 }
 .urgent-box p { margin: 0; }
 .urgent-box p + p { margin-top: 8px; }
-/* trademark and industry-payment note on robotics content */
-.tm-note {
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--ink-soft);
-  margin-top: 18px;
-}
 /* Site policies page */
 /* Fine print. Andy, 2026-09-29: "smaller text, written like a typical disclaimer page."
    13.5px on --ink-soft is 5.8:1 on white, so it still clears WCAG AA for normal text,
