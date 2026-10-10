@@ -2215,3 +2215,12 @@ summary:focus-visible,
 .policy-body li { margin: 3px 0; line-height: 1.65; color: var(--ink-soft); }
 .policy-toc { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 18px; font-size: 13px; }
 .policy-toc a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Language profile links under the hero location line (2026-10-10). Same 13.5px gold
+   line as .hero-locations; the links inherit the colour and underline only on hover. */
+.hero-langs { margin-top: -20px; margin-bottom: 20px; align-items: flex-start; }
+.hero-langs svg { margin-top: 3px; }
+.hero-langs > span { flex: 1 1 0; min-width: 0; line-height: 1.6; }
+.hero-langs a { color: inherit; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
+.hero-langs a:hover, .hero-langs a:focus-visible { text-decoration-color: currentColor; }
+.hero-langs .sep { opacity: .5; margin: 0 2px; }
