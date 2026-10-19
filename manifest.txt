@@ -125,3 +125,15 @@ sitemap.xml
 skokie-joint-replacement-surgeon.html
 star-approach-hip-replacement.html
 hip-knee-replacement-chicago-hebrew.html
+tka-balancing-simulator/index.html
+tka-balancing-simulator/app/index.html
+tka-balancing-simulator/app/app.js
+arthroplasty-surgeons-in-training/index.html
+save-my-card/index.html
+save-my-card/andrew-b-harris-md.pkpass
+tka-balancing-simulator/media/sim-anatomy.webp
+tka-balancing-simulator/media/sim-balance-screen.webp
+tka-balancing-simulator/media/sim-cases-screen.webp
+tka-balancing-simulator/media/sim-femurs.webp
+tka-balancing-simulator/media/sim-tension-screen.webp
+tka-balancing-simulator/media/sim-wear.webp

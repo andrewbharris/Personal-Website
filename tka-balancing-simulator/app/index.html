@@ -1,0 +1,733 @@
+<!doctype html>
+<!-- © 2026 Andrew B. Harris, MD. All rights reserved. The TKA Robotic Balancing Simulator, its model and its code are proprietary. Copying, modifying, redistributing or hosting it elsewhere is not permitted. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ===== SITE HEAD BLOCK (andrewbharrismd.com) START: carry this whole block over to each new build. This copy lives in app/ and is noindexed; the indexed page is the intro page one folder up. ===== -->
+<title>TKA Robotic Balancing Simulator | Andrew B. Harris, MD</title>
+<meta name="description" content="A free total knee replacement balancing simulator for orthopaedic residents and fellows: plan the implant, measure ligament tension and balance the gaps.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://andrewbharrismd.com/tka-balancing-simulator/">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#14202b">
+<meta name="author" content="Andrew B. Harris, MD">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Andrew B. Harris, MD">
+<meta property="og:title" content="TKA Robotic Balancing Simulator | Andrew B. Harris, MD">
+<meta property="og:description" content="A free total knee replacement balancing simulator for orthopaedic residents and fellows: plan the implant, measure ligament tension and balance the gaps.">
+<meta property="og:url" content="https://andrewbharrismd.com/tka-balancing-simulator/">
+<meta property="og:image" content="https://andrewbharrismd.com/assets/img/og-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TKA Robotic Balancing Simulator | Andrew B. Harris, MD">
+<meta name="twitter:description" content="A free total knee replacement balancing simulator for orthopaedic residents and fellows: plan the implant, measure ligament tension and balance the gaps.">
+<meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/og-card.jpg">
+<!-- Cloudflare Web Analytics --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "0dbb83d412b44a49854563b32a7359af"}'></script><!-- End Cloudflare Web Analytics -->
+<!-- ===== SITE HEAD BLOCK END ===== -->
+<meta name="copyright" content="© 2026 Andrew B. Harris, MD. All rights reserved. The TKA Robotic Balancing Simulator, its model and its code are proprietary. Copying, modifying, redistributing or hosting it elsewhere is not permitted.">
+</head><body>
+<style>
+/* Layout: pinned compact header (case, gaps, HKA, status, switches, target), three views, each with an implant panel that opens on a click, optional Advanced strip. Plain clinical tool, Arial, color only for state. */
+:root {
+  --bg: #ffffff; --fg: #1a1a1a; --muted: #666666; --faint: #8a8a8a; --line: #d9d9d9; --line2: #ececec; --ctl: #a9a9a9; --btn: #f6f6f6;
+  --dark: #2b2b2b; --tight: #c2410c; --loose: #1d4ed8; --ok: #15803d; --warn: #b45309; --adv: #b45309;
+  --font: Arial, Helvetica, sans-serif; color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--bg); color: var(--fg); }
+body { font-family: var(--font); font-size: 14px; margin: 0; font-variant-numeric: tabular-nums; }
+button, select, input { font-family: var(--font); color: var(--fg); }
+* { font-family: var(--font); }   /* Arial everywhere: form controls, tables and the text inside every drawing */
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--loose); outline-offset: 1px; }
+.wrap { margin: 0 auto; }
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid #d5d9de; }
+.tbar { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 4px 14px; background: #22262b; color: #e9ecef; }
+.tbar .app { font-size: 14.5px; font-weight: bold; letter-spacing: 0.02em; color: #ffffff; white-space: nowrap; }
+.vsep { width: 1px; height: 22px; background: #3d434a; flex: none; }
+.case { display: flex; flex-direction: column; justify-content: center; gap: 3px; min-width: 0; flex: 1; }
+.csub { display: flex; align-items: center; gap: 10px; font-size: 12.5px; } .csub .tlink { font-size: 13px; }
+.case b { font-size: 15px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.chip { font-size: 12px; color: #c3c9d0; border: 1px solid #4b525a; padding: 0 5px; white-space: nowrap; }
+#cplan { font-size: 13px; color: #a9b1ba; white-space: nowrap; }
+.acts { display: flex; gap: 6px; }
+.tb { height: 30px; padding: 0 11px; border: 1px solid #4b525a; background: #2e3339; color: #eef1f4; font-size: 13.5px; cursor: pointer; white-space: nowrap; }
+.tb:hover { background: #3a4047; } .tb:disabled, .tb:disabled:hover { opacity: 0.45; cursor: not-allowed; } .tb[aria-expanded="true"] { background: #e9ecef; color: #22262b; }
+.tb:focus-visible, .tlink:focus-visible { outline: 2px solid #9ec2ff; outline-offset: 1px; }
+.sws { display: flex; align-items: center; gap: 14px; }
+.tgt { font-size: 13.5px; color: #a9b1ba; white-space: nowrap; }
+.tlink { background: none; border: 0; padding: 0; color: #9ec2ff; white-space: nowrap; text-decoration: underline; cursor: pointer; font-size: 13.5px; }
+.link { background: none; border: 0; padding: 0; color: var(--loose); text-decoration: underline; cursor: pointer; font-size: 13px; }
+.lab { font-size: 12.5px; color: var(--muted); }
+.row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.btn { height: 27px; padding: 0 10px; border: 1px solid var(--ctl); background: var(--bg); font-size: 13px; cursor: pointer; }
+.btn:hover { background: var(--btn); }
+.btn.primary { background: #22262b; color: #fff; border-color: #22262b; height: 32px; padding: 0 16px; font-size: 14.5px; }
+.sw { display: flex; align-items: center; gap: 7px; font-size: 13.5px; cursor: pointer; white-space: nowrap; color: #d6dbe0; }
+.sw input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.sw .trk { width: 28px; height: 15px; border-radius: 8px; background: #4b525a; position: relative; flex: none; }
+.sw .trk::after { content: ""; position: absolute; top: 2px; left: 2px; width: 11px; height: 11px; border-radius: 50%; background: #cfd4da; transition: left 0.12s; }
+.sw input:checked + .trk { background: #e9ecef; } .sw input:checked + .trk::after { left: 15px; background: #22262b; }
+.sw input:focus-visible + .trk { outline: 2px solid #9ec2ff; outline-offset: 1px; }
+.sw.advsw { color: #f3b46b; font-weight: bold; } .sw.advsw input:checked + .trk { background: #f3b46b; }
+/* the gap view switch sits in the balance tile, on the light band */
+.th .sw { font-size: 12px; gap: 6px; color: #4b525a; } .th .sw .trk { width: 24px; height: 13px; background: #c3c9d0; }
+.th .sw .trk::after { width: 9px; height: 9px; background: #fff; } .th .sw input:checked + .trk { background: #22262b; } .th .sw input:checked + .trk::after { left: 13px; background: #fff; }
+.band { display: grid; grid-template-columns: 1.05fr 1.05fr 1.5fr 1fr 0.8fr; grid-template-areas: "ext flex al rs bal"; padding: 6px 0 calc(5px + var(--bandpad, 0px)); }   /* --bandpad: fitViews() eases the one row band toward the two row one just above 1280 px */
+.t-ext { grid-area: ext; } .t-flex { grid-area: flex; } .t-al { grid-area: al; } .t-rs { grid-area: rs; } .t-bal { grid-area: bal; border-right: 0; }
+.tile { padding: 0 12px; border-right: 1px solid var(--line2); min-width: 0; }
+.tile:last-child { border-right: 0; }
+.th { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 8px; }
+.tl { font-size: 12.5px; font-weight: bold; letter-spacing: 0.07em; color: #4b525a; white-space: nowrap; }
+.tt { font-size: 12px; color: #7b828a; white-space: nowrap; }
+.tbtn { background: none; border: 0; padding: 0; cursor: pointer; font-family: var(--font); text-decoration: underline dotted; text-underline-offset: 2px; } .tbtn:hover { color: #1d4ed8; }
+.gb { display: grid; grid-template-columns: 70px minmax(0, 1fr) 70px; align-items: center; gap: 4px; margin-top: 2px; }
+.gsh svg { display: block; width: 100%; height: 66px; }
+.gap { display: flex; flex-direction: column; align-items: center; line-height: 1.12; }
+.gap .sd { font-size: 12.5px; color: #5c636b; }
+.gap .v { font-size: 32px; font-weight: bold; line-height: 36px; } .gap .v.long { font-size: 26px; }   /* five characters (−12.6) fit the 70 px column; one line height for both sizes, so the band never changes by a fraction */
+.gap .st { font-size: 12.5px; font-weight: bold; }
+.gap .dl { font-size: 12px; color: var(--faint); min-height: 14px; }
+.gap.tight .v, .gap.tight .st { color: var(--tight); } .gap.loose .v, .gap.loose .st { color: var(--loose); } .gap.ok .v, .gap.ok .st { color: var(--ok); }
+.alt { border-collapse: collapse; font-size: 14px; margin-top: 3px; }
+.alt th { font-size: 12px; font-weight: normal; color: #7b828a; text-align: left; padding: 0 0 1px; }
+.alt td { padding: 1px 0; white-space: nowrap; vertical-align: baseline; }
+.alt td.k { color: #5c636b; padding-right: 12px; } .alt td.ar { color: #8a9099; padding: 0 8px; } .alt td.pl { font-weight: bold; }
+.alt tr.hka td { font-size: 16.5px; } .alt tr.hka td.pl { font-size: 19px; } .alt tr.hka td.k { font-weight: bold; color: #2a2f35; }
+@media (max-width: 420px) { .alt td.k { padding-right: 8px; } .alt td.ar { padding: 0 6px; } }
+.rtab { display: grid; grid-template-columns: minmax(0, 1fr) 46px 46px; row-gap: 5px; font-size: 14.5px; margin-top: 6px; align-items: baseline; }
+.rtab .h { font-size: 12.5px; color: #5c636b; text-align: right; } .rtab b { text-align: right; font-size: 17px; } .rtab .rl { color: #3b4148; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bandgrip { display: none; height: 14px; align-items: center; justify-content: center; cursor: ns-resize; border-top: 1px solid var(--line2); background: #f6f7f8; touch-action: none; }
+.bandgrip span { width: 44px; height: 4px; border-radius: 2px; background: #a9b0b8; } .bandgrip:focus-visible { outline: 2px solid var(--loose); outline-offset: -2px; }
+/* Balance: every line holds its height and never wraps, and the warnings keep two lines whether there are none or many,
+   so a change to the plan never changes the band's height (and with it the drawings). Two columns where the tile is wide. */
+.bal { display: flex; flex-direction: column; gap: 2px; container-type: inline-size; }
+.bgrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1px 20px; } .bcol { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+@container (min-width: 350px) { .bgrid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.bst { display: flex; align-items: center; gap: 7px; height: 23px; font-size: 17.5px; font-weight: bold; white-space: nowrap; overflow: hidden; }
+.bst svg { flex: none; } .bst span { overflow: hidden; text-overflow: ellipsis; } .bst.good { color: var(--ok); } .bst.warn { color: var(--warn); }
+.bsub { height: 16px; line-height: 16px; font-size: 13.5px; color: #3b4148; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .bsub.bad { color: var(--tight); }
+.blim { display: flex; align-items: baseline; } .blim #wsum { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: #3b4148; } .blim .link { flex: none; font-size: 13.5px; }
+.warns { color: var(--warn); font-size: 13px; display: flex; flex-direction: column; gap: 1px; min-width: 0; margin-top: 1px; }
+.warns > span { display: flex; height: 15px; line-height: 15px; min-width: 0; white-space: nowrap; } .warns > span.none { color: #7b828a; }
+.warns > span > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; } .warns > span > b { flex: none; margin-left: 6px; font-weight: normal; color: #6b737c; }
+main { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+section.view { container-type: inline-size; display: flex; flex-direction: column; gap: 4px; padding: 6px 12px; border-right: 1px solid var(--line2); min-width: 0; }
+section.view:last-child { border-right: 0; }
+.vh { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.vh b { font-size: 15px; } .vh span { font-size: 12px; color: #6b737c; } .vh > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+/* --s (px per mm) is set by fitViews(): one scale for every view that changes smoothly with the window */
+.pic svg { display: block; margin: 0 auto; max-width: 100%; }
+#picC svg { width: calc(var(--s, 3) * 128px); height: calc(var(--s, 3) * 116px); }
+#picS svg { width: calc(var(--s, 3) * 128px); height: calc(var(--s, 3) * 122px); }
+#picA svg { width: calc(var(--s, 3) * 125.4px); height: calc(var(--s, 3) * 89.6px); }
+.pic svg { cursor: default; } .pic svg[data-hv] { cursor: pointer; }
+.pic svg[data-hv="fem"] .hv-fem path, .pic svg[data-hv="tib"] .hv-tib path { stroke: #3b82f6; stroke-width: 0.65; }
+.pic svg[data-hv="cutF"] .hv-cutF, .pic svg[data-hv="cutT"] .hv-cutT, .pic svg[data-hv="cutR"] .hv-cutR { stroke: #3b82f6; stroke-width: 0.75; stroke-dasharray: none; }
+.pic svg[data-hv="flexP"] .hv-fem path { stroke: #3b82f6; stroke-width: 0.65; stroke-dasharray: 1.2 0.8; }
+.pvghost { display: none; } .pic svg[data-hv^="cut"] .pvghost, .pic svg[data-hv="flexP"] .pvghost { display: inline; }
+.pic svg .pvring { transition: r 0.1s; } .pic svg[data-hv^="cut"] .pvring.near { fill: #dbeafe; stroke: #3b82f6; }
+.picwrap { position: relative; outline: none; } .picwrap:focus-visible { outline: 2px solid var(--loose); outline-offset: -2px; }
+/* The implant panel: opens in the pane of the implant clicked, where it covers the least (placePads), and keeps one size
+   for every implant, side and value: it is built once and updated in place, so nothing under the pointer moves while it
+   is used. In one column it sits under the drawing instead. One panel at a time. */
+section.view { position: relative; }
+.pad { position: absolute; z-index: 3; left: 0; top: 0; width: 288px; background: #ffffff; border: 1px solid #b4bbc3; border-radius: 6px; box-shadow: 0 10px 28px rgba(20, 30, 40, 0.16), 0 1px 3px rgba(20, 30, 40, 0.10); font-size: 12.5px; color: #2a2f35; overflow: hidden; outline: none; }
+#cname.flash { animation: cflash 2.6s ease-out; } @keyframes cflash { 0%, 35% { background: #fde68a; color: #1a1a1a; box-shadow: 0 0 0 3px #fde68a; } }   /* a new case's name lights up, nothing moves */
+.pad.opening { animation: padin 0.14s ease-out; } @keyframes padin { from { opacity: 0; } }   /* a fade only: nothing moves under the pointer */
+.pad.glide { transition: left 0.24s ease-out, top 0.24s ease-out; }   /* a new spot is reached smoothly, never by a jump */
+.pad.dragging { box-shadow: 0 14px 34px rgba(20, 30, 40, 0.24), 0 1px 3px rgba(20, 30, 40, 0.10); }
+.pad .ph { display: flex; align-items: center; gap: 7px; height: 27px; padding: 0 3px 0 7px; background: #f3f5f7; border-bottom: 1px solid #dde1e5; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.pad.dragging, .pad.dragging .ph { cursor: grabbing; }
+.pad .grip { display: flex; color: #8a9099; } .pad .ph:hover .grip { color: #4b525a; }
+.pad .seg.pcs { height: 21px; border-color: #a3aab2; } .pad .seg.pcs button { padding: 0 10px; font-size: 12.5px; font-weight: bold; cursor: pointer; }
+.pad .hb { margin-left: auto; display: flex; align-items: center; gap: 1px; }
+.pad .ib { width: 26px; height: 22px; border: 0; border-radius: 4px; background: none; display: inline-flex; align-items: center; justify-content: center; color: #3b4148; cursor: pointer; padding: 0; }
+.pad .ib:hover { background: #e2e6ea; color: #1a1a1a; } .pad .ib:active { background: #d5dbe1; } .pad .ib:disabled { color: #b8bec5; background: none; cursor: default; }
+.pad .ib svg { width: 15px; height: 15px; display: block; }
+.pad .hsep { width: 1px; height: 15px; background: #d3d8dd; margin: 0 2px; }
+.pad .pb { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: center; gap: 4px 6px; padding: 5px 8px; }
+.pad .pl { color: #5c636b; font-size: 12px; white-space: nowrap; }
+/* a stepper per way the implant moves: the value it changes sits between its two buttons, each a word and an icon */
+.pad .pst { display: grid; grid-template-columns: 50px minmax(0, 1fr) 50px; height: 24px; border: 1px solid #b9bfc6; background: #ffffff; }
+.pad .pst button, .pad .stp button { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+.pad .pst button { display: flex; align-items: center; justify-content: center; gap: 3px; border: 0; padding: 0; background: #f5f6f7; font-size: 12px; color: #2f353b; cursor: pointer; white-space: nowrap; }   /* plain words, so the bold value between them leads */
+.pad .pst button:first-child { border-right: 1px solid #dfe2e6; } .pad .pst button:last-child { border-left: 1px solid #dfe2e6; }
+.pad .pst button:hover, .pad .stp button:hover { background: #e7eaee; } .pad .pst button:active, .pad .pst button.held, .pad .stp button:active, .pad .stp button.held { background: #d6dce2; }
+.pad .pst button:disabled, .pad .stp button:disabled { color: #b8bec5; background: #f5f6f7; cursor: default; }
+.pad .pst output { display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; color: #1a1a1a; white-space: nowrap; overflow: hidden; min-width: 0; }
+.pad button:focus-visible { outline: 2px solid var(--loose); outline-offset: -2px; }
+.ai { width: 12px; height: 12px; flex: none; } .ai.d-down { transform: rotate(180deg); } .ai.d-left { transform: rotate(-90deg); } .ai.d-right { transform: rotate(90deg); }
+.ri { width: 14px; height: 10px; flex: none; } .ccw > .ri { transform: scaleX(-1); }
+/* pivots: equal buttons across the stepper column, the presets in the order the drawing shows them, then Custom */
+.pad .seg.pvs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); width: auto; height: 21px; }
+.pad .seg button { padding: 0 5px; font-size: 12px; cursor: pointer; white-space: nowrap; } .pad .seg button:hover:not([aria-pressed="true"]):not(.off) { background: #eef1f4; }
+.pad .seg button.off { color: #a3a9b0; cursor: default; }
+/* the settings under a rule: size and its sizing reference, or the insert */
+.pad .pf { display: grid; grid-template-columns: 52px auto auto minmax(0, 1fr); align-items: center; gap: 6px; padding: 4px 8px 5px; border-top: 1px solid #e3e6e9; background: #fafbfc; }
+.pad .pf .stp { width: 84px; height: 23px; } .pad .pf .stp.ins { width: 108px; } .pad .pf .stp button { width: 26px; } .pad .pf .stp output { font-size: 13px; }
+.pad .pf .seg { height: 21px; justify-self: end; } .pad .pf .seg button { padding: 0 9px; } .pad .pf .pl + .stp + .pl { margin-left: 4px; }
+.L-narrow .pad { position: static; width: 288px; max-width: 100%; margin: 4px auto 2px; box-shadow: 0 1px 3px rgba(20, 30, 40, 0.10); }
+.L-narrow .pad .grip { display: none; } .L-narrow .pad .ph { cursor: auto; }
+@container (max-width: 292px) { .pad { width: 100%; } .pad .pb { grid-template-columns: 50px minmax(0, 1fr); } .pad .pst { grid-template-columns: 46px minmax(0, 1fr) 46px; } .pad .pst output { font-size: 12.5px; } .pad .pf { grid-template-columns: 50px auto auto minmax(0, 1fr); } }
+section.view.padopen { z-index: 4; }   /* a dragged panel sits over the other panes too */
+html.padmove, html.padmove * { user-select: none !important; -webkit-user-select: none !important; cursor: grabbing !important; }   /* while a panel is dragged */
+.pic svg .padhid, .readout .padhid, #adv .padhid, footer.padhid { visibility: hidden; }
+/* on the balance screen the panes fill the window, so a wide window leaves room under the drawings for the panel */
+html[data-scr="balance"] body { display: flex; flex-direction: column; min-height: 100vh; margin: 0; } html[data-scr="balance"] .wrap { flex: 1 0 auto; display: flex; flex-direction: column; width: 100%; } html[data-scr="balance"] main { flex: 1 0 auto; }
+.vh { min-height: 20px; align-items: center; } .vht { display: flex; align-items: center; gap: 10px; } .vh .vtog { font-weight: normal; height: 21px; flex: none; white-space: nowrap; } .vht { flex: none; } .vh .vtog button { font-size: 12px; padding: 0 5px; line-height: 16px; }
+.pic { transition: transform 0.16s ease-in; transform-origin: 50% 50%; } .pic.flip { transform: scaleX(0); }
+
+.cr { display: flex; align-items: center; gap: 6px; }
+.cl { width: 62px; flex: none; font-size: 13px; color: #5c636b; }
+.stp { display: flex; height: 30px; border: 1px solid #b9bfc6; width: 150px; flex: none; }
+.stp button { width: 26px; border: 0; background: #f5f6f7; font-size: 16.5px; cursor: pointer; padding: 0; }
+.stp button:first-child { border-right: 1px solid #dfe2e6; } .stp button:last-child { border-left: 1px solid #dfe2e6; }
+.stp button:hover { background: #e9ecef; }
+.stp output { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 13.5px; font-weight: bold; white-space: nowrap; overflow: hidden; }
+.stp.wide { width: 196px; }
+.seg { display: flex; height: 24px; border: 1px solid var(--ctl); width: fit-content; }
+.seg button { padding: 0 3px; border: 0; background: var(--bg); font-size: 11.5px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--ctl); }
+.seg button[aria-pressed="true"] { background: #22262b; color: #fff; }
+.seg button:disabled { color: #b5b5b5; cursor: default; }
+.seg button:disabled[aria-pressed="true"] { color: #fff; }
+.ro { font-size: 14px; }
+.readout { font-size: 13px; color: #2a2f35; display: flex; flex-wrap: wrap; gap: 3px 14px; min-height: 34px; align-content: flex-start; }   /* two lines held (three for the sagittal one on a narrow pane), so a line wrapping does not move the drawings */
+.view.cq1 #roS { min-height: 51px; } .L-narrow .readout, .L-narrow .view.cq1 #roS { min-height: 16px; }   /* one column: the scale follows the width, nothing to hold */ .readout .k { color: #5c636b; margin-right: 4px; } .readout > span { white-space: nowrap; } .L-narrow .readout > #grooveTxt { white-space: normal; }   /* the longest readout may wrap on a phone */
+/* Advanced: soft tissue and the gaps through the range of motion, on a cool gray ground under an orange rule */
+.advstrip { display: flex; flex-wrap: wrap; gap: 8px 36px; padding: 5px 14px 6px; border-top: 2px solid var(--adv); background: #f6f7f9; }
+.advcol { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.advsoft { flex: none; } .advarc { flex: 1 1 300px; container-type: inline-size; }
+.advhd { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; min-height: 16px; } .advarc .advhd { flex-wrap: nowrap; } .L-narrow .advarc .advhd { flex-wrap: wrap; }   /* the legend never drops to a second line on a wide window */
+/* soft tissue as a table: a label and its control a row, the posterior structures in a column of equal chips beside
+   the releases, the posterior osteophytes on the last row (None when the knee has none, so the columns never change) */
+.softgrid { display: grid; grid-template-columns: max-content max-content max-content; grid-auto-rows: 28px; gap: 3px 0; align-items: center; } .softgrid .stp { height: 28px; }
+.softgrid .cr { display: contents; } .softgrid .cl { width: auto; padding-right: 12px; } .advstrip .softgrid > .ck { margin-left: 14px; justify-self: stretch; }
+.softgrid .osts { grid-column: 2 / 4; display: flex; align-items: center; gap: 6px; } .softgrid .osn { font-size: 13px; color: #8a9099; } .stp.rel { width: 210px; }
+#arcSvg { min-width: 0; height: 94px; touch-action: pan-y; }   /* the chart's own height (ARC_H in draw.js) */
+.legend { display: flex; gap: 14px; font-size: 12px; color: #5c636b; white-space: nowrap; overflow: hidden; } .legend i { display: inline-block; width: 14px; height: 8px; vertical-align: -1px; margin-right: 5px; }
+.legend .lgb { background: #e5e8ec; } .legend .lgt { background: rgba(194, 65, 12, 0.22); } .legend .lgl { background: rgba(29, 78, 216, 0.22); } .legend .lgc { width: 8px; border-radius: 50%; background: #5c636b; }
+/* posterior steps as chips: a box and a name, dark once done */
+.advstrip label.ck { position: relative; display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px 0 9px; border: 1px solid #b9bfc6; border-radius: 3px; background: #ffffff; font-size: 13px; color: #2f353b; cursor: pointer; white-space: nowrap; user-select: none; -webkit-user-select: none; justify-self: start; }
+.advstrip label.ck:hover { border-color: #6b737c; } .advstrip label.ck input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: inherit; }   /* the whole chip is the box */
+.advstrip label.ck .cb { position: relative; width: 12px; height: 12px; border: 1.5px solid #8a9099; border-radius: 2px; box-sizing: border-box; flex: none; }
+.advstrip label.ck.on { background: #2f353b; border-color: #2f353b; color: #ffffff; } .advstrip label.ck.on .cb { background: #ffffff; border-color: #ffffff; }
+.advstrip label.ck.on .cb::after { content: ""; position: absolute; left: 3px; top: 0; width: 3px; height: 6px; border: solid #2f353b; border-width: 0 1.8px 1.8px 0; transform: rotate(45deg); }
+.advstrip label.ck.off { opacity: 0.55; cursor: default; } .advstrip label.ck:has(input:focus-visible) { outline: 2px solid var(--loose); outline-offset: 1px; }
+/* a release: the last step made over a track of the whole sequence */
+.stp.rel output { position: relative; } .stp.rel .rn { padding-bottom: 4px; } .stp.rel .rbar { position: absolute; left: 9px; right: 9px; bottom: 4px; display: flex; gap: 2px; }
+.stp.rel .rbar i { flex: 1; height: 3px; border-radius: 1px; background: #dde1e6; } .stp.rel .rbar i.on { background: #2f353b; }
+footer { margin: 0 auto; padding: 5px 14px 8px; font-size: 12.5px; color: #6b7280; border-top: 1px solid var(--line2); }
+/* Steps in the title bar; screens other than Balance hide the balancing chrome */
+.steps { display: flex; gap: 2px; flex: none; }
+.steps button { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 9px 0 5px; border: 0; background: none; color: #7e868f; font-size: 13.5px; white-space: nowrap; cursor: default; }
+.steps button i { font-style: normal; display: inline-flex; width: 20px; height: 20px; align-items: center; justify-content: center; border: 1px solid #4b525a; border-radius: 50%; font-size: 12px; flex: none; }
+.steps button.ahead { color: #aab2bb; cursor: pointer; } .steps button.ahead:hover { background: #343a41; color: #fff; }   /* not reached yet: choosing it skips ahead */
+.steps button.done { color: #d6dbe0; cursor: pointer; } .steps button.done i { border-color: #9aa2ab; } .steps button.done:hover { background: #343a41; color: #fff; }
+.steps button.cur { color: #ffffff; font-weight: bold; } .steps button.cur i { background: #e9ecef; color: #22262b; border-color: #e9ecef; }
+.tb.go { background: #e9ecef; color: #22262b; border-color: #e9ecef; font-weight: bold; } .tb.go:hover { background: #ffffff; }
+html:not([data-scr="balance"]) .bal-only { display: none !important; }
+html[data-scr="case"] .caseonly { display: none !important; }
+html[data-scr="balance"] #clevel { display: none; } .L-mid .tbar { gap: 10px; }   /* the balance bar keeps the starting plan on the case's second line at every width, so the bar never changes height */
+.L-mid .steps button span { display: none; } .L-mid .steps button { padding: 0 5px; }
+/* the balance bar is the fullest: there the other steps show their numbers only, at every width */
+html[data-scr="balance"] .steps button:not(.cur) span { display: none; } html[data-scr="balance"] .steps button:not(.cur) { padding: 0 4px; }
+.csub { min-width: 0; overflow: hidden; flex-wrap: wrap; row-gap: 1px; }   /* the starting plan drops to its own line when the bar is short of room */
+/* Screens */
+.screen { min-height: calc(100vh - 49px); display: flex; flex-direction: column; }
+.scr-in { flex: 1; padding: 12px 20px 16px; max-width: 1360px; width: 100%; margin: 0 auto; }
+.scr-hd { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 6px; }
+.scr-hd h1 { font-size: 22px; margin: 0; } .scr-hd .sub { margin: 0; }
+.screen h2 { font-size: 12.5px; font-weight: bold; letter-spacing: 0.07em; color: #4b525a; text-transform: uppercase; margin: 14px 0 6px; }
+.sub { color: #5c636b; font-size: 14px; margin: 0 0 10px; line-height: 1.45; } .sub a { color: #1d4ed8; }
+.scr-ft { position: sticky; bottom: 0; display: flex; align-items: center; gap: 16px; padding: 8px 20px; background: #ffffff; border-top: 1px solid #d5d9de; z-index: 4; }
+.scr-ft .btns { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-left: auto; flex: none; }
+.scr-ft .btn { height: 34px; padding: 0 16px; font-size: 14.5px; white-space: nowrap; }   /* a long label moves to its own row */
+.btn.primary:hover { background: #3a4047; } .btn.primary:disabled { background: #b8bec5; border-color: #b8bec5; cursor: default; }
+.src { font-size: 13px; color: #5c636b; line-height: 1.55; min-width: 0; } .src a { color: #1d4ed8; } .src b { color: #2a2f35; margin-right: 4px; }
+.ftsel { font-size: 14px; color: #3b4148; min-width: 0; } .ftsel b { font-size: 15.5px; color: #1a1a1a; margin-right: 8px; }
+.seg.tabs { height: 32px; } .seg.tabs button { padding: 0 14px; font-size: 14px; }
+/* Side: drawings mirror for a right knee; the medial and lateral readouts beside them swap with them */
+.side-R .gb > .gap:first-child, .side-R .capvals > .gap:first-child { order: 3; } .side-R .gb > .gsh { order: 2; } .side-R .gb > .gap:last-child, .side-R .capvals > .gap:last-child { order: 1; }
+.chip.side { color: #ffffff; border-color: #8a929b; }
+.seg.side button[aria-pressed="true"] { font-weight: bold; }
+.rtab b.bad { color: var(--tight); } .rstag { color: var(--warn); font-weight: bold; }
+.strat:disabled { cursor: default; opacity: 0.55; } .strat:disabled:hover { border-color: #c3c8ce; background: #ffffff; } .strat[aria-checked="true"]:disabled { opacity: 1; background: #22262b; } .lock { margin: 6px 0 0; }
+/* CPAK grid: aHKA across, JLO down, cells shaded by share */
+.cpgrid { display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto repeat(3, minmax(108px, auto)); gap: 8px; max-width: 860px; }
+.cpgrid .ax { font-size: 13.5px; font-weight: bold; letter-spacing: 0.07em; color: #4b525a; }
+.cpgrid .ax1 { grid-column: 2 / -1; grid-row: 1; text-align: center; } .cpgrid .ax2 { grid-column: 1; grid-row: 1; align-self: end; text-align: center; }
+.cpgrid .ax small { display: block; font-size: 12.5px; font-weight: normal; letter-spacing: 0; color: #6b737c; margin-top: 1px; }
+.cpgrid .rg { font-size: 13px; font-weight: normal; color: #5c636b; margin-top: -2px; }
+.cpgrid .chd { font-size: 15px; font-weight: bold; color: #2a2f35; text-align: center; align-self: end; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.cpgrid .rhd { font-size: 15px; font-weight: bold; color: #2a2f35; align-self: center; max-width: 104px; padding-right: 4px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.cpth { display: block; } .cpth.limb { height: 124px; width: auto; } .cpth.knee { width: 80px; height: auto; }
+@media (max-width: 520px) { .cpth.limb { height: 92px; } .cpth.knee { width: 60px; } .cpgrid { grid-template-columns: min-content repeat(3, minmax(0, 1fr)); } }   /* phones: the row headers no wider than their thumbnails */
+.cpc { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 6px; border: 1px solid #d3dae3; background: var(--bg, #f3f5f8); cursor: pointer; color: #1a1a1a; min-width: 0; }
+.cpc.dk { color: #ffffff; border-color: transparent; }
+.cpc:hover { box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #9aa3ab; } .cpc[aria-checked="true"] { box-shadow: 0 0 0 2px #ffffff, 0 0 0 5px #22262b; }
+.cpc .ty { font-size: 26px; font-weight: bold; } .cpc .pw { font-size: 16.5px; font-weight: bold; text-align: center; line-height: 1.15; }
+@media (max-width: 420px) { .cpc { padding: 8px 2px; } .cpc .pw { font-size: 13px; } }
+@media (max-width: 360px) { .cpgrid { gap: 5px; } .cpc { padding: 8px 1px; } .cpc .pw { font-size: 12px; } .cpgrid .rhd { max-width: 72px; font-size: 13px; } }
+/* Case cards */
+/* Plan */
+.plan-grid { display: grid; grid-template-columns: minmax(300px, 360px) minmax(0, 1fr); gap: 24px; align-items: start; }
+.plan-left h2:first-child { margin-top: 6px; }
+/* Register: settings on the left, the knee on the right; in one column the knee comes first, so the probe is in view */
+.reg-grid { display: grid; grid-template-columns: minmax(300px, 360px) minmax(0, 1fr); grid-template-areas: "left fig"; column-gap: 28px; align-items: start; }
+.reg-left { grid-area: left; } .reg-fig { grid-area: fig; min-width: 0; }
+.reg-left > h2:first-child { margin-top: 6px; }
+.regcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 8px; }
+.regcard { display: grid; gap: 3px; text-align: left; padding: 10px 12px 8px; border: 1px solid #c3c8ce; background: #ffffff; cursor: pointer; color: #1a1a1a; font: inherit; }
+.regcard:hover { border-color: #6b737c; } .regcard[aria-checked="true"] { border-color: #22262b; box-shadow: inset 0 0 0 1px #22262b; background: #f6f7f8; }
+.regcard:disabled { cursor: default; opacity: 0.6; }
+.regcard .rct { font-size: 15.5px; font-weight: bold; } .regcard[aria-checked="true"] .rct::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #22262b; margin-right: 7px; vertical-align: 1px; }
+.regcard .rcs { font-size: 13.5px; color: #5c636b; line-height: 1.35; } .regcard .rcf svg { display: block; width: 100%; max-width: 400px; height: auto; margin-top: 4px; }
+.regtxt { margin: 8px 0 0; }
+#regFig svg { display: block; width: 100%; max-width: 760px; height: auto; max-height: calc(100vh - 200px); margin: 0 auto; }
+.rgcap { text-align: center; margin: 2px 0 0; font-size: 14.5px; color: #5c636b; min-height: 20px; } .rgcap.run { color: #1d4ed8; font-weight: bold; } .rgcap.ok { color: #15803d; font-weight: bold; }
+.reglegend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13.5px; color: #4b525a; margin: 8px 0 0; }
+.reglegend span { display: inline-flex; align-items: center; gap: 6px; } .reglegend i { display: inline-block; flex: none; }
+.reglegend .lc { width: 16px; height: 9px; background: #c9def0; border: 1px solid #5f8fb4; }
+.reglegend .ln, .reglegend .lr { width: 20px; height: 0; border-top: 1.5px dashed #7b828a; } .reglegend .lr { border-top: 2px solid #1d4ed8; }
+.reglegend .lpt { width: 9px; height: 9px; border-radius: 50%; background: #1d4ed8; border: 1.5px solid #fff; box-shadow: 0 0 0 1px #1d4ed8; }
+@media (max-width: 980px) { .reg-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "fig" "left"; row-gap: 10px; } #regFig svg { max-height: none; max-width: 520px; } }
+.strats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.strat { min-height: 42px; border: 1px solid #c3c8ce; background: #ffffff; font-size: 15.5px; font-weight: bold; cursor: pointer; text-align: center; padding: 4px 8px; line-height: 1.2; }
+.strat:hover { border-color: #6b737c; background: #f6f7f8; } .strat[aria-checked="true"] { background: #22262b; color: #ffffff; border-color: #22262b; }
+.limlist { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 16px; font-size: 14px; } .limlist .k { color: #5c636b; } .limlist > span:not(.k):not(.none) { font-weight: bold; color: #1a1a1a; } .limlist .none { grid-column: 1 / -1; color: #5c636b; }
+.plan-fig { margin: 0; min-width: 0; position: sticky; top: 56px; } #planFig { display: flex; gap: 10px; align-items: flex-start; } #planFig svg { display: block; width: 100%; height: auto; max-height: calc(100vh - 230px); }
+.pf-limb { flex: 0 0 27%; min-width: 0; padding-right: 10px; border-right: 1px solid #e3e6e9; }
+.pfcap { display: flex; justify-content: space-around; text-align: center; margin-top: 2px; } .pfcap span { display: flex; flex-direction: column; } .pfcap small { font-size: 12.5px; color: #5c636b; } .pfcap b { font-size: 14px; color: #1a1a1a; white-space: nowrap; } .pf-knee { flex: 1 1 auto; min-width: 0; }
+.plan-fig figcaption { font-size: 14px; line-height: 1.5; color: #2a2f35; margin-top: 6px; } .plan-fig figcaption .note { display: block; color: #5c636b; margin-top: 4px; }
+.loadfrom { display: flex; align-items: center; gap: 8px; margin: 10px 0 4px; font-size: 13.5px; } .loadfrom select { height: 30px; flex: 1; min-width: 0; font-size: 14px; border: 1px solid var(--ctl); background: #ffffff; }
+details summary { cursor: pointer; font-size: 13.5px; color: #1d4ed8; margin-top: 8px; }
+.tg { display: grid; grid-template-columns: 86px 1fr 1fr; gap: 6px; align-items: center; }
+.tg input, .tol input { width: 100%; height: 30px; border: 1px solid var(--ctl); padding: 0 6px; font-size: 14.5px; text-align: center; }
+.tol { display: flex; align-items: center; gap: 8px; } .tol input { width: 70px; }
+.lg { display: grid; grid-template-columns: minmax(0, 1fr) 134px 134px; gap: 5px 8px; align-items: center; margin-top: 8px; font-size: 13.5px; }
+.lg .lf { display: flex; align-items: center; gap: 5px; } .lg input { width: 58px; height: 28px; border: 1px solid var(--ctl); text-align: center; font-size: 14px; padding: 0 2px; }
+.lg .u { color: #5c636b; font-size: 13px; white-space: nowrap; } .lg .ln { color: #2a2f35; }
+@media (max-width: 480px) { .lg { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 3px; } .lg .ln { grid-column: 1 / -1; margin-top: 4px; } }   /* label above its two fields */
+/* Tension */
+.tens-lvls { display: grid; grid-template-columns: repeat(3, 124px); gap: 8px; }
+.tlv b { display: block; font-size: 19px; } .tlv span { display: block; font-size: 13px; font-weight: normal; margin-top: 1px; }
+.tens-hd { position: relative; display: flex; align-items: center; gap: 8px; margin: 14px 0 6px; } .tens-hd h2 { margin: 0; }
+.info { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #1d4ed8; background: #ffffff; color: #1d4ed8; font-size: 13px; font-weight: bold; line-height: 1; padding: 0; cursor: pointer; flex: none; }
+.info:hover, .info[aria-expanded="true"] { background: #1d4ed8; color: #ffffff; }
+.infopop { position: absolute; left: 0; top: calc(100% + 6px); z-index: 20; width: min(560px, calc(100vw - 40px)); background: #ffffff; border: 1px solid #b9c0c8; box-shadow: 0 8px 28px rgba(20, 30, 40, 0.18); padding: 12px 16px 10px; font-size: 14px; line-height: 1.5; color: #2a2f35; }
+.infopop h3 { margin: 0 0 6px; font-size: 15.5px; color: #1a1a1a; } .infopop p { margin: 0 0 8px; }
+.tinf { margin: 2px 0 8px; } .tinf th.cur, .tinf td.cur { background: #f1f4f8; } .tinf td.cur { font-weight: bold; } .tinfw { color: #5c636b; font-size: 13px; }
+.tlv { height: 52px; border: 1px solid #c3c8ce; background: #ffffff; cursor: pointer; font-size: 17.5px; font-weight: bold; line-height: 1.15; }
+.tlv:hover { border-color: #6b737c; background: #f6f7f8; } .tlv[aria-checked="true"] { background: #22262b; color: #ffffff; border-color: #22262b; }
+.caps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 12px; }
+.capbox { border: 1px solid #d5d9de; padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.caph { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; } .caph h2 { margin: 0; }
+.capst { font-size: 13px; color: #7b828a; } .capst.ok { color: var(--ok); font-weight: bold; }
+.capfig > svg { display: block; width: 100%; height: auto; max-height: clamp(230px, calc(100vh - 520px), 440px); }   /* the two captures fit the window on a laptop */
+/* forces on the left, what they mean on the right; one column on a narrow screen */
+.tens-top { display: grid; grid-template-columns: auto minmax(0, 760px); gap: 10px 32px; align-items: start; margin-top: 10px; } .tens-top .tens-hd { margin-top: 0; }
+@media (max-width: 1000px) { .tens-top { grid-template-columns: minmax(0, 1fr); } }
+.tens-note { margin: 0; font-size: 14.5px; line-height: 1.45; color: #374151; } .tens-note + .tens-note { margin-top: 6px; } .tens-note b { color: #1a1a1a; }
+.cvh { font-size: 13.5px; font-weight: bold; color: #4b525a; text-align: center; margin-top: 2px; } .cvh small { display: block; font-size: 13px; font-weight: normal; color: #6b7280; }
+.caph { align-items: center; } .caph h2 { display: flex; align-items: center; } .caph .pose { width: 54px; height: 25px; margin-right: 10px; flex: none; }
+.capst.run { color: #1d4ed8; font-weight: bold; } .capvals .gap.idle .v { color: #b8bec5; } .capvals .gap.idle .st { color: #7b828a; font-weight: normal; }
+.limsrc { margin-top: 4px; font-size: 13px; } .tol { margin-top: 8px; }
+.capvals { min-height: 80px; display: flex; flex-direction: column; justify-content: center; }
+.capvals .gb { grid-template-columns: 86px minmax(0, 1fr) 86px; width: 100%; max-width: 440px; margin: 0 auto; } .capvals .gsh svg { height: 84px; }
+.capvals .gap .v { font-size: 28px; line-height: 32px; } .capvals .gap .v.long { font-size: 24px; } .capvals .wait { text-align: center; color: #7b828a; font-size: 14px; }
+.capbtn { align-self: center; height: 36px; padding: 0 24px; }
+/* Final */
+.fin-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 2px; }
+/* report: what changed and what was done across the top, then the details in tight panels */
+.fin-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; }
+.kpi { display: flex; flex-direction: column; gap: 2px; border: 1px solid #d5d9de; padding: 6px 9px; min-width: 0; }
+.kpi .kpl { font-size: 12px; font-weight: bold; letter-spacing: 0.07em; text-transform: uppercase; color: #4b525a; margin-bottom: 2px; } .kpi .kpl .nc { text-transform: none; }
+.kpi .kpf { font-size: 13.5px; color: #5c636b; } .kpi .kpv { font-size: 21px; font-weight: bold; color: #1a1a1a; line-height: 1.2; } .kpi .kpn { font-size: 13.5px; color: #1d4ed8; font-weight: bold; }
+.kpi .kpv.bad, .kpi .bad { color: var(--tight); } .kpi .kpv.good, .kpi .good { color: var(--ok); }
+.kpi .kpls { display: flex; flex-direction: column; gap: 1px; font-size: 13.5px; font-weight: bold; line-height: 1.35; }
+.kpi .kpg { display: grid; grid-template-columns: auto 52px 52px; gap: 0 6px; font-size: 13.5px; margin-top: 3px; align-items: baseline; width: fit-content; } .kpi .kpg i { font-style: normal; color: #7b828a; font-size: 12.5px; text-align: right; }
+.kpi .kpg i:nth-child(3n + 1) { text-align: left; } .kpi .kpg b { font-size: 15.5px; text-align: right; } .kpi .kpg b.tight { color: var(--tight); } .kpi .kpg b.loose { color: var(--loose); } .kpi .kpg b.ok { color: var(--ok); }
+.fin-main { display: grid; grid-template-columns: minmax(250px, 0.95fr) minmax(330px, 1.25fr) minmax(270px, 1fr); gap: 8px; align-items: stretch; }
+.fpanel.fgaps { display: flex; flex-direction: column; } .fpanel.fgaps .fgap { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.fin-low { display: grid; grid-template-columns: minmax(0, 660px) minmax(220px, 1fr); gap: 8px 24px; align-items: start; } .fin-low .sub:first-child { margin-top: 2px; } .fh2 { margin: 12px 0 4px; }
+.fgap + .fgap { margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--line2); } .fgap .gb { grid-template-columns: 74px minmax(0, 1fr) 74px; margin-top: 2px; } .fgap .gsh svg { height: 62px; } .fgap .gap .v { font-size: 26px; line-height: 30px; } .fgap .gap .v.long { font-size: 22px; } .fgap .gap .dl { color: #5c636b; font-size: 12.5px; }
+.ftab td.rv { font-weight: bold; font-size: 15.5px; color: #1a1a1a; } .ftab + .ftab { margin-top: 8px; }
+.falg { display: grid; grid-template-columns: minmax(100px, 132px) minmax(0, 1fr); gap: 12px; align-items: start; } .flimb svg { display: block; width: 100%; height: auto; max-height: 250px; }
+.flcap { display: flex; justify-content: space-around; font-size: 12.5px; color: #5c636b; margin-top: 2px; } .falg .alt { width: auto; justify-self: start; } .falg .alt td { white-space: nowrap; }
+.ftab td small { font-size: 12px; color: #7b828a; margin-right: 5px; font-weight: normal; }
+.ctab { max-width: 660px; } .ctab th { white-space: normal; vertical-align: bottom; } .ctab td small { display: block; margin: 0; } .ctab td small.nw { white-space: nowrap; } .ctab td.bad { color: var(--tight); font-weight: bold; }
+.fpanel { border: 1px solid #d5d9de; padding: 8px 10px 9px; min-width: 0; } .fpanel h2 { margin: 0 0 6px; } .fpanel .sub { margin: 6px 0 0; font-size: 13.5px; }
+.ftab { border-collapse: collapse; width: 100%; font-size: 14px; } .ftab th, .ftab td { text-align: right; padding: 3px 6px; border-bottom: 1px solid var(--line2); } .ftab th { white-space: nowrap; }
+.ftab th:first-child, .ftab td:first-child { text-align: left; color: #5c636b; } .ftab th { font-weight: normal; color: #7b828a; font-size: 12.5px; }
+.ftab td.tight { color: var(--tight); font-weight: bold; } .ftab td.loose { color: var(--loose); font-weight: bold; } .ftab td.ok { color: var(--ok); font-weight: bold; }
+.flist { margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.55; } .flist b.bad { color: var(--tight); } .fdraw svg { display: block; width: 100%; height: auto; max-height: 340px; }
+@media (max-width: 900px) { .plan-grid { grid-template-columns: minmax(0, 1fr); } .plan-fig { position: static; } }
+/* narrower: alignment beside resections, the gaps below them with extension and flexion side by side; under 960 px: one column */
+@media (max-width: 1120px) { .fin-low { grid-template-columns: minmax(0, 1fr); }
+  .fin-main { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); } .fin-main > :nth-child(2) { grid-row: 1; grid-column: 1; } .fin-main > :nth-child(3) { grid-row: 1; grid-column: 2; }
+  .fin-main > .fgaps { grid-row: 2; grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 20px; } .fin-main > .fgaps h2 { grid-column: 1 / -1; }
+  .fin-main > .fgaps .fgap + .fgap { margin-top: 0; padding-top: 0; border-top: 0; padding-left: 20px; border-left: 1px solid var(--line2); } }
+@media (max-width: 960px) { .fin-main { grid-template-columns: minmax(0, 1fr); } .fin-main > :nth-child(3) { grid-row: 2; grid-column: 1; } .fin-main > .fgaps { grid-row: 3; grid-template-columns: minmax(0, 1fr); }
+  .fin-main > .fgaps .fgap + .fgap { margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--line2); padding-left: 0; border-left: 0; } }
+/* the seven headline boxes: four a row below 1100 px, two below 700 px, the last one filling its row */
+@media (max-width: 1100px) { .fin-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); } .fin-kpis > :nth-child(7) { grid-column: span 2; } }
+@media (max-width: 700px) { .fin-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .falg { grid-template-columns: minmax(0, 1fr); } .flimb { max-width: 200px; margin: 0 auto; } }
+@media (max-width: 480px) { .tens-lvls { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 600px) { #planFig { flex-direction: column; align-items: center; } .pf-limb { flex: none; width: 62%; padding-right: 0; border-right: 0; } .pf-knee { width: 100%; } }   /* wide enough that its labels stay apart */
+@media (max-width: 760px) { .caps { grid-template-columns: minmax(0, 1fr); } .scr-in { padding: 14px 14px 20px; } .scr-ft { padding: 8px 14px; flex-wrap: wrap; position: static; } .scr-ft .btns { margin-left: 0; width: 100%; justify-content: flex-end; } }
+/* Layout classes set by fitViews(): L-mid below 1280 px, L-narrow at 1100 px and below; cq1 and cq2 on narrow panes */
+.L-mid .band { grid-template-columns: 1fr 1fr 1.25fr 1fr; grid-template-areas: "ext flex al rs" "bal bal al rs"; row-gap: 6px; padding-bottom: 5px; }
+.L-mid .t-flex, .L-mid .t-al, .L-mid .t-bal { border-right: 1px solid var(--line2); } .L-mid .t-rs { border-right: 0; }
+.L-mid .t-bal { border-top: 1px solid var(--line2); padding-top: 6px; }
+/* below 1280 px the gap tiles put their target on its own line, and the balance screen's footer keeps to one line, so text
+   wrapping or unwrapping as the window changes never moves the drawings */
+.L-mid .th .tt { flex-basis: 100%; }
+html[data-scr="balance"]:not(.L-narrow) footer { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11.5px; } .L-mid .t-al { border-left: 1px solid var(--line2); margin-left: -1px; }
+.L-narrow main { grid-template-columns: minmax(0, 1fr); }
+.L-narrow section.view { border-right: 0; border-bottom: 1px solid var(--line2); }
+.L-narrow .tbar { flex-wrap: wrap; padding: 6px 14px; } .L-narrow .case { flex-basis: 100%; order: -1; } .L-narrow .vsep { display: none; }
+.L-narrow .band { height: var(--bandh, auto); overflow-y: auto; }
+/* one column under 900 px: two tiles a row, alignment on a row of its own */
+@media (max-width: 939px) { .L-narrow .band { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "ext flex" "al al" "rs bal"; row-gap: 8px; }
+  .L-narrow .t-al { border-left: 0; margin-left: 0; border-right: 0; border-top: 1px solid var(--line2); padding-top: 6px; } .L-narrow .t-rs { border-top: 1px solid var(--line2); padding-top: 6px; border-right: 1px solid var(--line2); } .L-narrow .t-bal { border-right: 0; } }
+.L-narrow .bandgrip { display: flex; }
+@media (max-width: 440px) { .L-narrow .band { grid-template-areas: "ext flex" "al al" "rs rs" "bal bal"; } .L-narrow .t-rs { border-right: 0; } }
+.L-narrow .advsoft { flex: 1 1 100%; } .L-narrow .advarc { flex-basis: 100%; }
+.L-narrow .softgrid { display: flex; flex-wrap: wrap; gap: 6px 10px; } .L-narrow .softgrid .cr { display: flex; align-items: center; flex: 1 1 100%; min-height: 30px; }
+.L-narrow .advstrip .softgrid > .ck { order: 1; margin-left: 0; justify-self: start; } .L-narrow .softgrid .osr { order: 2; flex-wrap: wrap; gap: 4px 0; } .L-narrow .softgrid .cl { width: 100px; flex: none; } .L-narrow .softgrid .osr .cl { width: auto; } .L-narrow .softgrid .cr .stp { flex: 0 1 300px; min-width: 0; }
+@media (max-width: 350px) { .lx2 { display: none; } .L-narrow .softgrid .cl { width: 58px; } }
+/* the narrowest panes (phones under 360 px): one column of controls, each label beside its control again */
+.view.cq2 .vh > span { display: none; }
+/* Case screen: CPAK grid beside difficulty and the knee it gives */
+.case-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr); gap: 0 32px; align-items: start; }
+/* beside the case the grid fills the window height: the three rows of types grow, the margins keep their size */
+@media (min-width: 981px) { .case-l .cpgrid { grid-template-rows: auto auto repeat(3, minmax(100px, 1fr)); height: clamp(440px, calc(100vh - 205px), 720px); } }
+/* the case: its values across the top, then its knee (joint line against level) and its whole standing limb, which fill
+   the column down to the bottom of the grid */
+.kcase { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "kv kv" "knee limb"; gap: 14px 20px; }
+.kcase .kv { grid-area: kv; } .kfig { grid-area: knee; margin: 0; align-self: center; justify-self: center; width: 100%; max-width: 300px; text-align: center; } .klimb { grid-area: limb; margin: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; }
+.kfig svg.cpth.knee { width: 100%; height: auto; } .kfig figcaption { font-size: 13px; color: #5c636b; margin-top: 6px; }
+.klimb svg { display: block; height: calc(100% - 40px); width: auto; min-height: 200px; max-height: 520px; } .klimb figcaption { display: flex; flex-direction: column; align-items: center; } .klimb figcaption small { font-size: 12.5px; color: #5c636b; } .klimb figcaption b { font-size: 15px; color: #1a1a1a; white-space: nowrap; }
+@media (min-width: 981px) { .case-grid { align-items: stretch; } .case-r { display: flex; flex-direction: column; min-height: 0; } .kcase { flex: 1; min-height: 0; } }
+@media (max-width: 980px) { .klimb svg { height: 300px; } }
+@media (max-width: 480px) { .klimb svg { height: 280px; } .kfig figcaption { font-size: 12px; } }
+.case-l .cpgrid { max-width: none; }
+.dif { display: flex; align-items: center; gap: 14px; }
+.dif input { flex: 1; min-width: 0; accent-color: #22262b; height: 24px; margin: 0; cursor: pointer; }
+.dif output { min-width: 112px; font-size: 14.5px; color: #3b4148; } .dif output b { font-size: 26px; color: #1a1a1a; margin-right: 6px; }
+.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 5px 16px; font-size: 15px; line-height: 1.35; }
+.kv .k { color: #5c636b; } .kv > span:not(.k) { font-weight: bold; color: #1a1a1a; }
+.kh { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; } .kh h2 { margin-bottom: 6px; }
+/* how the case is chosen: a random case unless the type or a number is chosen; the choice in effect is filled dark, like a strategy */
+/* three ways in, side by side: a random case, a type from the CPAK grid, or a case by its number */
+.pickrow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 1040px; margin: 2px 0 14px; }
+.pickmode { grid-column: span 2; display: grid; grid-template-columns: subgrid; }
+.pmcard { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "i t"; align-items: center; gap: 1px 12px; min-height: 54px; text-align: left; padding: 8px 14px; border: 1px solid #c3c8ce; background: #ffffff; color: #1a1a1a; cursor: pointer; font: inherit; margin: 0; }
+.pmcard:hover { border-color: #6b737c; background: #f6f7f8; } .pmcard[aria-checked="true"], .pmnum.on { background: #22262b; border-color: #22262b; color: #ffffff; }
+.pmcard svg { grid-area: i; width: 28px; height: 28px; } .pmt { grid-area: t; font-size: 17px; font-weight: bold; cursor: inherit; }
+.pmnum { grid-template-columns: auto auto minmax(0, 1fr); grid-template-areas: "i t n"; position: relative; cursor: text; }
+.pmnum .pmin { grid-area: n; justify-self: end; display: flex; gap: 6px; }
+.pmnum input { width: 92px; height: 32px; padding: 0 9px; border: 1px solid #9aa2ab; border-radius: 0; background: #ffffff; color: #1a1a1a; font: inherit; font-size: 16px; font-weight: bold; font-variant-numeric: tabular-nums; }
+.pmnum input::placeholder { color: #8a9099; font-weight: normal; font-size: 14px; } .pmnum input[aria-invalid="true"] { border-color: var(--tight); outline: 1px solid var(--tight); }
+.pmgo { height: 32px; padding: 0 13px; border: 1px solid #22262b; background: #22262b; color: #ffffff; font: inherit; font-size: 14.5px; font-weight: bold; cursor: pointer; }
+.pmnum.on .pmgo { background: #ffffff; color: #22262b; border-color: #ffffff; } .pmnum.on input { border-color: #ffffff; }
+.numerr { position: absolute; left: 0; top: calc(100% + 3px); font-size: 12.5px; color: var(--tight); white-space: nowrap; }   /* under the card, in its margin, so nothing moves */
+@media (max-width: 1139px) { .pickrow { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 18px; } .pickmode, .pmnum { grid-column: 1 / -1; } .pmnum .pmin { justify-self: start; } }   /* three across only where the number fits */
+#newKnee { display: inline-flex; align-items: center; gap: 6px; flex: none; white-space: nowrap; } #newKnee svg { width: 15px; height: 15px; }
+/* a random case: no grid, the knee across the page */
+.case-grid.rnd { grid-template-columns: minmax(0, 1fr); } .case-grid.rnd .case-l { display: none; } .case-grid.rnd .case-r { max-width: 1180px; } .case-grid.rnd .dif { max-width: 560px; }
+.case-grid.rnd .kh { justify-content: flex-start; gap: 18px; }
+@media (min-width: 981px) { .case-grid.rnd .kcase { grid-template-columns: minmax(200px, 260px) minmax(0, 560px) auto; grid-template-rows: auto; grid-template-areas: "kv knee limb"; justify-content: start; align-items: start; gap: 14px 40px; } .case-grid.rnd .kfig { align-self: center; max-width: 560px; } .case-grid.rnd .klimb svg { height: clamp(260px, calc(100vh - 400px), 500px); } }
+@media (max-width: 520px) { .pickrow { gap: 8px; } .pmcard { grid-template-columns: minmax(0, 1fr); grid-template-areas: "t"; min-height: 46px; padding: 6px 10px; gap: 2px; } .pmcard svg { display: none; } .pmt { font-size: 15.5px; }
+  .pmnum { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "t n"; gap: 10px; } .pmnum input { width: 84px; } }
+/* the next random case: the one obvious way on from the final screen */
+.scr-ft .btn.cta { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-size: 15.5px; font-weight: bold; } .btn.cta svg { width: 18px; height: 18px; }
+.kadv { margin-left: 10px; padding: 1px 6px; border: 1px solid var(--warn); color: var(--warn); font-size: 11.5px; letter-spacing: 0.06em; vertical-align: 1px; }
+.tbar .srcbtn { margin-left: auto; } html[data-scr="sources"] .srcbtn { display: none; } html[data-scr="balance"] .srcbtn { margin-left: 8px; }
+html[data-scr="sources"] .caseonly { display: none !important; }
+/* Sources page */
+.srcpage { max-width: 980px; }
+.srcgrp { padding: 8px 0; border-top: 1px solid var(--line2); } .srcgrp:first-child { border-top: 0; }
+.srcgrp h2 { margin: 0 0 6px; }
+.srcgrp ul { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55; color: #3b4148; columns: 3 230px; column-gap: 28px; } .srcgrp li { break-inside: avoid; } .srcgrp a { color: #1d4ed8; }
+@media (max-width: 480px) { .app2 { display: none; } .tbar .srcbtn { height: 26px; padding: 0 7px; font-size: 12.5px; }
+  .tbar { gap: 8px; padding-left: 10px; padding-right: 10px; } .steps { gap: 0; } .steps button, html[data-scr="balance"] .steps button:not(.cur) { padding: 0 3px; }
+  .gb { grid-template-columns: 60px minmax(0, 1fr) 60px; } .gap .v { font-size: 28px; line-height: 32px; } .gap .v.long { font-size: 22px; } }   /* phones: the title bar on one row, room for the gap shapes */
+/* the balance bar below the widest layout: the short app name leaves room for the case and Sources */
+html.L-mid[data-scr="balance"] .app2 { display: none; }
+@media (max-width: 980px) { .case-grid { grid-template-columns: minmax(0, 1fr); } .case-r { max-width: 620px; } }
+@media (max-width: 520px) { .dif { flex-wrap: wrap; } .dif input { flex-basis: 100%; } .dif output { order: -1; } }
+/* Phones and narrow windows on the balance screen: one view at a time, chosen in the title bar, the four gaps pinned under
+   it and the implant panel docked under the drawing, all in the first screen; the case, the steps, Reset, Advanced and
+   its strip, and the summary band follow below. fitViews() sizes the drawing to the screen height left. */
+.vtabs, .gstrip, .phdet, .dockph { display: none; }
+html.L-narrow[data-scr="balance"] .tbar { flex-wrap: nowrap; justify-content: space-between; gap: 10px; min-height: 44px; padding: 6px 12px; }
+html.L-narrow[data-scr="balance"] .tbar > :not(.vtabs):not(#resectBtn) { display: none; }
+html.L-narrow[data-scr="balance"] .vtabs { display: flex; flex: none; border: 1px solid #5b626a; }
+.vtabs button { height: 30px; padding: 0 11px; border: 0; background: none; color: #d6dbe0; font-size: 14px; cursor: pointer; white-space: nowrap; } .vtabs button + button { border-left: 1px solid #5b626a; }
+.vtabs button[aria-selected="true"] { background: #e9ecef; color: #22262b; font-weight: bold; } .vtabs button:focus-visible { outline: 2px solid #9ec2ff; outline-offset: -2px; }
+html.L-narrow[data-scr="balance"] #resectBtn { height: 32px; padding: 0 12px; }
+html.L-narrow[data-scr="balance"] .gstrip { display: grid; grid-template-columns: minmax(84px, max-content) minmax(0, 1fr) minmax(0, 1fr); align-items: baseline; gap: 0 10px; padding: 4px 12px 6px; }
+.gstrip .gbad { display: flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: bold; white-space: nowrap; } .gstrip .gbad svg { width: 14px; height: 14px; } .gstrip .gbad.good { color: var(--ok); } .gstrip .gbad.warn { color: var(--warn); }
+.gstrip .gsd { font-size: 12.5px; color: #5c636b; } .gstrip .gsl { font-size: 13px; font-weight: bold; color: #3b4148; white-space: nowrap; }
+.gstrip .gsc { white-space: nowrap; } .gstrip .gsc b { display: inline-block; min-width: 48px; font-size: 21px; line-height: 26px; } .gstrip .gsc i { font-style: normal; font-size: 12.5px; font-weight: bold; margin-left: 4px; }
+.gstrip .tight b, .gstrip .tight i { color: var(--tight); } .gstrip .loose b, .gstrip .loose i { color: var(--loose); } .gstrip .ok b, .gstrip .ok i { color: var(--ok); }
+html.L-narrow[data-scr="balance"] main > section.view:not(.on) { display: none; }
+html.L-narrow[data-scr="balance"] section.view { border-bottom: 0; padding: 4px 12px 8px; }
+html.L-narrow[data-scr="balance"] .vh { height: 22px; min-height: 22px; } html.L-narrow[data-scr="balance"] .vh > b:not(.vht) { display: none; }
+html.L-narrow[data-scr="balance"] .vh > span { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html.L-narrow[data-scr="balance"] .bandgrip { display: none; }
+/* the docked panel: the width of the pane up to 460 px, rows tall enough for a finger */
+html.L-narrow[data-scr="balance"] .pad { width: 100%; max-width: 460px; margin: 6px auto 0; }
+html.L-narrow[data-scr="balance"] .pad .px { display: none; }
+html.L-narrow[data-scr="balance"] .pad .ph { height: 32px; } html.L-narrow[data-scr="balance"] .pad .seg.pcs { height: 25px; } html.L-narrow[data-scr="balance"] .pad .seg.pcs button { padding: 0 14px; font-size: 13.5px; }
+html.L-narrow[data-scr="balance"] .pad .ib { width: 36px; height: 28px; }
+html.L-narrow[data-scr="balance"] .pad .pb { grid-template-columns: 62px minmax(0, 1fr); gap: 5px 8px; padding: 6px 10px; }
+html.L-narrow[data-scr="balance"] .pad .pl { font-size: 13px; }
+html.L-narrow[data-scr="balance"] .pad .pst { height: 32px; grid-template-columns: minmax(64px, 26%) minmax(0, 1fr) minmax(64px, 26%); }
+html.L-narrow[data-scr="balance"] .pad .pst button { font-size: 13.5px; gap: 4px; } html.L-narrow[data-scr="balance"] .pad .pst output { font-size: 14.5px; }
+html.L-narrow[data-scr="balance"] .pad .seg.pvs { height: 30px; } html.L-narrow[data-scr="balance"] .pad .seg button { font-size: 13.5px; }
+html.L-narrow[data-scr="balance"] .pad .pf { grid-template-columns: 62px auto auto minmax(0, 1fr); padding: 5px 10px 6px; }
+html.L-narrow[data-scr="balance"] .pad .pf .stp { width: 104px; height: 30px; } html.L-narrow[data-scr="balance"] .pad .pf .stp.ins { width: 126px; } html.L-narrow[data-scr="balance"] .pad .pf .stp button { width: 34px; } html.L-narrow[data-scr="balance"] .pad .pf .seg { height: 30px; } html.L-narrow[data-scr="balance"] .pad .pf .seg button { padding: 0 12px; }
+@media (max-width: 350px) {   /* the narrowest phones: the label column and the buttons a little tighter */
+  html.L-narrow[data-scr="balance"] .pad .pb { grid-template-columns: 50px minmax(0, 1fr); padding: 6px 8px; } html.L-narrow[data-scr="balance"] .pad .pl { font-size: 12.5px; }
+  html.L-narrow[data-scr="balance"] .pad .pst { grid-template-columns: minmax(50px, 23%) minmax(0, 1fr) minmax(50px, 23%); } html.L-narrow[data-scr="balance"] .pad .pst button { font-size: 12.5px; gap: 3px; } html.L-narrow[data-scr="balance"] .pad .pst output { font-size: 13.5px; }
+  html.L-narrow[data-scr="balance"] .pad .seg button { font-size: 12.5px; padding: 0 2px; }
+  html.L-narrow[data-scr="balance"] .pad .pf { grid-template-columns: 50px auto auto minmax(0, 1fr); gap: 5px; padding: 5px 8px 6px; } html.L-narrow[data-scr="balance"] .pad .pf .stp { width: 88px; } html.L-narrow[data-scr="balance"] .pad .pf .stp.ins { width: 110px; } html.L-narrow[data-scr="balance"] .pad .pf .stp button { width: 28px; } html.L-narrow[data-scr="balance"] .pad .pf .seg button { padding: 0 8px; }
+}
+html.L-narrow[data-scr="balance"] .dockph:not([hidden]) { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 460px; height: var(--dockh, 240px); margin: 6px auto 0; box-sizing: border-box; padding: 0 24px; border: 1px dashed #c3c8ce; color: #5c636b; font-size: 14px; text-align: center; }
+html.L-narrow[data-scr="balance"] .readout { padding-top: 6px; }
+/* a phone held sideways: the gaps on one line, the panel beside the drawing */
+html.L-land[data-scr="balance"] .gstrip { grid-template-columns: max-content max-content max-content max-content max-content max-content max-content; justify-content: space-between; padding: 2px 12px 3px; }
+html.L-land[data-scr="balance"] .gstrip .gsd { display: none; } html.L-land[data-scr="balance"] .gstrip .gsc::before { content: attr(data-sd) " "; font-size: 12.5px; color: #5c636b; }
+html.L-land[data-scr="balance"] .gstrip .gsc b { min-width: 0; font-size: 19px; line-height: 24px; }
+html.L-land[data-scr="balance"] section.view.on { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 340px); grid-template-rows: auto auto minmax(0, 1fr); column-gap: 14px; align-items: start; }
+html.L-land[data-scr="balance"] section.view.on > .vh { grid-column: 1 / -1; } html.L-land[data-scr="balance"] section.view.on > .picwrap { grid-column: 1; grid-row: 2 / 4; }
+html.L-land[data-scr="balance"] section.view.on > .pad, html.L-land[data-scr="balance"] section.view.on > .dockph { grid-column: 2; grid-row: 2; margin: 0; max-width: none; }
+html.L-land[data-scr="balance"] section.view.on > .readout { grid-column: 2; grid-row: 3; }
+.toast { position: fixed; z-index: 6; left: 50%; top: 132px; transform: translateX(-50%); max-width: calc(100vw - 32px); padding: 8px 14px; background: #22262b; color: #ffffff; font-size: 14px; font-weight: bold; border-radius: 6px; box-shadow: 0 6px 20px rgba(20, 30, 40, 0.25); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+.toast.show { animation: toast 3s ease-in-out forwards; } @keyframes toast { 0% { opacity: 0; } 8%, 80% { opacity: 1; } 100% { opacity: 0; } }   /* fades in and out in place */
+/* below the first screen: the case, the steps and tools, the Advanced strip, the summary */
+html.L-narrow[data-scr="balance"] .phdet { display: block; border-top: 1px solid #d5d9de; }
+.phcase { padding: 10px 12px 2px; font-size: 13.5px; color: #3b4148; line-height: 1.4; } .phcase b { font-size: 15px; color: #1a1a1a; margin-right: 6px; }
+.phtools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 6px 12px 10px; }
+.phtools .steps { flex-basis: 100%; flex-wrap: wrap; row-gap: 4px; } .rss { display: none; }
+@media (max-width: 400px) { html.L-narrow[data-scr="balance"] .vtabs button { padding: 0 8px; font-size: 13.5px; } html.L-narrow[data-scr="balance"] .rsl { display: none; } html.L-narrow[data-scr="balance"] .rss { display: inline; } }
+@media (max-width: 350px) { .gstrip .gsc b { min-width: 40px; font-size: 18px; } .gstrip .gsc i { font-size: 11.5px; margin-left: 2px; } .gstrip .gbad { font-size: 11.5px; } html.L-narrow[data-scr="balance"] .gstrip { grid-template-columns: max-content minmax(0, 1fr) minmax(0, 1fr); gap: 0 6px; padding-left: 8px; padding-right: 8px; } } .phtools .steps button { color: #3b4148; padding: 0 6px 0 2px; } .phtools .steps button i { border-color: #9aa2ab; }
+.phtools .steps button.done { color: #1a1a1a; } .phtools .steps button.done:hover, .phtools .steps button.ahead:hover { background: #eef1f4; color: #1a1a1a; } .phtools .steps button.ahead { color: #7b828a; }
+.phtools .steps button.cur i { background: #22262b; color: #ffffff; border-color: #22262b; } .phtools .steps button.cur { color: #1a1a1a; }
+html[data-scr="balance"] .phtools .steps button span, .phtools .steps button.cur span { display: inline; } .phtools .steps button { padding: 0 5px 0 2px; }
+.phtools .btn { height: 32px; padding: 0 14px; font-size: 14px; } .phtools .sw { color: var(--adv); font-weight: bold; font-size: 14px; } .phtools .sw .trk { background: #c3c9d0; } .phtools .sw input:checked + .trk { background: #f3b46b; }
+html.L-narrow[data-scr="balance"] .phdet .band { height: auto; overflow: visible; border-top: 1px solid var(--line2); padding-top: 8px; }
+html.L-narrow[data-scr="balance"] .phdet .advstrip { border-top: 1px solid var(--line2); }
+/* Phones on every screen: the title bar on one row (the app's short name, the step numbers, Sources; the screen's own
+   heading names the step and its line the case), the footer pinned with its short labels, shorter figures */
+.sx { display: none; }
+@media (max-width: 760px), (max-height: 500px) {
+  .tbar .case, .app3, .steps button.cur span { display: none; } html:not([data-scr="balance"]) .tbar { flex-wrap: nowrap; min-height: 44px; padding: 4px 12px; }
+  .scr-ft { position: sticky; flex-wrap: nowrap; padding: 8px 12px; gap: 10px; } .scr-ft .src, .scr-ft .ftsel { display: none; } .scr-ft .btns { width: 100%; margin-left: 0; flex-wrap: nowrap; justify-content: flex-end; }
+  .scr-ft .btn { padding: 0 12px; font-size: 14px; } .scr-ft .lx { display: none; } .scr-ft .sx { display: inline; }
+  #scrCase .scr-ft .ftsel { display: block; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } #scrCase .scr-ft .btns { width: auto; }
+  .tn2 { display: none; }   /* the second tension note is in the force info as well */
+}
+@media (max-width: 600px) {
+  #scrFinal .scr-ft .btns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; } #scrFinal .scr-ft .btn { padding: 0 4px; height: 32px; font-size: 13.5px; }
+  #scrFinal .scr-ft .btn.cta { grid-column: 1 / -1; justify-content: center; height: 44px; font-size: 16px; }
+  #planFig svg { max-height: 300px; } .capfig svg { max-height: 220px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="tbar">
+    <span class="app">TKA <span class="app2">Balancing </span><span class="app3">Simulator</span></span><span class="vsep"></span>
+    <nav class="steps" id="steps" aria-label="Steps"><button data-step="case"><i>1</i><span>Case</span></button><button data-step="reg"><i>2</i><span>Register</span></button><button data-step="plan"><i>3</i><span>Plan</span></button><button data-step="tension"><i>4</i><span>Tension</span></button><button data-step="balance"><i>5</i><span>Balance</span></button><button data-step="final"><i>6</i><span>Resect</span></button></nav>
+    <span class="vtabs" id="vtabs" role="tablist" aria-label="View"><button type="button" role="tab" data-vt="C">Coronal</button><button type="button" role="tab" data-vt="S">Sagittal</button><button type="button" role="tab" data-vt="A">Axial</button></span>
+    <span class="vsep caseonly"></span>
+    <span class="case caseonly"><b id="cname"></b><span class="csub"><span class="chip" id="clevel"></span><span class="chip side" id="cside"></span><span id="cplan"></span></span></span>
+    <span class="acts bal-only"><button class="tb" id="resetBtn" title="Return to the starting plan">Reset</button></span>
+    <span class="vsep bal-only"></span>
+    <span class="sws bal-only">
+      <label class="sw advsw"><input type="checkbox" role="switch" id="swAdv"><span class="trk"></span>Advanced</label>
+    </span>
+    <button class="tb go bal-only" id="resectBtn"><span class="rsl">Make resections</span><span class="rss">Resect</span></button>
+    <button class="tb srcbtn" id="srcBtn">Sources</button>
+  </div>
+  <div class="gstrip" id="gstrip" aria-label="Gaps, mm"></div>
+  <div class="band bal-only" aria-live="polite">
+    <section class="tile t-ext" aria-label="Extension gap">
+      <div class="th"><span class="tl">EXTENSION GAP, 10°</span><button class="tt tbtn" id="gtE" title="Edit target gaps"></button></div>
+      <div class="gb"><div class="gap" id="g_medial_ext"><span class="sd">Medial</span><span class="v"></span><span class="st"></span><span class="dl"></span></div><div class="gsh" id="gsE" aria-hidden="true"></div><div class="gap" id="g_lateral_ext"><span class="sd">Lateral</span><span class="v"></span><span class="st"></span><span class="dl"></span></div></div>
+    </section>
+    <section class="tile t-flex" aria-label="Flexion gap">
+      <div class="th"><span class="tl">FLEXION GAP, 90°</span><button class="tt tbtn" id="gtF" title="Edit target gaps"></button></div>
+      <div class="gb"><div class="gap" id="g_medial_flex"><span class="sd">Medial</span><span class="v"></span><span class="st"></span><span class="dl"></span></div><div class="gsh" id="gsF" aria-hidden="true"></div><div class="gap" id="g_lateral_flex"><span class="sd">Lateral</span><span class="v"></span><span class="st"></span><span class="dl"></span></div></div>
+    </section>
+    <section class="tile t-al" aria-label="Alignment, preop and plan">
+      <div class="th"><span class="tl">ALIGNMENT</span></div>
+      <table class="alt" id="alg"></table>
+    </section>
+    <section class="tile t-rs" aria-label="Resections">
+      <div class="th"><span class="tl" id="rsTl">RESECTIONS, mm</span><span class="tt rstag" id="rsTag" hidden>Recut: deeper only</span></div>
+      <div class="rtab"><span></span><span class="h">Med</span><span class="h">Lat</span><span class="rl">Distal femur</span><b id="rDm"></b><b id="rDl"></b><span class="rl">Posterior femur</span><b id="rPm"></b><b id="rPl"></b><span class="rl">Proximal tibia</span><b id="rTm"></b><b id="rTl"></b></div>
+    </section>
+    <section class="tile bal t-bal" aria-label="Balance">
+      <div class="th"><span class="tl">BALANCE</span><label class="sw totsw" title="Show totals, bone cut to bone cut: the residual plus the 8.5 mm femoral component and the tibial composite. Targets stay on the residual"><input type="checkbox" role="switch" id="swTot"><span class="trk"></span>Total gaps</label></div>
+      <div class="bgrid">
+        <div class="bcol"><div class="bst" id="badge"></div><div class="bsub" id="boff"></div><div class="bsub" id="bfull"></div></div>
+        <div class="bcol"><div class="bsub blim"><button class="link" id="limEdit" title="Change the limits">Limits</button><span id="wsum"></span></div><div class="warns" id="warns"><span></span><span></span></div></div>
+      </div>
+    </section>
+  </div>
+  <div class="bandgrip bal-only" id="bandGrip" role="separator" aria-orientation="horizontal" aria-label="Drag to resize the summary panel" tabindex="0"><span></span></div>
+</header>
+
+<section class="screen" id="scrCase" hidden aria-label="Choose a case">
+  <div class="scr-in">
+    <div class="scr-hd"><h1>Choose a case</h1></div>
+    <div class="pickrow">
+    <div class="pickmode" id="pickMode" role="radiogroup" aria-label="How the case is chosen">
+      <button type="button" class="pmcard" role="radio" data-m="random"><svg class="dice" viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6.6" cy="6.6" r="1.5" fill="currentColor"/><circle cx="13.4" cy="6.6" r="1.5" fill="currentColor"/><circle cx="10" cy="10" r="1.5" fill="currentColor"/><circle cx="6.6" cy="13.4" r="1.5" fill="currentColor"/><circle cx="13.4" cy="13.4" r="1.5" fill="currentColor"/></svg><span class="pmt">Random case</span></button>
+      <button type="button" class="pmcard" role="radio" data-m="choose"><svg class="gridi" viewBox="0 0 20 20" aria-hidden="true"><g fill="currentColor"><rect x="2" y="2" width="4.6" height="4.6" rx="0.8"/><rect x="7.7" y="2" width="4.6" height="4.6" rx="0.8"/><rect x="13.4" y="2" width="4.6" height="4.6" rx="0.8"/><rect x="2" y="7.7" width="4.6" height="4.6" rx="0.8"/><rect x="7.7" y="7.7" width="4.6" height="4.6" rx="0.8"/><rect x="13.4" y="7.7" width="4.6" height="4.6" rx="0.8"/><rect x="2" y="13.4" width="4.6" height="4.6" rx="0.8"/><rect x="7.7" y="13.4" width="4.6" height="4.6" rx="0.8"/><rect x="13.4" y="13.4" width="4.6" height="4.6" rx="0.8"/></g></svg><span class="pmt">Choose based on CPAK type</span></button>
+    </div>
+    <form class="pmcard pmnum" id="numForm" novalidate><svg class="hashi" viewBox="0 0 20 20" aria-hidden="true"><path d="M7.6 3 L6.2 17 M13.8 3 L12.4 17 M3.6 7.4 H17 M3 12.6 H16.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><label class="pmt" for="caseNum">Case number</label><span class="pmin"><input id="caseNum" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="16" aria-describedby="numErr"><button type="submit" class="pmgo">Go</button></span><span class="numerr" id="numErr" role="alert" hidden></span></form>
+    </div>
+    <div class="case-grid" id="caseGrid">
+      <div class="case-l"><h2>CPAK</h2><div id="kList"></div></div>
+      <div class="case-r">
+        <div id="difBox"><h2><label for="difSl">Difficulty</label></h2>
+        <div class="dif"><input type="range" id="difSl" min="1" max="10" step="1"><output id="difOut" for="difSl"></output></div></div>
+        <div class="kh"><h2>This case<span class="kadv" id="kAdv" hidden title="Advanced turns on for this case">Advanced</span></h2><button type="button" class="btn" id="newKnee">Another case</button></div>
+        <div class="kcase"><div class="kv" id="kPrev"></div><figure class="kfig"><div id="kFig" aria-hidden="true"></div><figcaption>Joint line in blue, level dashed</figcaption></figure><figure class="klimb" id="kLimb"></figure></div>
+      </div>
+    </div>
+  </div>
+  <div class="scr-ft"><div class="ftsel" id="kSel"></div><div class="btns"><button type="button" class="btn primary" id="caseNext">Next: register</button></div></div>
+</section>
+<section class="screen" id="scrReg" hidden aria-label="Register">
+  <div class="scr-in">
+    <div class="scr-hd"><h1>Register</h1><span class="sub" id="regCase"></span></div>
+    <div class="reg-grid">
+      <div class="reg-left">
+        <h2>Registration</h2>
+        <div class="regcards" id="regMode" role="radiogroup" aria-label="Registration">
+          <button type="button" class="regcard" role="radio" data-m="ct"><span class="rct">Preop CT Based Planning</span><span class="rcs">Registers bone, probing through cartilage</span><span class="rcf"></span></button>
+          <button type="button" class="regcard" role="radio" data-m="probe"><span class="rct">Imageless Planning - Intraop Registration Only</span><span class="rcs">Registers cartilage, or bone where worn through</span><span class="rcf"></span></button>
+        </div>
+        <div class="reglegend" id="regLeg"><span><i class="lc"></i>Cartilage</span><span><i class="ln"></i>Native surface</span><span><i class="lr"></i>Robot measures from</span><span><i class="lpt"></i>Registered point</span></div>
+      </div>
+      <div class="reg-fig"><div id="regFig"></div></div>
+    </div>
+  </div>
+  <div class="scr-ft"><div class="ftsel" id="regSel"></div><div class="btns"><button type="button" class="btn" id="regBack">Back</button><button type="button" class="btn" id="regGo">Register</button><button type="button" class="btn primary" id="regNext">Next: <span class="lx">initial resection planning</span><span class="sx">plan</span></button></div></div>
+</section>
+<section class="screen" id="scrPlan" hidden aria-label="Initial resection planning prior to laxity measurements">
+  <div class="scr-in">
+    <div class="scr-hd"><h1>Initial Resection Planning Prior to Laxity Measurements</h1><div class="seg tabs side" id="sideBtns" role="group" aria-label="Side"><button type="button" data-side="L">Left knee</button><button type="button" data-side="R">Right knee</button></div><span class="sub" id="planCase"></span></div>
+    <div class="plan-grid">
+      <div class="plan-left">
+        <h2>Starting strategy</h2>
+        <div class="strats" id="stratBtns" role="radiogroup" aria-label="Starting strategy"></div>
+        <p class="sub lock" id="stratLock" hidden>Locked once bone is cut.</p>
+        <h2>Limits</h2>
+        <div class="limlist" id="limList"></div>
+        <details id="dLimEdit"><summary>Edit limits</summary>
+          <div class="loadfrom"><label for="dLim">Start from</label><select id="dLim"></select></div>
+          <div class="lg" id="dLimGrid"></div>
+        </details>
+        <h2>Target gaps, mm</h2>
+        <div class="tg">
+          <span></span><span class="lab">Medial</span><span class="lab">Lateral</span>
+          <span>Extension</span><input id="t_me" type="number" step="0.5" aria-label="Medial extension target"><input id="t_le" type="number" step="0.5" aria-label="Lateral extension target">
+          <span>Flexion</span><input id="t_mf" type="number" step="0.5" aria-label="Medial flexion target"><input id="t_lf" type="number" step="0.5" aria-label="Lateral flexion target">
+        </div>
+        <div class="tol"><span>Tolerance ±</span><input id="t_tol" type="number" step="0.5" min="0.1" aria-label="Tolerance"><span>mm</span></div>
+      </div>
+      <figure class="plan-fig"><div id="planFig"></div><figcaption id="planCap"></figcaption></figure>
+    </div>
+  </div>
+  <div class="scr-ft"><div class="src"></div><div class="btns"><button type="button" class="btn" id="planBack">Back</button><button type="button" class="btn" id="planReturn" hidden>Back to balancing</button><button type="button" class="btn primary" id="planNext">Next: capture tension</button></div></div>
+</section>
+<section class="screen" id="scrTension" hidden aria-label="Capture ligament tension">
+  <div class="scr-in">
+    <div class="scr-hd"><h1>Capture ligament tension</h1><span class="sub" id="tensCase"></span></div>
+    <div class="tens-top"><div class="tens-l">
+    <div class="tens-hd"><h2>Force per compartment</h2><button type="button" class="info" id="tensInfoBtn" aria-expanded="false" aria-controls="tensInfo" aria-label="Why the force matters">i</button>
+      <div class="infopop" id="tensInfo" role="region" aria-label="Why the force matters" hidden>
+        <h3>Why the force matters</h3>
+        <p>Robotic tensioners commonly apply 70 to 100 N per compartment. Studies have used 25 to 250 N.</p>
+        <p>Gaps open quickly at first, then more slowly as the force rises, the lateral side more than the medial, most of all in flexion.</p>
+        <p>Here, 50 to 150 N widens the gaps about 2.5 mm medially and 4 to 5 mm laterally. A plan balanced at one force can be tight or loose at another.</p>
+        <div id="tensInfoTab"></div>
+        <p class="tinfw">At 50 or 150 N, the final screen also shows the gaps at 80 N.</p>
+      </div></div>
+    <div class="tens-lvls" id="tensLvls" role="radiogroup" aria-label="Force per compartment"></div></div>
+    <div class="tens-notes"><p class="tens-note" id="tensNote"></p>
+    <p class="tens-note tn2"><b>The ideal force for tensioning ligaments in robotic planning is not agreed on.</b> It still changes the plan: more force opens the same knee further, so the same target gaps need different resections.</p></div></div>
+    <div class="caps">
+      <div class="capbox" id="capE"><div class="caph"><h2><svg class="pose" viewBox="0 0 44 20" aria-hidden="true"><path d="M1 18 H43" stroke="#c3c8ce" stroke-width="1"/><path d="M4 14.2 L20.9 12.7 L36.9 14.1 L38.3 8.1" fill="none" stroke="#6b604c" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14.2 L20.9 12.7 L36.9 14.1 L38.3 8.1" fill="none" stroke="#efe6d3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20.9" cy="12.7" r="1.7" fill="#1d4ed8"/></svg>Extension, 10°</h2><span class="capst" id="capStE" aria-live="polite"></span></div><div class="capfig" id="capFigE"></div><div class="cvh" id="capHdE"></div><div class="capvals" id="capValE"></div><button type="button" class="btn primary capbtn" id="capBtnE">Capture extension</button></div>
+      <div class="capbox" id="capF"><div class="caph"><h2><svg class="pose" viewBox="0 0 44 20" aria-hidden="true"><path d="M1 18 H43" stroke="#c3c8ce" stroke-width="1"/><path d="M5 14.6 L16.5 3.6 L28 14.6 L34 15" fill="none" stroke="#6b604c" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 14.6 L16.5 3.6 L28 14.6 L34 15" fill="none" stroke="#efe6d3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16.5" cy="3.6" r="1.7" fill="#1d4ed8"/></svg>Flexion, 90°</h2><span class="capst" id="capStF" aria-live="polite"></span></div><div class="capfig" id="capFigF"></div><div class="cvh" id="capHdF"></div><div class="capvals" id="capValF"></div><button type="button" class="btn primary capbtn" id="capBtnF">Capture flexion</button></div>
+    </div>
+  </div>
+  <div class="scr-ft"><div class="src"></div><div class="btns"><button type="button" class="btn" id="tensBack">Back</button><button type="button" class="btn primary" id="tensNext" disabled>Next: balance</button></div></div>
+</section>
+<section class="screen" id="scrFinal" hidden aria-label="Resections made">
+  <div class="scr-in">
+    <div class="scr-hd"><h1 id="finTitle">Resections made</h1><div class="bst" id="finBadge"></div><span class="sub" id="finCase"></span></div>
+    <div class="fin-grid" id="finGrid"></div>
+  </div>
+  <div class="scr-ft"><div class="src"></div><div class="btns"><button type="button" class="btn" id="finRebal" title="Capture tension again, then balance and recut"><span class="lx">Rebalance and recut</span><span class="sx">Rebalance</span></button><button type="button" class="btn" id="finRecut" title="Back to balancing with the same capture">Recut</button><button type="button" class="btn" id="finNew" title="Back to the case screen"><span class="lx">Choose a case</span><span class="sx">Choose case</span></button><button type="button" class="btn primary cta" id="finNext" title="New random case, same difficulty and settings, straight to balancing"><svg class="dice" viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6.6" cy="6.6" r="1.5" fill="currentColor"/><circle cx="13.4" cy="6.6" r="1.5" fill="currentColor"/><circle cx="10" cy="10" r="1.5" fill="currentColor"/><circle cx="6.6" cy="13.4" r="1.5" fill="currentColor"/><circle cx="13.4" cy="13.4" r="1.5" fill="currentColor"/></svg>Next random case</button></div></div>
+</section>
+<section class="screen" id="scrSources" hidden aria-label="Sources">
+  <div class="scr-in srcpage">
+    <div class="scr-hd"><h1>Sources</h1></div>
+    <div id="srcList"></div>
+  </div>
+  <div class="scr-ft"><div class="src"></div><div class="btns"><button type="button" class="btn primary" id="srcBack">Back</button></div></div>
+</section>
+<main class="bal-only">
+  <section class="view" aria-label="Coronal">
+    <div class="vh"><b>Coronal</b><span id="hintC"></span></div>
+    <div class="picwrap" id="wrapC" tabindex="0" aria-label="Drawing. Click a component, then use arrow keys to move it and Shift with left or right to rotate it."><div class="pic" id="picC"></div></div><div class="pad" id="padC" hidden role="group" aria-label="Implant controls"></div>
+    <div class="readout" id="roC"></div>
+  </section>
+  <section class="view" aria-label="Sagittal">
+    <div class="vh"><b class="vht"><span class="seg vtog" id="viewS" role="group" aria-label="View"><button data-v="sag" aria-pressed="true">Sagittal</button><button data-v="post" aria-pressed="false">↻ Posterior</button></span></b><span id="hintS"></span></div>
+    <div class="picwrap" id="wrapS" tabindex="0" aria-label="Drawing. Click a component, then use arrow keys to move it and Shift with left or right to rotate it."><div class="pic" id="picS"></div></div><div class="pad" id="padS" hidden role="group" aria-label="Implant controls"></div><div class="dockph" id="dockPh" hidden>Seen from behind. Back to Sagittal to move the implants.</div>
+    <div class="readout" id="roS"></div>
+  </section>
+  <section class="view" aria-label="Axial">
+    <div class="vh"><b>Axial</b><span id="hintA">Anterior up</span></div>
+    <div class="picwrap" id="wrapA" tabindex="0" aria-label="Drawing. Click a component, then use arrow keys to move it and Shift with left or right to rotate it."><div class="pic ax" id="picA"></div></div><div class="pad" id="padA" hidden role="group" aria-label="Implant controls"></div>
+    <div class="readout" id="roA"><span id="grooveTxt"></span><span id="teaTxt"></span><span id="pcaTxt"></span></div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status" hidden></div>
+<section class="phdet" id="phDet" aria-label="Case, steps and summary">
+  <div class="phcase" id="phCase"></div>
+  <div class="phtools"><button type="button" class="btn" id="phReset" title="Return to the starting plan">Reset</button><label class="sw phadv"><input type="checkbox" role="switch" id="swAdv2"><span class="trk"></span>Advanced</label><button type="button" class="btn" id="phSrc">Sources</button></div>
+</section>
+<section class="advstrip bal-only" id="adv" hidden aria-label="Advanced">
+  <div class="advcol advsoft">
+    <div class="advhd"><span class="tl">SOFT TISSUE</span></div>
+    <div class="softgrid">
+      <div class="cr"><span class="cl">Medial<span class="lx2"> release</span></span><div class="stp wide rel" data-s="medial_steps"><button data-d="-1" aria-label="Take back a medial release step">−</button><output></output><button data-d="1" aria-label="Next medial release step">+</button></div></div>
+      <label class="ck" title="Opens both flexion gaps 2 mm, more where the PCL held the femur up the insert's posterior dish. Takes back half of a flexion contracture, up to 3°"><input type="checkbox" data-s="pcl"><i class="cb"></i><span>PCL resection</span></label>
+      <div class="cr"><span class="cl">Lateral<span class="lx2"> release</span></span><div class="stp wide rel" data-s="lateral_steps"><button data-d="-1" aria-label="Take back a lateral release step">−</button><output></output><button data-d="1" aria-label="Next lateral release step">+</button></div></div>
+      <label class="ck" title="Takes back the rest of a flexion contracture, up to 9°, and opens full extension 0.5 mm. Flexion unchanged"><input type="checkbox" data-s="capsule"><i class="cb"></i><span>Capsule release</span></label>
+      <div class="cr osr" id="ostRow"><span class="cl">Posterior osteophytes</span><span class="osts"><span class="osn" id="ostNone">None</span><label class="ck" id="ostM"><input type="checkbox" data-s="osteo_medial"><i class="cb"></i><span></span></label><label class="ck" id="ostL"><input type="checkbox" data-s="osteo_lateral"><i class="cb"></i><span></span></label></span></div>
+    </div>
+  </div>
+  <div class="advcol advarc">
+    <div class="advhd"><span class="tl">GAPS THROUGH ROM, mm</span><div class="legend" id="arcLeg"></div></div>
+    <div id="arcSvg"></div>
+  </div>
+</section>
+</div>
+<footer>Educational simulation with a simplified model and a generic implant. Not for surgical planning. Not a medical device. All cases are fictional. © 2026 Andrew B. Harris, MD. All rights reserved.</footer>
+<script src="app.js"></script>
+</body></html>

@@ -214,6 +214,7 @@ p {
   padding-bottom: 2px;
 }
 
+
 /* ===== Dropdown navigation ===== */
 
 .nav-item {
@@ -2224,3 +2225,51 @@ summary:focus-visible,
 .hero-langs a { color: inherit; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
 .hero-langs a:hover, .hero-langs a:focus-visible { text-decoration-color: currentColor; }
 .hero-langs .sep { opacity: .5; margin: 0 2px; }
+
+/* One-row header, restored 2026-10-15. Adding "For Trainees" pushed the nav onto a second row;
+   Andy found the 148px two-row header too tall, so the nav label "Meet Dr. Harris" became "About"
+   and the nav spacing tightened (22px became 18px on desktop, less on narrower screens), which
+   brings it back to one row from 881px up: 91px tall above 1100px, 89px below. The last dropdown
+   (For Trainees) opens leftward so its menu stays inside the viewport. Where the header still
+   wraps (701 to 880px), center both rows so the short second row does not read as off-center. */
+@media (min-width: 1200px) {
+  .nav-links > a, .nav-item { margin-right: 18px; }
+}
+@media (min-width: 1101px) and (max-width: 1199px) {
+  .nav-links > a, .nav-item { margin-right: 14px; }
+}
+@media (min-width: 951px) and (max-width: 1100px) {
+  .nav-links > a, .nav-item { margin-right: 10px; }
+}
+@media (min-width: 881px) and (max-width: 950px) {
+  .brand { font-size: 16px; }
+  .nav-links a { font-size: 11.5px; }
+  .nav-links > a, .nav-item { margin-right: 5px; }
+}
+@media (min-width: 881px) {
+  .nav-item:last-of-type .nav-menu { left: auto; right: -16px; }
+}
+@media (min-width: 701px) and (max-width: 880px) {
+  .site-header .wrap { justify-content: center; }
+  .site-header .nav-links { flex: 1 0 100%; justify-content: center; }
+}
+
+/* Header alignment, 2026-10-16. The nav words sat at four different heights (up to 2.5px
+   apart): plain links, dropdown parents (inline-flex), the active link (its underline was a
+   border plus 2px padding, which lifted the word) and the Contact box each lined up by their
+   boxes, not their text. Align the row on the text baseline, draw the active underline as a
+   text decoration so it adds no height, and slim the Contact box so it sits closer to the words. */
+.nav-links { align-items: baseline; }
+.nav-links > a, .nav-parent { line-height: 1.25; }
+.nav-links a.active {
+  border-bottom: 0;
+  padding-bottom: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+.nav-links .nav-cta { line-height: 1.25; padding: 8px 18px; }
+@media (min-width: 881px) and (max-width: 1100px) { .nav-links .nav-cta { padding: 7px 12px; } }
+@media (min-width: 881px) and (max-width: 950px) { .nav-links .nav-cta { padding: 6px 9px; } }
+@media (max-width: 700px) { .nav-links .nav-cta { padding: 7px 14px; } }
