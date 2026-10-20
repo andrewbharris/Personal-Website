@@ -198,16 +198,13 @@ html[data-scr="balance"] body { display: flex; flex-direction: column; min-heigh
 /* Advanced: soft tissue and the gaps through the range of motion, on a cool gray ground under an orange rule */
 .advstrip { display: flex; flex-wrap: wrap; gap: 8px 36px; padding: 5px 14px 6px; border-top: 2px solid var(--adv); background: #f6f7f9; }
 .advcol { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.advsoft { flex: none; } .advarc { flex: 1 1 300px; container-type: inline-size; }
-.advhd { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; min-height: 16px; } .advarc .advhd { flex-wrap: nowrap; } .L-narrow .advarc .advhd { flex-wrap: wrap; }   /* the legend never drops to a second line on a wide window */
+.advsoft { flex: none; }
+.advhd { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; min-height: 16px; }
 /* soft tissue as a table: a label and its control a row, the posterior structures in a column of equal chips beside
    the releases, the posterior osteophytes on the last row (None when the knee has none, so the columns never change) */
 .softgrid { display: grid; grid-template-columns: max-content max-content max-content; grid-auto-rows: 28px; gap: 3px 0; align-items: center; } .softgrid .stp { height: 28px; }
 .softgrid .cr { display: contents; } .softgrid .cl { width: auto; padding-right: 12px; } .advstrip .softgrid > .ck { margin-left: 14px; justify-self: stretch; }
 .softgrid .osts { grid-column: 2 / 4; display: flex; align-items: center; gap: 6px; } .softgrid .osn { font-size: 13px; color: #8a9099; } .stp.rel { width: 210px; }
-#arcSvg { min-width: 0; height: 94px; touch-action: pan-y; }   /* the chart's own height (ARC_H in draw.js) */
-.legend { display: flex; gap: 14px; font-size: 12px; color: #5c636b; white-space: nowrap; overflow: hidden; } .legend i { display: inline-block; width: 14px; height: 8px; vertical-align: -1px; margin-right: 5px; }
-.legend .lgb { background: #e5e8ec; } .legend .lgt { background: rgba(194, 65, 12, 0.22); } .legend .lgl { background: rgba(29, 78, 216, 0.22); } .legend .lgc { width: 8px; border-radius: 50%; background: #5c636b; }
 /* posterior steps as chips: a box and a name, dark once done */
 .advstrip label.ck { position: relative; display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px 0 9px; border: 1px solid #b9bfc6; border-radius: 3px; background: #ffffff; font-size: 13px; color: #2f353b; cursor: pointer; white-space: nowrap; user-select: none; -webkit-user-select: none; justify-self: start; }
 .advstrip label.ck:hover { border-color: #6b737c; } .advstrip label.ck input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: inherit; }   /* the whole chip is the box */
@@ -247,11 +244,8 @@ html[data-scr="balance"] .steps button:not(.cur) span { display: none; } html[da
 .btn.primary:hover { background: #3a4047; } .btn.primary:disabled { background: #b8bec5; border-color: #b8bec5; cursor: default; }
 .src { font-size: 13px; color: #5c636b; line-height: 1.55; min-width: 0; } .src a { color: #1d4ed8; } .src b { color: #2a2f35; margin-right: 4px; }
 .ftsel { font-size: 14px; color: #3b4148; min-width: 0; } .ftsel b { font-size: 15.5px; color: #1a1a1a; margin-right: 8px; }
-.seg.tabs { height: 32px; } .seg.tabs button { padding: 0 14px; font-size: 14px; }
 /* Side: drawings mirror for a right knee; the medial and lateral readouts beside them swap with them */
 .side-R .gb > .gap:first-child, .side-R .capvals > .gap:first-child { order: 3; } .side-R .gb > .gsh { order: 2; } .side-R .gb > .gap:last-child, .side-R .capvals > .gap:last-child { order: 1; }
-.chip.side { color: #ffffff; border-color: #8a929b; }
-.seg.side button[aria-pressed="true"] { font-weight: bold; }
 .rtab b.bad { color: var(--tight); } .rstag { color: var(--warn); font-weight: bold; }
 .strat:disabled { cursor: default; opacity: 0.55; } .strat:disabled:hover { border-color: #c3c8ce; background: #ffffff; } .strat[aria-checked="true"]:disabled { opacity: 1; background: #22262b; } .lock { margin: 6px 0 0; }
 /* CPAK grid: aHKA across, JLO down, cells shaded by share */
@@ -395,7 +389,7 @@ html[data-scr="balance"]:not(.L-narrow) footer { white-space: nowrap; overflow: 
   .L-narrow .t-al { border-left: 0; margin-left: 0; border-right: 0; border-top: 1px solid var(--line2); padding-top: 6px; } .L-narrow .t-rs { border-top: 1px solid var(--line2); padding-top: 6px; border-right: 1px solid var(--line2); } .L-narrow .t-bal { border-right: 0; } }
 .L-narrow .bandgrip { display: flex; }
 @media (max-width: 440px) { .L-narrow .band { grid-template-areas: "ext flex" "al al" "rs rs" "bal bal"; } .L-narrow .t-rs { border-right: 0; } }
-.L-narrow .advsoft { flex: 1 1 100%; } .L-narrow .advarc { flex-basis: 100%; }
+.L-narrow .advsoft { flex: 1 1 100%; }
 .L-narrow .softgrid { display: flex; flex-wrap: wrap; gap: 6px 10px; } .L-narrow .softgrid .cr { display: flex; align-items: center; flex: 1 1 100%; min-height: 30px; }
 .L-narrow .advstrip .softgrid > .ck { order: 1; margin-left: 0; justify-self: start; } .L-narrow .softgrid .osr { order: 2; flex-wrap: wrap; gap: 4px 0; } .L-narrow .softgrid .cl { width: 100px; flex: none; } .L-narrow .softgrid .osr .cl { width: auto; } .L-narrow .softgrid .cr .stp { flex: 0 1 300px; min-width: 0; }
 @media (max-width: 350px) { .lx2 { display: none; } .L-narrow .softgrid .cl { width: 58px; } }
@@ -445,17 +439,25 @@ html[data-scr="balance"]:not(.L-narrow) footer { white-space: nowrap; overflow: 
   .pmnum { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "t n"; gap: 10px; } .pmnum input { width: 84px; } }
 /* the next random case: the one obvious way on from the final screen */
 .scr-ft .btn.cta { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 20px; font-size: 15.5px; font-weight: bold; } .btn.cta svg { width: 18px; height: 18px; }
-.kadv { margin-left: 10px; padding: 1px 6px; border: 1px solid var(--warn); color: var(--warn); font-size: 11.5px; letter-spacing: 0.06em; vertical-align: 1px; }
-.tbar .srcbtn { margin-left: auto; } html[data-scr="sources"] .srcbtn { display: none; } html[data-scr="balance"] .srcbtn { margin-left: 8px; }
+
+.sidesw { display: flex; flex: none; height: 30px; border: 1px solid #4b525a; }
+.sidesw button { width: 30px; border: 0; background: #2e3339; color: #c3c9d0; font-size: 13.5px; font-weight: bold; cursor: pointer; }
+.sidesw button + button { border-left: 1px solid #4b525a; } .sidesw button:hover:not([aria-pressed="true"]) { color: #ffffff; }
+.sidesw button[aria-pressed="true"] { background: #e9ecef; color: #22262b; cursor: default; }
+.tbar .sidesw { margin-left: auto; } html[data-scr="sources"] .tbar .sidesw { display: none; } html[data-scr="balance"] .tbar .sidesw { margin-left: 8px; }
+.phtools .sidesw { height: 32px; border-color: #b9bfc6; } .phtools .sidesw button { width: 36px; background: #ffffff; color: #4b525a; font-size: 14px; } .phtools .sidesw button + button { border-left-color: #b9bfc6; }
+.phtools .sidesw button[aria-pressed="true"] { background: #22262b; color: #ffffff; }
+.tbar .srcbtn { margin-left: 8px; } html[data-scr="sources"] .srcbtn { display: none; } html[data-scr="balance"] .srcbtn { margin-left: 8px; }
 html[data-scr="sources"] .caseonly { display: none !important; }
 /* Sources page */
 .srcpage { max-width: 980px; }
 .srcgrp { padding: 8px 0; border-top: 1px solid var(--line2); } .srcgrp:first-child { border-top: 0; }
 .srcgrp h2 { margin: 0 0 6px; }
 .srcgrp ul { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55; color: #3b4148; columns: 3 230px; column-gap: 28px; } .srcgrp li { break-inside: avoid; } .srcgrp a { color: #1d4ed8; }
-@media (max-width: 480px) { .app2 { display: none; } .tbar .srcbtn { height: 26px; padding: 0 7px; font-size: 12.5px; }
+@media (max-width: 480px) { .app2, .tbar .app, .tbar .app + .vsep { display: none; } .tbar .srcbtn { height: 26px; padding: 0 7px; font-size: 12.5px; } .tbar .sidesw { height: 26px; } .tbar .sidesw button { width: 26px; font-size: 12.5px; }
   .tbar { gap: 8px; padding-left: 10px; padding-right: 10px; } .steps { gap: 0; } .steps button, html[data-scr="balance"] .steps button:not(.cur) { padding: 0 3px; }
-  .gb { grid-template-columns: 60px minmax(0, 1fr) 60px; } .gap .v { font-size: 28px; line-height: 32px; } .gap .v.long { font-size: 22px; } }   /* phones: the title bar on one row, room for the gap shapes */
+  .gb { grid-template-columns: 60px minmax(0, 1fr) 60px; } .gap .v { font-size: 28px; line-height: 32px; } .gap .v.long { font-size: 22px; } }   /* phones: the title bar on one row without the app's name, room for the gap shapes */
+@media (max-width: 340px) { .tbar .steps button { padding: 0 3px; } .tbar .srcbtn { margin-left: 0; } }   /* the smallest phones: tighter steps */
 /* the balance bar below the widest layout: the short app name leaves room for the case and Sources */
 html.L-mid[data-scr="balance"] .app2 { display: none; }
 @media (max-width: 980px) { .case-grid { grid-template-columns: minmax(0, 1fr); } .case-r { max-width: 620px; } }
@@ -523,8 +525,9 @@ html[data-scr="balance"] .phtools .steps button span, .phtools .steps button.cur
 .phtools .btn { height: 32px; padding: 0 14px; font-size: 14px; } .phtools .sw { color: var(--adv); font-weight: bold; font-size: 14px; } .phtools .sw .trk { background: #c3c9d0; } .phtools .sw input:checked + .trk { background: #f3b46b; }
 html.L-narrow[data-scr="balance"] .phdet .band { height: auto; overflow: visible; border-top: 1px solid var(--line2); padding-top: 8px; }
 html.L-narrow[data-scr="balance"] .phdet .advstrip { border-top: 1px solid var(--line2); }
-/* Phones on every screen: the title bar on one row (the app's short name, the step numbers, Sources; the screen's own
-   heading names the step and its line the case), the footer pinned with its short labels, shorter figures */
+/* Phones on every screen: the title bar on one row (the app's short name above 480 px, the step numbers, the knee's side,
+   Sources; the screen's own heading names the step and its line the case), the footer pinned with its short labels,
+   shorter figures */
 .sx { display: none; }
 @media (max-width: 760px), (max-height: 500px) {
   .tbar .case, .app3, .steps button.cur span { display: none; } html:not([data-scr="balance"]) .tbar { flex-wrap: nowrap; min-height: 44px; padding: 4px 12px; }
@@ -548,13 +551,14 @@ html.L-narrow[data-scr="balance"] .phdet .advstrip { border-top: 1px solid var(-
     <nav class="steps" id="steps" aria-label="Steps"><button data-step="case"><i>1</i><span>Case</span></button><button data-step="reg"><i>2</i><span>Register</span></button><button data-step="plan"><i>3</i><span>Plan</span></button><button data-step="tension"><i>4</i><span>Tension</span></button><button data-step="balance"><i>5</i><span>Balance</span></button><button data-step="final"><i>6</i><span>Resect</span></button></nav>
     <span class="vtabs" id="vtabs" role="tablist" aria-label="View"><button type="button" role="tab" data-vt="C">Coronal</button><button type="button" role="tab" data-vt="S">Sagittal</button><button type="button" role="tab" data-vt="A">Axial</button></span>
     <span class="vsep caseonly"></span>
-    <span class="case caseonly"><b id="cname"></b><span class="csub"><span class="chip" id="clevel"></span><span class="chip side" id="cside"></span><span id="cplan"></span></span></span>
+    <span class="case caseonly"><b id="cname"></b><span class="csub"><span class="chip" id="clevel"></span><span id="cplan"></span></span></span>
     <span class="acts bal-only"><button class="tb" id="resetBtn" title="Return to the starting plan">Reset</button></span>
     <span class="vsep bal-only"></span>
     <span class="sws bal-only">
       <label class="sw advsw"><input type="checkbox" role="switch" id="swAdv"><span class="trk"></span>Advanced</label>
     </span>
     <button class="tb go bal-only" id="resectBtn"><span class="rsl">Make resections</span><span class="rss">Resect</span></button>
+    <span class="sidesw" id="sideBtns" role="group" aria-label="Knee"><button type="button" data-side="L" aria-label="Left knee" title="Left knee">L</button><button type="button" data-side="R" aria-label="Right knee" title="Right knee">R</button></span>
     <button class="tb srcbtn" id="srcBtn">Sources</button>
   </div>
   <div class="gstrip" id="gstrip" aria-label="Gaps, mm"></div>
@@ -601,7 +605,7 @@ html.L-narrow[data-scr="balance"] .phdet .advstrip { border-top: 1px solid var(-
       <div class="case-r">
         <div id="difBox"><h2><label for="difSl">Difficulty</label></h2>
         <div class="dif"><input type="range" id="difSl" min="1" max="10" step="1"><output id="difOut" for="difSl"></output></div></div>
-        <div class="kh"><h2>This case<span class="kadv" id="kAdv" hidden title="Advanced turns on for this case">Advanced</span></h2><button type="button" class="btn" id="newKnee">Another case</button></div>
+        <div class="kh"><h2>This case</h2><button type="button" class="btn" id="newKnee">Another case</button></div>
         <div class="kcase"><div class="kv" id="kPrev"></div><figure class="kfig"><div id="kFig" aria-hidden="true"></div><figcaption>Joint line in blue, level dashed</figcaption></figure><figure class="klimb" id="kLimb"></figure></div>
       </div>
     </div>
@@ -627,7 +631,7 @@ html.L-narrow[data-scr="balance"] .phdet .advstrip { border-top: 1px solid var(-
 </section>
 <section class="screen" id="scrPlan" hidden aria-label="Initial resection planning prior to laxity measurements">
   <div class="scr-in">
-    <div class="scr-hd"><h1>Initial Resection Planning Prior to Laxity Measurements</h1><div class="seg tabs side" id="sideBtns" role="group" aria-label="Side"><button type="button" data-side="L">Left knee</button><button type="button" data-side="R">Right knee</button></div><span class="sub" id="planCase"></span></div>
+    <div class="scr-hd"><h1>Initial Resection Planning Prior to Laxity Measurements</h1><span class="sub" id="planCase"></span></div>
     <div class="plan-grid">
       <div class="plan-left">
         <h2>Starting strategy</h2>
@@ -647,7 +651,7 @@ html.L-narrow[data-scr="balance"] .phdet .advstrip { border-top: 1px solid var(-
         </div>
         <div class="tol"><span>Tolerance ±</span><input id="t_tol" type="number" step="0.5" min="0.1" aria-label="Tolerance"><span>mm</span></div>
       </div>
-      <figure class="plan-fig"><div id="planFig"></div><figcaption id="planCap"></figcaption></figure>
+      <figure class="plan-fig"><div id="planFig"></div></figure>
     </div>
   </div>
   <div class="scr-ft"><div class="src"></div><div class="btns"><button type="button" class="btn" id="planBack">Back</button><button type="button" class="btn" id="planReturn" hidden>Back to balancing</button><button type="button" class="btn primary" id="planNext">Next: capture tension</button></div></div>
@@ -709,22 +713,18 @@ html.L-narrow[data-scr="balance"] .phdet .advstrip { border-top: 1px solid var(-
 <div class="toast" id="toast" role="status" hidden></div>
 <section class="phdet" id="phDet" aria-label="Case, steps and summary">
   <div class="phcase" id="phCase"></div>
-  <div class="phtools"><button type="button" class="btn" id="phReset" title="Return to the starting plan">Reset</button><label class="sw phadv"><input type="checkbox" role="switch" id="swAdv2"><span class="trk"></span>Advanced</label><button type="button" class="btn" id="phSrc">Sources</button></div>
+  <div class="phtools"><button type="button" class="btn" id="phReset" title="Return to the starting plan">Reset</button><label class="sw phadv"><input type="checkbox" role="switch" id="swAdv2"><span class="trk"></span>Advanced</label><span class="sidesw" id="sideBtns2" role="group" aria-label="Knee"><button type="button" data-side="L" aria-label="Left knee" title="Left knee">L</button><button type="button" data-side="R" aria-label="Right knee" title="Right knee">R</button></span><button type="button" class="btn" id="phSrc">Sources</button></div>
 </section>
 <section class="advstrip bal-only" id="adv" hidden aria-label="Advanced">
   <div class="advcol advsoft">
     <div class="advhd"><span class="tl">SOFT TISSUE</span></div>
     <div class="softgrid">
       <div class="cr"><span class="cl">Medial<span class="lx2"> release</span></span><div class="stp wide rel" data-s="medial_steps"><button data-d="-1" aria-label="Take back a medial release step">−</button><output></output><button data-d="1" aria-label="Next medial release step">+</button></div></div>
-      <label class="ck" title="Opens both flexion gaps 2 mm, more where the PCL held the femur up the insert's posterior dish. Takes back half of a flexion contracture, up to 3°"><input type="checkbox" data-s="pcl"><i class="cb"></i><span>PCL resection</span></label>
+      <label class="ck" title="Opens both flexion gaps 2 mm, more where the PCL held the femur up the insert's posterior dish. Takes back half of the flexion contracture left at trial, up to 3°"><input type="checkbox" data-s="pcl"><i class="cb"></i><span>PCL resection</span></label>
       <div class="cr"><span class="cl">Lateral<span class="lx2"> release</span></span><div class="stp wide rel" data-s="lateral_steps"><button data-d="-1" aria-label="Take back a lateral release step">−</button><output></output><button data-d="1" aria-label="Next lateral release step">+</button></div></div>
-      <label class="ck" title="Takes back the rest of a flexion contracture, up to 9°, and opens full extension 0.5 mm. Flexion unchanged"><input type="checkbox" data-s="capsule"><i class="cb"></i><span>Capsule release</span></label>
+      <label class="ck" title="Takes back the rest of the flexion contracture left at trial, up to 9°, and opens full extension 0.5 mm. Flexion unchanged"><input type="checkbox" data-s="capsule"><i class="cb"></i><span>Posterior capsule release</span></label>
       <div class="cr osr" id="ostRow"><span class="cl">Posterior osteophytes</span><span class="osts"><span class="osn" id="ostNone">None</span><label class="ck" id="ostM"><input type="checkbox" data-s="osteo_medial"><i class="cb"></i><span></span></label><label class="ck" id="ostL"><input type="checkbox" data-s="osteo_lateral"><i class="cb"></i><span></span></label></span></div>
     </div>
-  </div>
-  <div class="advcol advarc">
-    <div class="advhd"><span class="tl">GAPS THROUGH ROM, mm</span><div class="legend" id="arcLeg"></div></div>
-    <div id="arcSvg"></div>
   </div>
 </section>
 </div>
