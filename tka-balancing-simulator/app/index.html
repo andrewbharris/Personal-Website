@@ -27,10 +27,10 @@
 <meta name="copyright" content="© 2026 Andrew B. Harris, MD. All rights reserved. The TKA Robotic Balancing Simulator, its model and its code are proprietary. Copying, modifying, redistributing or hosting it elsewhere is not permitted.">
 </head><body>
 <style>
-/* Layout: pinned compact header (case, gaps, HKA, status, switches, target), three views, each with an implant panel that opens on a click, optional Advanced strip. Plain clinical tool, Arial, color only for state. */
+/* Layout: pinned compact header (case, gaps, HKA, status, switches, target), three views, each with an implant panel that opens on a click, the soft tissue strip. Plain clinical tool, Arial, color only for state. */
 :root {
   --bg: #ffffff; --fg: #1a1a1a; --muted: #666666; --faint: #8a8a8a; --line: #d9d9d9; --line2: #ececec; --ctl: #a9a9a9; --btn: #f6f6f6;
-  --dark: #2b2b2b; --tight: #c2410c; --loose: #1d4ed8; --ok: #15803d; --warn: #b45309; --adv: #b45309;
+  --dark: #2b2b2b; --tight: #c2410c; --loose: #1d4ed8; --ok: #15803d; --warn: #b45309;
   --font: Arial, Helvetica, sans-serif; color-scheme: light;
 }
 * { box-sizing: border-box; }
@@ -54,7 +54,6 @@ header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; backg
 .tb { height: 30px; padding: 0 11px; border: 1px solid #4b525a; background: #2e3339; color: #eef1f4; font-size: 13.5px; cursor: pointer; white-space: nowrap; }
 .tb:hover { background: #3a4047; } .tb:disabled, .tb:disabled:hover { opacity: 0.45; cursor: not-allowed; } .tb[aria-expanded="true"] { background: #e9ecef; color: #22262b; }
 .tb:focus-visible, .tlink:focus-visible { outline: 2px solid #9ec2ff; outline-offset: 1px; }
-.sws { display: flex; align-items: center; gap: 14px; }
 .tgt { font-size: 13.5px; color: #a9b1ba; white-space: nowrap; }
 .tlink { background: none; border: 0; padding: 0; color: #9ec2ff; white-space: nowrap; text-decoration: underline; cursor: pointer; font-size: 13.5px; }
 .link { background: none; border: 0; padding: 0; color: var(--loose); text-decoration: underline; cursor: pointer; font-size: 13px; }
@@ -69,7 +68,6 @@ header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; backg
 .sw .trk::after { content: ""; position: absolute; top: 2px; left: 2px; width: 11px; height: 11px; border-radius: 50%; background: #cfd4da; transition: left 0.12s; }
 .sw input:checked + .trk { background: #e9ecef; } .sw input:checked + .trk::after { left: 15px; background: #22262b; }
 .sw input:focus-visible + .trk { outline: 2px solid #9ec2ff; outline-offset: 1px; }
-.sw.advsw { color: #f3b46b; font-weight: bold; } .sw.advsw input:checked + .trk { background: #f3b46b; }
 /* the gap view switch sits in the balance tile, on the light band */
 .th .sw { font-size: 12px; gap: 6px; color: #4b525a; } .th .sw .trk { width: 24px; height: 13px; background: #c3c9d0; }
 .th .sw .trk::after { width: 9px; height: 9px; background: #fff; } .th .sw input:checked + .trk { background: #22262b; } .th .sw input:checked + .trk::after { left: 13px; background: #fff; }
@@ -172,7 +170,7 @@ section.view { position: relative; }
 @container (max-width: 292px) { .pad { width: 100%; } .pad .pb { grid-template-columns: 50px minmax(0, 1fr); } .pad .pst { grid-template-columns: 46px minmax(0, 1fr) 46px; } .pad .pst output { font-size: 12.5px; } .pad .pf { grid-template-columns: 50px auto auto minmax(0, 1fr); } }
 section.view.padopen { z-index: 4; }   /* a dragged panel sits over the other panes too */
 html.padmove, html.padmove * { user-select: none !important; -webkit-user-select: none !important; cursor: grabbing !important; }   /* while a panel is dragged */
-.pic svg .padhid, .readout .padhid, #adv .padhid, footer.padhid { visibility: hidden; }
+.pic svg .padhid, .readout .padhid, #softStrip .padhid, footer.padhid { visibility: hidden; }
 /* on the balance screen the panes fill the window, so a wide window leaves room under the drawings for the panel */
 html[data-scr="balance"] body { display: flex; flex-direction: column; min-height: 100vh; margin: 0; } html[data-scr="balance"] .wrap { flex: 1 0 auto; display: flex; flex-direction: column; width: 100%; } html[data-scr="balance"] main { flex: 1 0 auto; }
 .vh { min-height: 20px; align-items: center; } .vht { display: flex; align-items: center; gap: 10px; } .vh .vtog { font-weight: normal; height: 21px; flex: none; white-space: nowrap; } .vht { flex: none; } .vh .vtog button { font-size: 12px; padding: 0 5px; line-height: 16px; }
@@ -195,23 +193,22 @@ html[data-scr="balance"] body { display: flex; flex-direction: column; min-heigh
 .ro { font-size: 14px; }
 .readout { font-size: 13px; color: #2a2f35; display: flex; flex-wrap: wrap; gap: 3px 14px; min-height: 34px; align-content: flex-start; }   /* two lines held (three for the sagittal one on a narrow pane), so a line wrapping does not move the drawings */
 .view.cq1 #roS { min-height: 51px; } .L-narrow .readout, .L-narrow .view.cq1 #roS { min-height: 16px; }   /* one column: the scale follows the width, nothing to hold */ .readout .k { color: #5c636b; margin-right: 4px; } .readout > span { white-space: nowrap; } .L-narrow .readout > #grooveTxt { white-space: normal; }   /* the longest readout may wrap on a phone */
-/* Advanced: soft tissue and the gaps through the range of motion, on a cool gray ground under an orange rule */
-.advstrip { display: flex; flex-wrap: wrap; gap: 8px 36px; padding: 5px 14px 6px; border-top: 2px solid var(--adv); background: #f6f7f9; }
-.advcol { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.advsoft { flex: none; }
-.advhd { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; min-height: 16px; }
+/* soft tissue, on a cool gray ground under a rule */
+.softstrip { display: flex; flex-wrap: wrap; gap: 8px 36px; padding: 5px 14px 6px; border-top: 1px solid #d5d9de; background: #f6f7f9; }
+.softcol { display: flex; flex-direction: column; gap: 3px; flex: none; min-width: 0; }
+.softhd { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; min-height: 16px; }
 /* soft tissue as a table: a label and its control a row, the posterior structures in a column of equal chips beside
    the releases, the posterior osteophytes on the last row (None when the knee has none, so the columns never change) */
 .softgrid { display: grid; grid-template-columns: max-content max-content max-content; grid-auto-rows: 28px; gap: 3px 0; align-items: center; } .softgrid .stp { height: 28px; }
-.softgrid .cr { display: contents; } .softgrid .cl { width: auto; padding-right: 12px; } .advstrip .softgrid > .ck { margin-left: 14px; justify-self: stretch; }
+.softgrid .cr { display: contents; } .softgrid .cl { width: auto; padding-right: 12px; } .softstrip .softgrid > .ck { margin-left: 14px; justify-self: stretch; }
 .softgrid .osts { grid-column: 2 / 4; display: flex; align-items: center; gap: 6px; } .softgrid .osn { font-size: 13px; color: #8a9099; } .stp.rel { width: 210px; }
 /* posterior steps as chips: a box and a name, dark once done */
-.advstrip label.ck { position: relative; display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px 0 9px; border: 1px solid #b9bfc6; border-radius: 3px; background: #ffffff; font-size: 13px; color: #2f353b; cursor: pointer; white-space: nowrap; user-select: none; -webkit-user-select: none; justify-self: start; }
-.advstrip label.ck:hover { border-color: #6b737c; } .advstrip label.ck input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: inherit; }   /* the whole chip is the box */
-.advstrip label.ck .cb { position: relative; width: 12px; height: 12px; border: 1.5px solid #8a9099; border-radius: 2px; box-sizing: border-box; flex: none; }
-.advstrip label.ck.on { background: #2f353b; border-color: #2f353b; color: #ffffff; } .advstrip label.ck.on .cb { background: #ffffff; border-color: #ffffff; }
-.advstrip label.ck.on .cb::after { content: ""; position: absolute; left: 3px; top: 0; width: 3px; height: 6px; border: solid #2f353b; border-width: 0 1.8px 1.8px 0; transform: rotate(45deg); }
-.advstrip label.ck.off { opacity: 0.55; cursor: default; } .advstrip label.ck:has(input:focus-visible) { outline: 2px solid var(--loose); outline-offset: 1px; }
+.softstrip label.ck { position: relative; display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px 0 9px; border: 1px solid #b9bfc6; border-radius: 3px; background: #ffffff; font-size: 13px; color: #2f353b; cursor: pointer; white-space: nowrap; user-select: none; -webkit-user-select: none; justify-self: start; }
+.softstrip label.ck:hover { border-color: #6b737c; } .softstrip label.ck input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: inherit; }   /* the whole chip is the box */
+.softstrip label.ck .cb { position: relative; width: 12px; height: 12px; border: 1.5px solid #8a9099; border-radius: 2px; box-sizing: border-box; flex: none; }
+.softstrip label.ck.on { background: #2f353b; border-color: #2f353b; color: #ffffff; } .softstrip label.ck.on .cb { background: #ffffff; border-color: #ffffff; }
+.softstrip label.ck.on .cb::after { content: ""; position: absolute; left: 3px; top: 0; width: 3px; height: 6px; border: solid #2f353b; border-width: 0 1.8px 1.8px 0; transform: rotate(45deg); }
+.softstrip label.ck.off { opacity: 0.55; cursor: default; } .softstrip label.ck:has(input:focus-visible) { outline: 2px solid var(--loose); outline-offset: 1px; }
 /* a release: the last step made over a track of the whole sequence */
 .stp.rel output { position: relative; } .stp.rel .rn { padding-bottom: 4px; } .stp.rel .rbar { position: absolute; left: 9px; right: 9px; bottom: 4px; display: flex; gap: 2px; }
 .stp.rel .rbar i { flex: 1; height: 3px; border-radius: 1px; background: #dde1e6; } .stp.rel .rbar i.on { background: #2f353b; }
@@ -389,9 +386,9 @@ html[data-scr="balance"]:not(.L-narrow) footer { white-space: nowrap; overflow: 
   .L-narrow .t-al { border-left: 0; margin-left: 0; border-right: 0; border-top: 1px solid var(--line2); padding-top: 6px; } .L-narrow .t-rs { border-top: 1px solid var(--line2); padding-top: 6px; border-right: 1px solid var(--line2); } .L-narrow .t-bal { border-right: 0; } }
 .L-narrow .bandgrip { display: flex; }
 @media (max-width: 440px) { .L-narrow .band { grid-template-areas: "ext flex" "al al" "rs rs" "bal bal"; } .L-narrow .t-rs { border-right: 0; } }
-.L-narrow .advsoft { flex: 1 1 100%; }
+.L-narrow .softcol { flex: 1 1 100%; }
 .L-narrow .softgrid { display: flex; flex-wrap: wrap; gap: 6px 10px; } .L-narrow .softgrid .cr { display: flex; align-items: center; flex: 1 1 100%; min-height: 30px; }
-.L-narrow .advstrip .softgrid > .ck { order: 1; margin-left: 0; justify-self: start; } .L-narrow .softgrid .osr { order: 2; flex-wrap: wrap; gap: 4px 0; } .L-narrow .softgrid .cl { width: 100px; flex: none; } .L-narrow .softgrid .osr .cl { width: auto; } .L-narrow .softgrid .cr .stp { flex: 0 1 300px; min-width: 0; }
+.L-narrow .softstrip .softgrid > .ck { order: 1; margin-left: 0; justify-self: start; } .L-narrow .softgrid .osr { order: 2; flex-wrap: wrap; gap: 4px 0; } .L-narrow .softgrid .cl { width: 100px; flex: none; } .L-narrow .softgrid .osr .cl { width: auto; } .L-narrow .softgrid .cr .stp { flex: 0 1 300px; min-width: 0; }
 @media (max-width: 350px) { .lx2 { display: none; } .L-narrow .softgrid .cl { width: 58px; } }
 /* the narrowest panes (phones under 360 px): one column of controls, each label beside its control again */
 .view.cq2 .vh > span { display: none; }
@@ -463,8 +460,8 @@ html.L-mid[data-scr="balance"] .app2 { display: none; }
 @media (max-width: 980px) { .case-grid { grid-template-columns: minmax(0, 1fr); } .case-r { max-width: 620px; } }
 @media (max-width: 520px) { .dif { flex-wrap: wrap; } .dif input { flex-basis: 100%; } .dif output { order: -1; } }
 /* Phones and narrow windows on the balance screen: one view at a time, chosen in the title bar, the four gaps pinned under
-   it and the implant panel docked under the drawing, all in the first screen; the case, the steps, Reset, Advanced and
-   its strip, and the summary band follow below. fitViews() sizes the drawing to the screen height left. */
+   it and the implant panel docked under the drawing, all in the first screen; the case, the steps, Reset, the knee's
+   side, Sources, the soft tissue strip and the summary band follow below. fitViews() sizes the drawing to the screen height left. */
 .vtabs, .gstrip, .phdet, .dockph { display: none; }
 html.L-narrow[data-scr="balance"] .tbar { flex-wrap: nowrap; justify-content: space-between; gap: 10px; min-height: 44px; padding: 6px 12px; }
 html.L-narrow[data-scr="balance"] .tbar > :not(.vtabs):not(#resectBtn) { display: none; }
@@ -512,7 +509,7 @@ html.L-land[data-scr="balance"] section.view.on > .pad, html.L-land[data-scr="ba
 html.L-land[data-scr="balance"] section.view.on > .readout { grid-column: 2; grid-row: 3; }
 .toast { position: fixed; z-index: 6; left: 50%; top: 132px; transform: translateX(-50%); max-width: calc(100vw - 32px); padding: 8px 14px; background: #22262b; color: #ffffff; font-size: 14px; font-weight: bold; border-radius: 6px; box-shadow: 0 6px 20px rgba(20, 30, 40, 0.25); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
 .toast.show { animation: toast 3s ease-in-out forwards; } @keyframes toast { 0% { opacity: 0; } 8%, 80% { opacity: 1; } 100% { opacity: 0; } }   /* fades in and out in place */
-/* below the first screen: the case, the steps and tools, the Advanced strip, the summary */
+/* below the first screen: the case, the steps and tools, the soft tissue strip, the summary */
 html.L-narrow[data-scr="balance"] .phdet { display: block; border-top: 1px solid #d5d9de; }
 .phcase { padding: 10px 12px 2px; font-size: 13.5px; color: #3b4148; line-height: 1.4; } .phcase b { font-size: 15px; color: #1a1a1a; margin-right: 6px; }
 .phtools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 6px 12px 10px; }
@@ -522,9 +519,9 @@ html.L-narrow[data-scr="balance"] .phdet { display: block; border-top: 1px solid
 .phtools .steps button.done { color: #1a1a1a; } .phtools .steps button.done:hover, .phtools .steps button.ahead:hover { background: #eef1f4; color: #1a1a1a; } .phtools .steps button.ahead { color: #7b828a; }
 .phtools .steps button.cur i { background: #22262b; color: #ffffff; border-color: #22262b; } .phtools .steps button.cur { color: #1a1a1a; }
 html[data-scr="balance"] .phtools .steps button span, .phtools .steps button.cur span { display: inline; } .phtools .steps button { padding: 0 5px 0 2px; }
-.phtools .btn { height: 32px; padding: 0 14px; font-size: 14px; } .phtools .sw { color: var(--adv); font-weight: bold; font-size: 14px; } .phtools .sw .trk { background: #c3c9d0; } .phtools .sw input:checked + .trk { background: #f3b46b; }
+.phtools .btn { height: 32px; padding: 0 14px; font-size: 14px; }
 html.L-narrow[data-scr="balance"] .phdet .band { height: auto; overflow: visible; border-top: 1px solid var(--line2); padding-top: 8px; }
-html.L-narrow[data-scr="balance"] .phdet .advstrip { border-top: 1px solid var(--line2); }
+html.L-narrow[data-scr="balance"] .phdet .softstrip { border-top: 1px solid var(--line2); }
 /* Phones on every screen: the title bar on one row (the app's short name above 480 px, the step numbers, the knee's side,
    Sources; the screen's own heading names the step and its line the case), the footer pinned with its short labels,
    shorter figures */
@@ -553,10 +550,6 @@ html.L-narrow[data-scr="balance"] .phdet .advstrip { border-top: 1px solid var(-
     <span class="vsep caseonly"></span>
     <span class="case caseonly"><b id="cname"></b><span class="csub"><span class="chip" id="clevel"></span><span id="cplan"></span></span></span>
     <span class="acts bal-only"><button class="tb" id="resetBtn" title="Return to the starting plan">Reset</button></span>
-    <span class="vsep bal-only"></span>
-    <span class="sws bal-only">
-      <label class="sw advsw"><input type="checkbox" role="switch" id="swAdv"><span class="trk"></span>Advanced</label>
-    </span>
     <button class="tb go bal-only" id="resectBtn"><span class="rsl">Make resections</span><span class="rss">Resect</span></button>
     <span class="sidesw" id="sideBtns" role="group" aria-label="Knee"><button type="button" data-side="L" aria-label="Left knee" title="Left knee">L</button><button type="button" data-side="R" aria-label="Right knee" title="Right knee">R</button></span>
     <button class="tb srcbtn" id="srcBtn">Sources</button>
@@ -713,11 +706,11 @@ html.L-narrow[data-scr="balance"] .phdet .advstrip { border-top: 1px solid var(-
 <div class="toast" id="toast" role="status" hidden></div>
 <section class="phdet" id="phDet" aria-label="Case, steps and summary">
   <div class="phcase" id="phCase"></div>
-  <div class="phtools"><button type="button" class="btn" id="phReset" title="Return to the starting plan">Reset</button><label class="sw phadv"><input type="checkbox" role="switch" id="swAdv2"><span class="trk"></span>Advanced</label><span class="sidesw" id="sideBtns2" role="group" aria-label="Knee"><button type="button" data-side="L" aria-label="Left knee" title="Left knee">L</button><button type="button" data-side="R" aria-label="Right knee" title="Right knee">R</button></span><button type="button" class="btn" id="phSrc">Sources</button></div>
+  <div class="phtools"><button type="button" class="btn" id="phReset" title="Return to the starting plan">Reset</button><span class="sidesw" id="sideBtns2" role="group" aria-label="Knee"><button type="button" data-side="L" aria-label="Left knee" title="Left knee">L</button><button type="button" data-side="R" aria-label="Right knee" title="Right knee">R</button></span><button type="button" class="btn" id="phSrc">Sources</button></div>
 </section>
-<section class="advstrip bal-only" id="adv" hidden aria-label="Advanced">
-  <div class="advcol advsoft">
-    <div class="advhd"><span class="tl">SOFT TISSUE</span></div>
+<section class="softstrip bal-only" id="softStrip" aria-label="Soft tissue">
+  <div class="softcol">
+    <div class="softhd"><span class="tl">SOFT TISSUE</span></div>
     <div class="softgrid">
       <div class="cr"><span class="cl">Medial<span class="lx2"> release</span></span><div class="stp wide rel" data-s="medial_steps"><button data-d="-1" aria-label="Take back a medial release step">−</button><output></output><button data-d="1" aria-label="Next medial release step">+</button></div></div>
       <label class="ck" title="Opens both flexion gaps 2 mm, more where the PCL held the femur up the insert's posterior dish. Takes back half of the flexion contracture left at trial, up to 3°"><input type="checkbox" data-s="pcl"><i class="cb"></i><span>PCL resection</span></label>
