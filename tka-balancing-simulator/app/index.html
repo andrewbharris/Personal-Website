@@ -115,7 +115,7 @@ main { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 section.view { container-type: inline-size; display: flex; flex-direction: column; gap: 4px; padding: 6px 12px; border-right: 1px solid var(--line2); min-width: 0; }
 section.view:last-child { border-right: 0; }
 .vh { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-.vh b { font-size: 15px; } .vh span { font-size: 12px; color: #6b737c; } .vh > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.vh .vht { font-size: 15px; } .vh span { font-size: 12px; color: #6b737c; } .vh > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }   /* views are named in the band's capitals (tl, v64); the sagittal one by its toggle */
 /* --s (px per mm) is set by fitViews(): one scale for every view that changes smoothly with the window */
 .pic svg { display: block; margin: 0 auto; max-width: 100%; }
 #picC svg { width: calc(var(--s, 3) * 128px); height: calc(var(--s, 3) * 116px); }
@@ -193,8 +193,13 @@ html[data-scr="balance"] body { display: flex; flex-direction: column; min-heigh
 .seg button:disabled { color: #b5b5b5; cursor: default; }
 .seg button:disabled[aria-pressed="true"] { color: #fff; }
 .ro { font-size: 14px; }
-.readout { font-size: 13px; color: #2a2f35; display: flex; flex-wrap: wrap; gap: 3px 14px; min-height: 34px; align-content: flex-start; }   /* two lines held (three for the sagittal one on a narrow pane), so a line wrapping does not move the drawings */
-.view.cq1 #roS { min-height: 51px; } .L-narrow .readout, .L-narrow .view.cq1 #roS { min-height: 16px; }   /* one column: the scale follows the width, nothing to hold */ .readout .k { color: #5c636b; margin-right: 4px; } .readout > span { white-space: nowrap; } .L-narrow .readout > #grooveTxt { white-space: normal; }   /* the longest readout may wrap on a phone */
+/* the readouts under the drawings: a value a row, its name in gray and the value in bold, as in the band's tables; the
+   femoral rotation to the PCA and to the TEA first and larger (v64). No row wraps in the three column layouts */
+.readout { font-size: 14px; color: #2a2f35; } .readout table { border-collapse: collapse; }
+.readout td { padding: 1px 0; line-height: 16px; white-space: nowrap; vertical-align: baseline; } .readout td.k { color: #5c636b; padding-right: 14px; }
+.readout tr.key td { line-height: 20px; } .readout tr.key td.k { color: #3b4148; } .readout tr.key b { font-size: 17px; }
+.L-narrow .readout td:last-child { white-space: normal; }   /* the groove's value may wrap on the narrowest phones */
+.view.cq1 #roS { min-height: 51px; } .L-narrow .view.cq1 #roS { min-height: 0; }   /* on a narrow pane the sagittal one keeps a third line's height: in a short window that is the room the implant panel needs to sit clear of the tray and the femoral component (panel.js) */
 /* soft tissue, on a cool gray ground under a rule */
 .softstrip { display: flex; flex-wrap: wrap; gap: 8px 36px; padding: 5px 14px 6px; border-top: 1px solid #d5d9de; background: #f6f7f9; }
 .softcol { display: flex; flex-direction: column; gap: 3px; flex: none; min-width: 0; }
@@ -692,7 +697,7 @@ html.L-narrow[data-scr="balance"] .phdet .softstrip { border-top: 1px solid var(
 </section>
 <main class="bal-only">
   <section class="view" aria-label="Coronal">
-    <div class="vh"><b>Coronal</b><span id="hintC"></span></div>
+    <div class="vh"><b class="tl">CORONAL</b><span id="hintC"></span></div>
     <div class="picwrap" id="wrapC" tabindex="0" aria-label="Drawing. Click a component, then use arrow keys to move it and Shift with left or right to rotate it."><div class="pic" id="picC"></div></div><div class="pad" id="padC" hidden role="group" aria-label="Implant controls"></div>
     <div class="readout" id="roC"></div>
   </section>
@@ -702,9 +707,9 @@ html.L-narrow[data-scr="balance"] .phdet .softstrip { border-top: 1px solid var(
     <div class="readout" id="roS"></div>
   </section>
   <section class="view" aria-label="Axial">
-    <div class="vh"><b>Axial</b><span id="hintA">Anterior up</span></div>
+    <div class="vh"><b class="tl">AXIAL</b><span id="hintA"></span></div>
     <div class="picwrap" id="wrapA" tabindex="0" aria-label="Drawing. Click a component, then use arrow keys to move it and Shift with left or right to rotate it."><div class="pic ax" id="picA"></div></div><div class="pad" id="padA" hidden role="group" aria-label="Implant controls"></div>
-    <div class="readout" id="roA"><span id="grooveTxt"></span><span id="teaTxt"></span><span id="pcaTxt"></span></div>
+    <div class="readout" id="roA"></div>
   </section>
 </main>
 <div class="toast" id="toast" role="status" hidden></div>
