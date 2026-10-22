@@ -92,6 +92,8 @@ header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; backg
 .alt td { padding: 1px 0; white-space: nowrap; vertical-align: baseline; }
 .alt td.k { color: #5c636b; padding-right: 12px; } .alt td.ar { color: #8a9099; padding: 0 8px; } .alt td.pl { font-weight: bold; }
 .alt tr.hka td { font-size: 16.5px; } .alt tr.hka td.pl { font-size: 19px; } .alt tr.hka td.k { font-weight: bold; color: #2a2f35; }
+.alt tr.chg td.pl { color: var(--warn); } .alt .chgw { font-size: 12px; margin-left: 6px; } .alt tr.short td.pl { color: var(--tight); }   /* a contracture the plan leaves (revision 23) */
+.alt .kn { display: none; } .L-mid.L-narrow .alt .kw { display: none; } .L-mid.L-narrow .alt .kn { display: inline; }   /* FC where the band's alignment tile is narrow */   /* the plan changes the knee's CPAK type: a note, not an alarm (v62) */
 @media (max-width: 420px) { .alt td.k { padding-right: 8px; } .alt td.ar { padding: 0 6px; } }
 .rtab { display: grid; grid-template-columns: minmax(0, 1fr) 46px 46px; row-gap: 5px; font-size: 14.5px; margin-top: 6px; align-items: baseline; }
 .rtab .h { font-size: 12.5px; color: #5c636b; text-align: right; } .rtab b { text-align: right; font-size: 17px; } .rtab .rl { color: #3b4148; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -201,7 +203,7 @@ html[data-scr="balance"] body { display: flex; flex-direction: column; min-heigh
    the releases, the posterior osteophytes on the last row (None when the knee has none, so the columns never change) */
 .softgrid { display: grid; grid-template-columns: max-content max-content max-content; grid-auto-rows: 28px; gap: 3px 0; align-items: center; } .softgrid .stp { height: 28px; }
 .softgrid .cr { display: contents; } .softgrid .cl { width: auto; padding-right: 12px; } .softstrip .softgrid > .ck { margin-left: 14px; justify-self: stretch; }
-.softgrid .osts { grid-column: 2 / 4; display: flex; align-items: center; gap: 6px; } .softgrid .osn { font-size: 13px; color: #8a9099; } .stp.rel { width: 210px; }
+.softgrid .osts { grid-column: 2 / 4; display: flex; align-items: center; gap: 6px; } .softgrid .osn { font-size: 13px; color: #8a9099; } .stp.rel { width: 228px; }   /* fits Posteromedial capsule ¾ (revision 23) */
 /* posterior steps as chips: a box and a name, dark once done */
 .softstrip label.ck { position: relative; display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px 0 9px; border: 1px solid #b9bfc6; border-radius: 3px; background: #ffffff; font-size: 13px; color: #2f353b; cursor: pointer; white-space: nowrap; user-select: none; -webkit-user-select: none; justify-self: start; }
 .softstrip label.ck:hover { border-color: #6b737c; } .softstrip label.ck input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: inherit; }   /* the whole chip is the box */
@@ -212,6 +214,8 @@ html[data-scr="balance"] body { display: flex; flex-direction: column; min-heigh
 /* a release: the last step made over a track of the whole sequence */
 .stp.rel output { position: relative; } .stp.rel .rn { padding-bottom: 4px; } .stp.rel .rbar { position: absolute; left: 9px; right: 9px; bottom: 4px; display: flex; gap: 2px; }
 .stp.rel .rbar i { flex: 1; height: 3px; border-radius: 1px; background: #dde1e6; } .stp.rel .rbar i.on { background: #2f353b; }
+.stp.rel .rbar i.part { background: linear-gradient(to right, #2f353b var(--f), #dde1e6 var(--f)); }   /* a release part made, a quarter at a time (revision 23) */
+.stp.mt { width: 228px; } .softgrid .osr > .cl { grid-column: 1; } .lnarrow { display: none; }
 footer { margin: 0 auto; padding: 5px 14px 8px; font-size: 12.5px; color: #6b7280; border-top: 1px solid var(--line2); }
 /* Steps in the title bar; screens other than Balance hide the balancing chrome */
 .steps { display: flex; gap: 2px; flex: none; }
@@ -336,7 +340,7 @@ details summary { cursor: pointer; font-size: 13.5px; color: #1d4ed8; margin-top
 .kpi { display: flex; flex-direction: column; gap: 2px; border: 1px solid #d5d9de; padding: 6px 9px; min-width: 0; }
 .kpi .kpl { font-size: 12px; font-weight: bold; letter-spacing: 0.07em; text-transform: uppercase; color: #4b525a; margin-bottom: 2px; } .kpi .kpl .nc { text-transform: none; }
 .kpi .kpf { font-size: 13.5px; color: #5c636b; } .kpi .kpv { font-size: 21px; font-weight: bold; color: #1a1a1a; line-height: 1.2; } .kpi .kpn { font-size: 13.5px; color: #1d4ed8; font-weight: bold; }
-.kpi .kpv.bad, .kpi .bad { color: var(--tight); } .kpi .kpv.good, .kpi .good { color: var(--ok); }
+.kpi .kpv.bad, .kpi .bad { color: var(--tight); } .kpi .kpv.good, .kpi .good { color: var(--ok); } .kpi.chg .kpv, .kpi.chg .kpn { color: var(--warn); } .kpi.short .kpv, .kpi.short .kpn { color: var(--tight); }
 .kpi .kpls { display: flex; flex-direction: column; gap: 1px; font-size: 13.5px; font-weight: bold; line-height: 1.35; }
 .kpi .kpg { display: grid; grid-template-columns: auto 52px 52px; gap: 0 6px; font-size: 13.5px; margin-top: 3px; align-items: baseline; width: fit-content; } .kpi .kpg i { font-style: normal; color: #7b828a; font-size: 12.5px; text-align: right; }
 .kpi .kpg i:nth-child(3n + 1) { text-align: left; } .kpi .kpg b { font-size: 15.5px; text-align: right; } .kpi .kpg b.tight { color: var(--tight); } .kpi .kpg b.loose { color: var(--loose); } .kpi .kpg b.ok { color: var(--ok); }
@@ -388,14 +392,14 @@ html[data-scr="balance"]:not(.L-narrow) footer { white-space: nowrap; overflow: 
 @media (max-width: 440px) { .L-narrow .band { grid-template-areas: "ext flex" "al al" "rs rs" "bal bal"; } .L-narrow .t-rs { border-right: 0; } }
 .L-narrow .softcol { flex: 1 1 100%; }
 .L-narrow .softgrid { display: flex; flex-wrap: wrap; gap: 6px 10px; } .L-narrow .softgrid .cr { display: flex; align-items: center; flex: 1 1 100%; min-height: 30px; }
-.L-narrow .softstrip .softgrid > .ck { order: 1; margin-left: 0; justify-self: start; } .L-narrow .softgrid .osr { order: 2; flex-wrap: wrap; gap: 4px 0; } .L-narrow .softgrid .cl { width: 100px; flex: none; } .L-narrow .softgrid .osr .cl { width: auto; } .L-narrow .softgrid .cr .stp { flex: 0 1 300px; min-width: 0; }
+.L-narrow .softstrip .softgrid > .ck { order: 1; margin-left: 0; justify-self: start; } .L-narrow .softgrid .osr { order: 2; flex-wrap: wrap; gap: 4px 0; } .L-narrow .softgrid .cl { width: 100px; flex: none; } .L-narrow .softgrid .osr .cl { width: auto; } .L-narrow .lwide { display: none; } .L-narrow .lnarrow { display: inline; } .L-narrow .softgrid .cr .stp { flex: 0 1 300px; min-width: 0; }
 @media (max-width: 350px) { .lx2 { display: none; } .L-narrow .softgrid .cl { width: 58px; } }
 /* the narrowest panes (phones under 360 px): one column of controls, each label beside its control again */
 .view.cq2 .vh > span { display: none; }
 /* Case screen: CPAK grid beside difficulty and the knee it gives */
 .case-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr); gap: 0 32px; align-items: start; }
 /* beside the case the grid fills the window height: the three rows of types grow, the margins keep their size */
-@media (min-width: 981px) { .case-l .cpgrid { grid-template-rows: auto auto repeat(3, minmax(100px, 1fr)); height: clamp(440px, calc(100vh - 205px), 720px); } }
+@media (min-width: 981px) { .case-l .cpgrid { grid-template-rows: auto auto repeat(3, minmax(100px, 1fr)); min-height: clamp(440px, calc(100vh - 205px), 720px); } }   /* a floor, not a height: on a short window the rows need more, and a fixed height let the last row spill under the footer (scrollend.js) */
 /* the case: its values across the top, then its knee (joint line against level) and its whole standing limb, which fill
    the column down to the bottom of the grid */
 .kcase { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "kv kv" "knee limb"; gap: 14px 20px; }
@@ -712,10 +716,11 @@ html.L-narrow[data-scr="balance"] .phdet .softstrip { border-top: 1px solid var(
   <div class="softcol">
     <div class="softhd"><span class="tl">SOFT TISSUE</span></div>
     <div class="softgrid">
-      <div class="cr"><span class="cl">Medial<span class="lx2"> release</span></span><div class="stp wide rel" data-s="medial_steps"><button data-d="-1" aria-label="Take back a medial release step">−</button><output></output><button data-d="1" aria-label="Next medial release step">+</button></div></div>
+      <div class="cr"><span class="cl">Medial<span class="lx2"> release</span></span><div class="stp wide rel" data-s="medial_steps" data-step="0.25"><button data-d="-1" aria-label="Take back a quarter of a medial release step">−</button><output></output><button data-d="1" aria-label="Release a quarter step more medially">+</button></div></div>
       <label class="ck" title="Opens both flexion gaps 2 mm, more where the PCL held the femur up the insert's posterior dish. Takes back half of the flexion contracture left at trial, up to 3°"><input type="checkbox" data-s="pcl"><i class="cb"></i><span>PCL resection</span></label>
-      <div class="cr"><span class="cl">Lateral<span class="lx2"> release</span></span><div class="stp wide rel" data-s="lateral_steps"><button data-d="-1" aria-label="Take back a lateral release step">−</button><output></output><button data-d="1" aria-label="Next lateral release step">+</button></div></div>
+      <div class="cr" id="mtroRow"><span class="cl" title="Posteromedial tibial reduction osteotomy: the uncapped flare taken off 1 mm at a time. Each mm opens the medial extension gap 0.38 mm and the medial flexion gap 0.2 mm"><span class="lwide">Reduction osteotomy</span><span class="lnarrow">Osteotomy</span></span><div class="stp wide mt" data-s="mtro" data-step="1"><button data-d="-1" aria-label="Take back 1 mm of the reduction osteotomy">−</button><output></output><button data-d="1" aria-label="Take 1 mm more of the posteromedial tibial flare">+</button></div></div>
       <label class="ck" title="Takes back the rest of the flexion contracture left at trial, up to 9°, and opens full extension 0.5 mm. Flexion unchanged"><input type="checkbox" data-s="capsule"><i class="cb"></i><span>Posterior capsule release</span></label>
+      <div class="cr"><span class="cl">Lateral<span class="lx2"> release</span></span><div class="stp wide rel" data-s="lateral_steps" data-step="0.25"><button data-d="-1" aria-label="Take back a quarter of a lateral release step">−</button><output></output><button data-d="1" aria-label="Release a quarter step more laterally">+</button></div></div>
       <div class="cr osr" id="ostRow"><span class="cl">Posterior osteophytes</span><span class="osts"><span class="osn" id="ostNone">None</span><label class="ck" id="ostM"><input type="checkbox" data-s="osteo_medial"><i class="cb"></i><span></span></label><label class="ck" id="ostL"><input type="checkbox" data-s="osteo_lateral"><i class="cb"></i><span></span></label></span></div>
     </div>
   </div>

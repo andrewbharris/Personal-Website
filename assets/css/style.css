@@ -2273,3 +2273,36 @@ summary:focus-visible,
 @media (min-width: 881px) and (max-width: 1100px) { .nav-links .nav-cta { padding: 7px 12px; } }
 @media (min-width: 881px) and (max-width: 950px) { .nav-links .nav-cta { padding: 6px 9px; } }
 @media (max-width: 700px) { .nav-links .nav-cta { padding: 7px 14px; } }
+
+/* ---------------------------------------------------------------
+   Dropdown hierarchy, 2026-10-21 (design critique).
+   Every page link shares one style; group labels are labels only,
+   each with a hairline above it, which also sets the "All ..."
+   overview link apart. No left rule on the sublists. Desktop only;
+   the wrapped mobile menu keeps its own layout above.
+   --------------------------------------------------------------- */
+@media (min-width: 881px) {
+  .nav-menu a,
+  .nav-menu a.nav-top,
+  .nav-menu .nav-sub {
+    font-size: 13.5px;
+    font-weight: 400;
+    color: var(--ink);
+    padding: 8px 20px;
+  }
+  .nav-menu a:hover,
+  .nav-menu .nav-sub:hover { background: var(--ivory); color: var(--ink); }
+  .nav-menu a.current { font-weight: 600; }
+  .nav-sublist { margin: 0 0 4px; padding-left: 0; border-left: 0; }
+  .nav-menu .nav-sub { padding-left: 32px; }
+  .nav-group,
+  .nav-menu a.nav-top + .nav-group,
+  .nav-sublist + .nav-group {
+    margin-top: 6px;
+    padding: 12px 20px 4px;
+    border-top: 1px solid var(--border-hair);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    color: var(--slate);
+  }
+}
