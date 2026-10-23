@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="Contact | Andrew B. Harris, MD">
 <meta name="twitter:description" content="Office locations for Dr. Andrew B. Harris, hip and knee replacement surgeon in Skokie, on the North Shore, and in Chicago.">
 <meta name="twitter:image" content="https://andrewbharrismd.com/assets/img/og-card.jpg">
-<link rel="stylesheet" href="assets/css/style.css?v=45">
+<link rel="stylesheet" href="assets/css/style.css?v=47">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -145,7 +145,10 @@
 
       <div>
         <p class="pull-quote" style="margin-bottom:22px;">Dr. Harris sees patients in Skokie, on the North Shore, and in the city of Chicago.</p>
-        <a href="https://www.endeavorhealth.org/providers/andrew-b-harris" class="btn btn-primary" target="_blank" rel="noopener">Schedule an appointment</a>
+        <div style="display:inline-grid; gap:12px; max-width:100%;">
+          <a href="https://www.endeavorhealth.org/providers/andrew-b-harris" class="btn btn-primary" target="_blank" rel="noopener" style="text-align:center;">Schedule an appointment online</a>
+        </div>
+        <p style="margin:16px 0 0;">Or call <a href="tel:+18478667846" class="text-link">(847) 866-7846</a>.</p>
       </div>
 
       <div class="bio">
@@ -158,6 +161,49 @@
         <p style="margin-top:22px;">The <a href="procedures.html" class="text-link">procedures section</a> covers each operation and the <a href="patient-resources.html" class="text-link">patient guides</a> cover the questions that come up most often.</p>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROFESSIONAL MESSAGES ============ -->
+<section class="section-ivory" id="professional">
+  <div class="wrap">
+    <h2 style="margin-bottom:28px;">For physicians, researchers and media</h2>
+    <form id="proForm" class="contact-form" action="https://formspree.io/f/FORMSPREE_ID" method="POST">
+      <input type="hidden" name="_subject" value="Website message (professional)">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px;">
+      <div class="form-field">
+        <label for="pf-name">Name</label>
+        <input id="pf-name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="form-field">
+        <label for="pf-email">Email</label>
+        <input id="pf-email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="form-field">
+        <label for="pf-referral">How did you hear about Dr. Harris? <span class="label-note">(optional)</span></label>
+        <select id="pf-referral" name="referral_source">
+          <option value="">Select one</option>
+          <option>Another physician</option>
+          <option>Friend or family member</option>
+          <option>Google or other web search</option>
+          <option>AI search (ChatGPT, Claude, Gemini, etc.)</option>
+          <option>Hospital or practice directory</option>
+          <option>Insurance provider directory</option>
+          <option>Social media</option>
+          <option>Research or publications</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="pf-msg">Message</label>
+        <textarea id="pf-msg" name="message" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send</button>
+      <p id="proErr" class="form-note" hidden>That didn’t go through. Please try again.</p>
+    </form>
+    <div id="proSent" class="form-success" style="display:block;" hidden>
+      <p>Your message was sent.</p>
     </div>
   </div>
 </section>
@@ -206,17 +252,10 @@
         <p>
           <a href="contact.html">Offices &rarr;</a>
         </p>
-        <h4 style="margin-top:14px;">Languages</h4>
-        <p>
-          <a href="cirujano-de-cadera-y-rodilla-chicago.html" lang="es">Español</a><br>
-          <a href="zamena-sustavov-chicago-skokie.html" lang="ru">Русский</a><br>
-          <a href="endoprotezoplastyka-biodra-kolana-chicago.html" lang="pl">Polski</a><br>
-          <a href="hip-knee-replacement-chicago-korean.html" lang="ko">한국어</a><br>
-          <a href="smyana-na-stava-chicago.html" lang="bg">Български</a><br>
-          <a href="klubo-kelio-endoprotezavimas-cikaga.html" lang="lt">Lietuvių</a><br>
-          <a href="hip-knee-replacement-chicago-chinese.html" lang="zh">中文</a><br>
-          <a href="hip-knee-replacement-chicago-hebrew.html" lang="he" dir="rtl">עברית</a>
-        </p>
+      </div>
+      <div class="footer-langs">
+        <h4>Languages</h4>
+        <p><a href="cirujano-de-cadera-y-rodilla-chicago.html" lang="es">Español</a><span class="sep" aria-hidden="true">·</span><a href="zamena-sustavov-chicago-skokie.html" lang="ru">Русский</a><span class="sep" aria-hidden="true">·</span><a href="endoprotezoplastyka-biodra-kolana-chicago.html" lang="pl">Polski</a><span class="sep" aria-hidden="true">·</span><a href="hip-knee-replacement-chicago-korean.html" lang="ko">한국어</a><span class="sep" aria-hidden="true">·</span><a href="smyana-na-stava-chicago.html" lang="bg">Български</a><span class="sep" aria-hidden="true">·</span><a href="klubo-kelio-endoprotezavimas-cikaga.html" lang="lt">Lietuvių</a><span class="sep" aria-hidden="true">·</span><a href="hip-knee-replacement-chicago-chinese.html" lang="zh">中文</a><span class="sep" aria-hidden="true">·</span><a href="hip-knee-replacement-chicago-hebrew.html" lang="he" dir="rtl">עברית</a></p>
       </div>
     </div>
     <p class="footer-disclaimer">This website is general education, not medical advice, and reading it does not create a doctor&ndash;patient relationship. In an emergency, call 911. This is Dr. Harris&rsquo;s personal website. The views expressed are my own and do not reflect the views of my employer, Endeavor Health.</p>
@@ -227,6 +266,10 @@
   </div>
 </footer>
 
+<script>/* professional form: posts to Formspree in the background and shows the result in place */
+(function(){var f=document.getElementById('proForm');if(!f)return;var ok=document.getElementById('proSent'),err=document.getElementById('proErr');
+f.addEventListener('submit',function(e){e.preventDefault();err.hidden=true;var b=f.querySelector('button[type=submit]');b.disabled=true;
+fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw 0;f.hidden=true;ok.hidden=false;}).catch(function(){err.hidden=false;b.disabled=false;});});})();</script>
 <script src="assets/js/nav.js"></script>
 </body>
 </html>

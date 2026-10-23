@@ -2306,3 +2306,36 @@ summary:focus-visible,
     color: var(--slate);
   }
 }
+
+/* Footer languages, 2026-10-21: one wrapped line across the full footer width
+   instead of eight stacked links under Contact. */
+.footer-langs {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 16px;
+}
+.footer-grid .footer-langs h4 { margin: 0; }
+.footer-langs p { margin: 0; }
+.footer-langs .sep { margin: 0 9px; color: rgba(255,255,255,0.35); }
+@media (max-width: 700px) {
+  /* on a phone the list wraps; drop the dots so no line starts with one */
+  .footer-langs p { display: flex; flex-wrap: wrap; gap: 2px 18px; }
+  .footer-langs .sep { display: none; }
+}
+
+/* Professional contact form checkbox, 2026-10-23 */
+.check-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 4px 0 18px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink);
+  cursor: pointer;
+  max-width: 520px;
+}
+.check-field input { width: 16px; height: 16px; margin: 3px 0 0; accent-color: var(--gold); flex: none; }
+.form-success[hidden] { display: none !important; }
