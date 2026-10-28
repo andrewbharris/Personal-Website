@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /tka-balancing-simulator/app/
 
 Sitemap: https://andrewbharrismd.com/sitemap.xml
