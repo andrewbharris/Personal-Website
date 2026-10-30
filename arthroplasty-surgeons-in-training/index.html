@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Root-relative paths on purpose: this page lives one folder down, at
-     /arthroplasty-surgeons-in-training/. noindex until it lists a second resource. -->
+     /arthroplasty-surgeons-in-training/. noindex kept for now (two resources, little text). -->
 <html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,9 +40,10 @@
       "author": {
         "@id": "https://andrewbharrismd.com/#physician"
       },
-      "hasPart": {
-        "@id": "https://andrewbharrismd.com/tka-balancing-simulator/#app"
-      }
+      "hasPart": [
+        { "@id": "https://andrewbharrismd.com/tka-balancing-simulator/#app" },
+        { "@id": "https://andrewbharrismd.com/anterior-hip-anatomy.html#page" }
+      ]
     },
     {
       "@type": "Physician",
@@ -149,6 +150,10 @@
         <a href="/arthroplasty-surgeons-in-training/" class="nav-parent active" aria-expanded="false" aria-haspopup="true">For Trainees<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         <div class="nav-menu">
           <a href="/arthroplasty-surgeons-in-training/" class="nav-top current">All Trainee Resources</a>
+          <span class="nav-group">Hip</span>
+          <div class="nav-sublist">
+            <a href="/anterior-hip-anatomy.html" class="nav-sub">Anterior Hip Anatomy</a>
+          </div>
           <span class="nav-group">Knee</span>
           <div class="nav-sublist">
             <a href="/tka-balancing-simulator/" class="nav-sub">TKA Balancing Simulator</a>
@@ -176,6 +181,14 @@
         <h2>TKA Balancing Simulator</h2>
         <p>Plan, tension and balance 500 simulated arthritic knees, each with its own alignment, morphology and cartilage wear.</p>
         <a href="/tka-balancing-simulator/" class="text-link text-link-cta">View the simulator →</a>
+      </div>
+    </div>
+    <div class="res-card" style="margin-top:28px;">
+      <a href="/anterior-hip-anatomy.html"><img src="/assets/img/anterior-vs-star-incision.webp" alt="Front and side views of the hip with the skin incisions for the anterior approach and the STAR approach marked" width="1200" height="939" loading="lazy" decoding="async"></a>
+      <div>
+        <h2>Anterior Hip Anatomy</h2>
+        <p>Selected articles and meeting videos on the applied anatomy of the direct anterior approach, with an emphasis on the releases required for femoral mobilization.</p>
+        <a href="/anterior-hip-anatomy.html" class="text-link text-link-cta">View the resources →</a>
       </div>
     </div>
   </div>
