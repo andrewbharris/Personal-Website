@@ -114,6 +114,10 @@ async function handleFor(path){
 }
 // "guides/x.html" -> "guides/"   |   "about.html" -> ""
 const dirOf = p => p.includes('/') ? p.slice(0, p.lastIndexOf('/') + 1) : '';
+// Resolve an asset reference to a path inside Working Version. A root-relative path
+// ("/assets/img/x.webp", used by the pages that live in subfolders) ignores the page's
+// own folder; a relative one ("assets/img/x.webp", "./fonts/a.ttf") is joined to it.
+const sitePath = (raw, base) => raw.startsWith('/') ? raw.slice(1) : (base || '') + raw.replace(/^\.\//,'');
 async function getSiteCss(){
   if (cssCache !== null) return cssCache;
   try { cssCache = await (await readFile('assets/css/style.css')).text(); }
@@ -133,7 +137,7 @@ async function resolveImages(doc, base){
   for (const img of doc.querySelectorAll('img[src]')){
     const raw = img.getAttribute('src') || '';
     if (!raw || /^(https?:|data:|blob:|\/\/)/i.test(raw)) continue;
-    const url = await blobFor((base || '') + raw.split('?')[0].replace(/^\.\//,''));
+    const url = await blobFor(sitePath(raw.split('?')[0], base));
     if (url){ img.setAttribute('src', url); img.removeAttribute('srcset'); }
   }
 }
@@ -149,7 +153,7 @@ async function resolveStyleUrls(doc, base){
     let out = '', last = 0;
     for (const [i, len, raw] of hits){
       if (/^(https?:|data:|blob:|\/\/)/i.test(raw)) continue;
-      const u = await blobFor((base || '') + raw.replace(/^\.\//,''));
+      const u = await blobFor(sitePath(raw, base));
       if (u){ out += css.slice(last, i) + 'url("' + u + '")'; last = i + len; }
     }
     if (last) st.textContent = out + css.slice(last);
@@ -343,7 +347,10 @@ const KNOWN = {
   'robotic-knee-replacement.html':                ['Procedures & approaches','Robotic Knee Replacement'],
   'revision-joint-replacement.html':              ['Procedures & approaches','Revision Joint Replacement'],
   'outpatient-joint-replacement.html':            ['Patient guides','Outpatient Joint Replacement'],
+  'arthroplasty-surgeons-in-training/index.html': ['For trainees','Trainee Resources (hub)'],
   'anterior-hip-anatomy.html':                    ['For trainees','Anterior Hip Anatomy'],
+  'tka-balancing-simulator/index.html':           ['For trainees','TKA Balancing Simulator'],
+  'save-my-card/index.html':                      ['Main pages','Save My Card (wallet)'],
   'cirujano-de-cadera-y-rodilla-chicago.html': ['Languages','Meet Dr. Harris (Español)'],
   'zamena-sustavov-chicago-skokie.html': ['Languages','Meet Dr. Harris (Русский)'],
   'endoprotezoplastyka-biodra-kolana-chicago.html': ['Languages','Meet Dr. Harris (Polski)'],
@@ -371,6 +378,7 @@ const KNOWN = {
 // Never offer these for editing: the editor itself, and the Search Console
 // verification file, which must never be altered.
 const SKIP = f => f === 'USE THIS TO HAND-EDIT CONTENT.html' || /^google[0-9a-f]+\.html$/i.test(f);
+const SKIP_DIR = d => d === 'assets' || d === 'guides' || /^[._]/.test(d);
 const labelFrom = f => f.replace(/\.html$/,'').replace(/[-_]+/g,' ')
                         .replace(/\b\w/g, c => c.toUpperCase());
 
@@ -388,6 +396,14 @@ async function buildPageList(){
       if (handle.kind === 'file' && /\.html$/i.test(name)) files.push('guides/' + name);
     }
   } catch(e){ /* no guides folder */ }
+  // Pages that live in their own folder (the simulator, the trainee hub, save-my-card)
+  // are one level down as <folder>/index.html. Only that file is offered; assets/, the
+  // simulator's app/ (two levels down) and anything hidden or parked never appear.
+  for await (const [name, handle] of dirHandle.entries()){
+    if (handle.kind !== 'directory' || SKIP_DIR(name)) continue;
+    try { await handle.getFileHandle('index.html'); files.push(name + '/index.html'); }
+    catch(e){ /* folder has no index.html */ }
+  }
   files.sort();
   const groups = {};
   for (const f of files){
@@ -624,7 +640,7 @@ async function loadPage(note){
   await resolveStyleUrls(doc, dirOf(page));
 
   // Inline the real site stylesheet so the preview is always styled correctly
-  const siteCss = dirOf(page) ? '' : await getSiteCss();
+  const siteCss = /assets\/css\/style\.css/.test(originalText) ? await getSiteCss() : '';
   if (siteCss){ const sc = doc.createElement('style'); sc.id = 'cc-sitecss'; sc.textContent = siteCss; doc.head.appendChild(sc); }
   const st = doc.createElement('style'); st.id = 'cc-style';
   st.textContent = '[data-cc-id]:hover{outline:2px dashed #6e9bb6;outline-offset:2px;cursor:text}'
