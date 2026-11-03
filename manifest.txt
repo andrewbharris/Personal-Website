@@ -46,6 +46,7 @@ assets/img/favicon-32x32.png
 assets/img/favicon.ico
 assets/img/harris_wife_hss.jpg
 assets/img/headshot.jpg
+assets/img/andrew-b-harris-md-orthopaedic-surgeon.jpg
 assets/img/headshot_fellowship.jpg
 assets/img/hip-arthritis-normal-vs-arthritic.webp
 assets/img/hip-arthritis-vs-replacement.webp
