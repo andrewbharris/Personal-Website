@@ -90,6 +90,7 @@ const $ = s => document.querySelector(s);
 const NBSP = / /g;
 const norm = s => (s||'').replace(NBSP,' ').replace(/\s+/g,' ').trim();
 const cleanRun = s => (s||'').replace(NBSP,' ').replace(/\n/g,' ');
+let restoreScrollY = null;
 let dirHandle = null, dirty = false, originalText = '', origMap = {}, cssCache = null,
     loadedPage = null, blobCache = {};
 // Disk watching. loadedMtime is the mtime of the file the preview was built from.
@@ -666,6 +667,7 @@ async function loadPage(note){
       // Lock all navigation so the preview always matches the selected file
       d.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a'); if (a) e.preventDefault(); }, true);
       loadedPage = page;   // mark which file the preview actually corresponds to
+      if (restoreScrollY !== null){ try { frame.contentWindow.scrollTo(0, restoreScrollY); } catch(e){} restoreScrollY = null; }
       setStatus('Ready — ' + boxes.length + ' editable areas'
                 + (note ? '  ·  ' + note : ''), note ? 'ok' : '');
     } catch(err){ setStatus('Load error: '+err.message,'err'); }
@@ -690,6 +692,20 @@ async function savePage(){
     assignIds(outDoc, (el,id) => { idmap[id] = el; });
 
     const live = $('#frame').contentDocument;
+    // SAFETY: the preview's boxes must line up one-to-one with the file's boxes. Every box the
+    // user did not touch must still carry the same text on both sides; if any does not, the ids
+    // have drifted (this happened on 2026-11-07 when an emptied box dropped out of the count and
+    // later edits landed in the wrong headings) and writing would scramble the page.
+    let drift = 0;
+    live.querySelectorAll('[data-cc-id]').forEach(el => {
+      const id = el.getAttribute('data-cc-id');
+      if (norm(el.textContent) !== origMap[id]) return;          // edited: compared below
+      if (!idmap[id] || norm(idmap[id].textContent) !== origMap[id]) drift++;
+    });
+    if (drift){
+      setStatus('Not saved \u2014 the preview is out of step with the file (' + drift + ' boxes). Copy your edit, click \u201cDiscard & reload\u201d, and redo it.','err');
+      return;
+    }
     let changes = 0, rebuilt = 0;
     live.querySelectorAll('[data-cc-id]').forEach(el => {
       const id = el.getAttribute('data-cc-id');
@@ -738,9 +754,14 @@ async function savePage(){
     allowOverwrite = false;
     hideDiskBanner();
     dirty = false;
-    setStatus('Saved ✓  ' + changes + ' change' + (changes===1?'':'s')
+    const savedNote = 'Saved ✓  ' + changes + ' change' + (changes===1?'':'s')
       + (rebuilt ? '  ·  ' + rebuilt + ' with markup changes' : '')
-      + '  ·  ' + new Date().toLocaleTimeString(), 'ok');
+      + '  ·  ' + new Date().toLocaleTimeString();
+    // Reload the preview from the file just written. Without this, a box emptied by this save
+    // drops out of the numbering on the next save while the preview keeps its old numbers, and
+    // the next edit is written into the wrong element. Scroll position is kept.
+    try { restoreScrollY = $('#frame').contentWindow.scrollY || 0; } catch(e){ restoreScrollY = 0; }
+    await loadPage(savedNote);
   } catch (e) {
     setStatus('Save failed: ' + e.message, 'err');
   }
