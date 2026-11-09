@@ -2,4 +2,10 @@ User-agent: *
 Allow: /
 Disallow: /tka-balancing-simulator/app/
 
+# Keep the decorative page-header artwork out of Google Images, so Google does not
+# pick it (rendered on black) as the thumbnail in search results.
+User-agent: Googlebot-Image
+Disallow: /assets/img/hip-replacement-motif-detailed.webp
+Disallow: /assets/img/knee-replacement-motif-detailed.webp
+
 Sitemap: https://andrewbharrismd.com/sitemap.xml
