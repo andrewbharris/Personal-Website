@@ -131,6 +131,7 @@ tka-balancing-simulator/app/index.html
 tka-balancing-simulator/app/app.js
 arthroplasty-surgeons-in-training/index.html
 anterior-hip-anatomy.html
+arthroplasty-risk-calculators.html
 save-my-card/index.html
 save-my-card/andrew-b-harris-md.pkpass
 tka-balancing-simulator/media/sim-anatomy.webp
