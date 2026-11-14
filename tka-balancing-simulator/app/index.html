@@ -517,6 +517,9 @@ html.L-land[data-scr="balance"] section.view.on > .vh { grid-column: 1 / -1; } h
 html.L-land[data-scr="balance"] section.view.on > .pad, html.L-land[data-scr="balance"] section.view.on > .dockph { grid-column: 2; grid-row: 2; margin: 0; max-width: none; }
 html.L-land[data-scr="balance"] section.view.on > .readout { grid-column: 2; grid-row: 3; }
 .toast { position: fixed; z-index: 6; left: 50%; top: 132px; transform: translateX(-50%); max-width: calc(100vw - 32px); padding: 8px 14px; background: #22262b; color: #ffffff; font-size: 14px; font-weight: bold; border-radius: 6px; box-shadow: 0 6px 20px rgba(20, 30, 40, 0.25); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+/* a soft tissue press that changes no number: why, by the control (revision 24); it never takes a click, and goes on the next */
+.snote { position: fixed; z-index: 7; left: 0; top: 0; width: max-content; max-width: min(320px, calc(100vw - 8px)); box-sizing: border-box; padding: 8px 12px 9px; background: #ffffff; border: 1px solid #b9bfc6; border-radius: 6px; box-shadow: 0 6px 20px rgba(20, 30, 40, 0.18); font-size: 13.5px; line-height: 1.35; color: #2a2f35; pointer-events: none; }
+.snote b { display: block; font-size: 12px; letter-spacing: 0.07em; color: #4b525a; margin-bottom: 2px; }
 .toast.show { animation: toast 3s ease-in-out forwards; } @keyframes toast { 0% { opacity: 0; } 8%, 80% { opacity: 1; } 100% { opacity: 0; } }   /* fades in and out in place */
 /* below the first screen: the case, the steps and tools, the soft tissue strip, the summary */
 html.L-narrow[data-scr="balance"] .phdet { display: block; border-top: 1px solid #d5d9de; }
@@ -713,6 +716,7 @@ html.L-narrow[data-scr="balance"] .phdet .softstrip { border-top: 1px solid var(
   </section>
 </main>
 <div class="toast" id="toast" role="status" hidden></div>
+<div class="snote" id="softNote" role="status" hidden><b>NOTHING CHANGED</b><span></span></div>
 <section class="phdet" id="phDet" aria-label="Case, steps and summary">
   <div class="phcase" id="phCase"></div>
   <div class="phtools"><button type="button" class="btn" id="phReset" title="Return to the starting plan">Reset</button><span class="sidesw" id="sideBtns2" role="group" aria-label="Knee"><button type="button" data-side="L" aria-label="Left knee" title="Left knee">L</button><button type="button" data-side="R" aria-label="Right knee" title="Right knee">R</button></span><button type="button" class="btn" id="phSrc">Sources</button></div>

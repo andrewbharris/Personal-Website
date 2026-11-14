@@ -134,9 +134,9 @@ anterior-hip-anatomy.html
 arthroplasty-risk-calculators.html
 save-my-card/index.html
 save-my-card/andrew-b-harris-md.pkpass
-tka-balancing-simulator/media/sim-anatomy.webp
 tka-balancing-simulator/media/sim-balance-screen.webp
 tka-balancing-simulator/media/sim-cases-screen.webp
 tka-balancing-simulator/media/sim-femurs.webp
 tka-balancing-simulator/media/sim-tension-screen.webp
-tka-balancing-simulator/media/sim-wear.webp
+tka-balancing-simulator/media/sim-register-screen.webp
+tka-balancing-simulator/media/sim-report-cartilage.webp
